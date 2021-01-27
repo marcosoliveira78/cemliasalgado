@@ -1,9 +1,13 @@
-import React, { useLayoutEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Tooltip } from '@material-ui/core';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaSistrix } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { Button, Jumbotron } from 'react-bootstrap';
+import { Button, FormControl, InputGroup, Jumbotron, OverlayTrigger, Tooltip as TooltipBs, } from 'react-bootstrap';
 import Tables from '../../component/Table';
+import { uniqueId } from 'lodash';
+import { SearchWrapper, FiltroItem } from '../styles';
+// import jsonRep from '../../repositories/json';
 
 // Table Headers
 const headCells = [
@@ -36,15 +40,46 @@ const headCells = [
 
 function ListagemGeral() {
 
-    const [matriculas, setMatriculas] = useState([]);
     const urlBd = 'http://localhost:8080/Matriculas';
-    console.log(urlBd);
+    // console.log(urlBd);
 
 
 
     // Hooks
+    const [matriculas, setMatriculas] = useState([]);
+    const [resultado, setResultado] = useState([]);
+    const [filtro, setFiltro] = useState([]);
+
+    let rows
+
+    async function getMatriculaByFiltro() {
+        if (filtro !== null && filtro !== undefined) {
+            if (filtro.length >= 3) {
+                const filtrado = matriculas.filter((matricula) => 
+
+                    (matricula.nome.includes(filtro))
+                );
+                setResultado([...filtrado])
+            }
+            if (filtro.length === 0) {
+                setResultado([...matriculas])
+            }
+        }
+    }
+
+    // Handles
+    const handleChange = (event) => {
+        const { value } = event.target;
+        setTimeout(() => {
+            setFiltro(value);
+        }, 200);
+    };
+
+
+
     // Table Rows
-    const rows = matriculas.map((matricula) => (
+    //useEffect(() => {
+    rows = resultado.map((matricula) => (
         {
             key: matricula.id,
             dataHora: matricula.dataHora,
@@ -96,41 +131,59 @@ function ListagemGeral() {
                 </>,
         }
     ));
-
-
+    //}, [resultado])
     // Triggers
     useLayoutEffect(() => {
         fetch(urlBd)
             .then(async (resp) => {
                 const resultado = await resp.json();
-                console.log('Resultado: ', resultado)
+                // console.log('Resultado: ', resultado)
                 setMatriculas([...resultado,]);
+                setResultado([...resultado,]);
             })
     }, []);
 
-    //   return (
-    //     <Wrapper>
-    //       {matriculas && (
-    //         matriculas.map((matricula) => (
-    //             <div style={{display: 'flex', color: '#f5f5f5'}}> {`${matricula.id} - ${matricula.nome} - ${matricula.naturalidade}`}</div>
-    //         ))
-    //       )}
-    //     </Wrapper>
-    //   );
+    useEffect(() => {
+        getMatriculaByFiltro();
+    }, [filtro]);
+    // console.log('Resultado: ', resultado);
     return (
         <>
             <div className="root">
-                <Jumbotron className="jumbotron">
+                
+                <SearchWrapper style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-end',
+                    width: '100%'
+                }}>
+                    {/* <Link to="/Item/Cadastrar">
+                        <Button variant="warning" className="btn btn-info">Cadastrar Aluno</Button>
+                    </Link> */}
+                    <Jumbotron className="jumbotron">
                     <h1>Listagem de Alunos</h1>
-                    <p>
+                    <span>
                         Listagem dos alunos que preencheram o formulário de matrícula em 2021.
-          </p>
-                    <p>
-                        <Link to="/Grupo/Cadastrar">
-                            <Button variant="info" className="btn btn-info">Cadastrar Aluno</Button>
-                        </Link>
-                    </p>
+                    </span>
                 </Jumbotron>
+                    <OverlayTrigger placement="left" overlay={<TooltipBs id={uniqueId()}>Filtrar por Nome</TooltipBs>}>
+                        <FiltroItem style={{ padding: '0', height: 'auto' }}>
+                            <InputGroup size="lg">
+                                <FormControl className="searchInputItens" onChange={handleChange} />
+                                <InputGroup.Append>
+                                    <InputGroup.Text
+                                        style={{
+                                            backgroundColor: '#cce3d9',
+                                            borderLeftColor: '#cce3d9',
+                                        }}>
+                                        <FaSistrix style={{ fontSize: '18px' }} />
+                                    </InputGroup.Text>
+                                </InputGroup.Append>
+                            </InputGroup>
+                        </FiltroItem>
+                    </OverlayTrigger>
+                </SearchWrapper>
                 <div className="divider" />
                 <Tables headCells={headCells} rows={rows} collapsable={false} />
             </div>

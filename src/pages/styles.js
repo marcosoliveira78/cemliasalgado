@@ -146,6 +146,27 @@ export const ContainerCentered = styled.div`
   height: 300px;
 `;
 
+export const FiltroItem = styled.div`
+    color: #f5f5f5df;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;  
+    padding-top: 3vh;
+    font-size: 30px;  
+    text-decoration: none;
+    z-index: 10;
+    &:hover,
+    &:focus,
+    &:active{
+      color: #f5f5f5;
+      text-decoration: none;
+  }
+  @media (max-width: 465px){
+    
+  }
+    `;
+    
 export const FlexColumnLeft = styled.div`
   display: flex;
   align-items: flex-start;
@@ -212,6 +233,14 @@ color: #ff0000;
 margin-bottom: 1vh;
 margin-top: 0 !important;
 padding: 0 1vh;
+`;
+
+export const SearchWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;  
 `;
 
 export const Wrapper = styled.div`

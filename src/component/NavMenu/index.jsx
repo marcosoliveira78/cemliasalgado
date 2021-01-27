@@ -122,13 +122,22 @@ function NavMenu() {
             {login && (
                 <>
                     <Navbar className="menu">
-                        <Container>
-                            <Navbar.Brand href="#">
-                                {/* <img src={logo} style={{ width: '25px' }} alt="Energisa logo" className="menu-imagem" /> */}
-                                <span style={{ marginLeft: '10px', fontFamily: 'Lovers Quarrel', fontSize: '40px' }}>Conservatório Estadua de Música Lia Salgado</span>
+                    <Container>
+                            <Navbar.Brand style={{ marginRight: '5px' }}>
+                                <Link to="/Home" className="link">
+                                    <OverlayTrigger placement="bottom-end" overlay={<Tooltip id={uniqueId()}>Página Inicial</Tooltip>}>
+                                        <img src={logo} style={{ width: '25px' }} alt="AWCSE" className="sub-menu-imagem" />
+                                    </OverlayTrigger>
+                                </Link>
                             </Navbar.Brand>
-                            <Navbar.Brand className="nav-bar-text">
-                                {/* {
+                        {/* </Container>
+                        <Container> */}
+                            <Navbar.Brand href="#" style={{ display: 'flex',  width: '100%', justifyContent: 'center'}}>
+                                {/* <img src={logo} style={{ width: '25px' }} alt="Energisa logo" className="menu-imagem" /> */}
+                                <span style={{ fontFamily: 'Lovers Quarrel', fontSize: '5vh' }}>Conservatório Estadual de Música Lia Salgado</span>
+                            </Navbar.Brand>
+                            {/* <Navbar.Brand className="nav-bar-text">
+                                {
                                         !admin && (
                                             <FaUserCircle style={{ fontSize: '20px', marginRight: '10px' }} title={`Seja bem vindo, ${Auth.getUserLogged().informacoesUsuario.usuarioNome}`} />
                                         )
@@ -138,13 +147,13 @@ function NavMenu() {
                                         admin && (
                                             <FaUserTie style={{ fontSize: '20px', marginRight: '10px' }} title={`Seja bem vindo administrador, ${Auth.getUserLogged().informacoesUsuario.usuarioNome}`} />
                                         )
-                                    } */}
+                                    }
                                 {`Seja bem-vindo!`}
-                            </Navbar.Brand>
+                            </Navbar.Brand> */}
                         </Container>
                     </Navbar>
 
-                    <Navbar expand="sm" className="sub-menu">
+                    {/* <Navbar expand="sm" className="sub-menu">
                         <Container>
                             <Navbar.Brand style={{ marginRight: '5px' }}>
                                 <Link to="/Home" className="link">
@@ -152,7 +161,7 @@ function NavMenu() {
                                         <img src={logo} style={{ width: '25px' }} alt="AWCSE" className="sub-menu-imagem" />
                                     </OverlayTrigger>
                                 </Link>
-                            </Navbar.Brand>
+                            </Navbar.Brand> */}
                             {/* {login && (
                                     <Navbar.Text>
                                         <a onClick={() => refreshSession(time)} href={`${urlEllevo}/Principal.asp?SessionID=${sessionID}`} target="_blank" rel="noreferrer">
@@ -162,14 +171,14 @@ function NavMenu() {
                                         </a>
                                     </Navbar.Text>
                                 )} */}
-                            <Navbar.Text style={{ marginLeft: '10px' }}>
+                            {/* <Navbar.Text style={{ marginLeft: '10px' }}>
                                 <Link to="/Chamados" className="link">
                                     <OverlayTrigger placement="bottom" overlay={<Tooltip id={uniqueId()}>Meus Chamados</Tooltip>}>
                                         <FaBookReader className="fa-style" />
                                     </OverlayTrigger>
                                 </Link>
-                            </Navbar.Text>
-                            <Nav className="mr-auto">
+                            </Navbar.Text> */}
+                            {/* <Nav className="mr-auto">
                                 {
                                     admin && (
                                         <>
@@ -202,10 +211,10 @@ function NavMenu() {
                                         </>
                                     )
                                 }
-                            </Nav>
-                            <OverlayTrigger placement="bottom-start" overlay={<Tooltip id={uniqueId()}>Sair</Tooltip>}>
+                            </Nav> */}
+                            {/* <OverlayTrigger placement="bottom-start" overlay={<Tooltip id={uniqueId()}>Sair</Tooltip>}>
                                 <FaDoorOpen style={{ fontSize: '30px', marginRight: '5px', cursor: 'pointer' }} onClick={handlerLogout} />
-                            </OverlayTrigger>
+                            </OverlayTrigger> */}
                             {/* {exibeTempoSessao && (
                                     <div style={{ fontSize: '11px' }}>
                                         <span>Sessão:</span>
@@ -213,8 +222,8 @@ function NavMenu() {
                                         {`${tempo}`}
                                     </div>
                                 )} */}
-                        </Container>
-                    </Navbar>
+                        {/* </Container>
+                    </Navbar> */}
                 </>
             )}
         </>
