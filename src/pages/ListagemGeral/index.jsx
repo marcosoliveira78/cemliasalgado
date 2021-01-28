@@ -40,7 +40,8 @@ const headCells = [
 
 function ListagemGeral() {
 
-    const urlBd = 'http://localhost:8080/Matriculas';
+    // const urlBd = 'http://localhost:8080/Matriculas';
+    const urlBd = 'https://cemliasalgado.herokuapp.com/matriculas';
     // console.log(urlBd);
 
     // functions
