@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Tooltip } from '@material-ui/core';
 import { FaEdit, FaSistrix } from 'react-icons/fa';
@@ -46,50 +46,7 @@ function ListagemGeral() {
     // functions
     function replaceSpecialChars(str)
 {
-
-    // const acentos = ["ç", "Ç", "á", "é", "í", "ó", "ú", "ý", "Á", "É", "Í", "Ó", "Ú", "Ý", "à", "è", "ì", "ò", "ù", "À", "È", "Ì", "Ò", "Ù", "ã", "õ", "ñ", "ä", "ë", "ï", "ö", "ü", "ÿ", "Ä", "Ë", "Ï", "Ö", "Ü", "Ã", "Õ", "Ñ", "â", "ê", "î", "ô", "û", "Â", "Ê", "Î", "Ô", "Û" ];
-    // const semAcento = ["c", "C", "a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "Y", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "a", "o", "n", "a", "e", "i", "o", "u", "y", "A", "E", "I", "O", "U", "A", "O", "N", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U" ];
-    
-    // str.map((x) => {
-
-    // })
-    
-    // str = str.replace(/[ÀÁÂÃÄÅ]/,"A");
-    // str = str.replace(/[àáâãäå]/,"a");
-    // str = str.replace(/[ÈÉÊË]/,"E");
-    // str = str.replace(/[ìíîï]/,"i");
-    // str = str.replace(/[Ç]/,"C");
-    // str = str.replace(/[ç]/,"c");
-
-    // o resto
-
     return str.normalize("NFD").replace(/[^a-zA-Zs]/g, ""); 
-
-    // public static string RemoveAcentos(string str)
-    // {
-    //     /** Troca os caracteres acentuados por não acentuados **/
-        
-
-    //     for (int i = 0; i < acentos.Length; i++)
-    //     {
-    //         str = str.Replace(acentos[i], semAcento[i]);
-    //     }
-    //     /** Troca os caracteres especiais da string por "" **/
-    //     string[] caracteresEspeciais = { "¹", "²", "³", "£", "¢", "¬", "º", "¨", "\"", "'", ".", ",", "-", ":", "(", ")", "ª", "|", "\\\\", "°", "_", "@", "#", "!", "$", "%", "&", "*", ";", "/", "<", ">", "?", "[", "]", "{", "}", "=", "+", "§", "´", "`", "^", "~" };
-
-    //     for (int i = 0; i < caracteresEspeciais.Length; i++)
-    //     {
-    //         str = str.Replace(caracteresEspeciais[i], "");
-    //     }
-
-    //     /** Troca os caracteres especiais da string por " " **/
-    //     str = Regex.Replace(str, @"[^\w\.@-]", " ",
-    //                         RegexOptions.None, TimeSpan.FromSeconds(1.5));
-
-    //     return str.Trim();
-    // }
-
-
 }
 
     // Hooks
@@ -99,21 +56,6 @@ function ListagemGeral() {
 
     let rows
 
-    async function getMatriculaByFiltro() {
-        if (filtro !== null && filtro !== undefined) {
-            if (filtro.length >= 3) {
-                const filtrado = matriculas.filter((matricula) => 
-
-                    (replaceSpecialChars(matricula.nome).toLowerCase().includes(replaceSpecialChars(filtro).toLowerCase()))
-                );
-                setResultado([...filtrado])
-            }
-            if (filtro.length === 0) {
-                setResultado([...matriculas])
-            }
-        }
-    }
-
     // Handles
     const handleChange = (event) => {
         const { value } = event.target;
@@ -122,10 +64,7 @@ function ListagemGeral() {
         }, 200);
     };
 
-
-
     // Table Rows
-    //useEffect(() => {
     rows = resultado.map((matricula) => (
         {
             key: matricula.id,
@@ -178,7 +117,7 @@ function ListagemGeral() {
                 </>,
         }
     ));
-    //}, [resultado])
+
     // Triggers
     useLayoutEffect(() => {
         fetch(urlBd)
@@ -191,9 +130,20 @@ function ListagemGeral() {
     }, []);
 
     useEffect(() => {
-        getMatriculaByFiltro();
-    }, [filtro]);
-    // console.log('Resultado: ', resultado);
+        if (filtro !== null && filtro !== undefined) {
+            if (filtro.length >= 3) {
+                const filtrado = matriculas.filter((matricula) => 
+
+                    (replaceSpecialChars(matricula.nome).toLowerCase().includes(replaceSpecialChars(filtro).toLowerCase()))
+                );
+                setResultado([...filtrado])
+            }
+            if (filtro.length === 0) {
+                setResultado([...matriculas])
+            }
+        }
+    }, [filtro, matriculas]);
+    
     return (
         <>
             <div className="root">
