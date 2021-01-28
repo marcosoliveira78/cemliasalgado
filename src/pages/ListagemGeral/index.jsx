@@ -110,11 +110,11 @@ function ListagemGeral() {
             status: 'A',
             acoes:
                 <>
-                    <Tooltip title="Editar">
-                        <Link to={{ pathname: `/Matricula/Editar/${matricula.id}` }}>
-                            <FaEdit className="icone" />
-                        </Link>
-                    </Tooltip>
+            // <Tooltip title="Editar">
+            //     <Link to={{ pathname: `/Matricula/Editar/${matricula.id}` }}>
+            //         <FaEdit className="icone" />
+            //     </Link>
+            // </Tooltip>
                 </>,
         }
     ));
