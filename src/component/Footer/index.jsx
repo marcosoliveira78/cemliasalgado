@@ -1,13 +1,13 @@
 import React from 'react';
 import FooterBase from './styles';
-// import LogoEnergisa from '../../assets/img/logoEnergisa.png';
+import Logo from '../../assets/image/logo.png';
 
 function Footer() {
   return (
     <FooterBase>
-      {/* <a href="#">
-        <img src={LogoEnergisa} alt="Logo Energisa" style={{ height: '20px' }} />
-      </a> */}
+      <a href="/">
+        <img src={Logo} alt="Logo Energisa" style={{ height: '20px' }} />
+      </a>
 
     </FooterBase>
   );

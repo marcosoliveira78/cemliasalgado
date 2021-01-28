@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const FooterBase = styled.footer`
-  background: #b79977;
+  background-color:  #cf8c34;
   color: var(--white);
   max-height: 7rem;
   padding-left: 16px;
@@ -9,7 +9,7 @@ const FooterBase = styled.footer`
   padding-top: 2px;
   padding-bottom: 2px;
   text-align: right;
-  z-index: 999;
+  z-index: 10;
   position: fixed;
   bottom: 0;
   left: 0;

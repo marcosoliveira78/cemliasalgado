@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Tooltip } from '@material-ui/core';
 import { FaEdit, FaSistrix } from 'react-icons/fa';
@@ -128,6 +129,8 @@ function ListagemGeral() {
   useEffect(() => {
     if (filtro !== null && filtro !== undefined) {
       if (filtro.length >= 3) {
+        const filtroPorPalavras = filtro.split(' ');
+        console.log('filtro:', filtroPorPalavras);
         const filtrado = matriculas.filter((matricula) => (
           replaceSpecialChars(matricula.nome).toLowerCase()
             .includes(replaceSpecialChars(filtro).toLowerCase())));
@@ -167,8 +170,8 @@ function ListagemGeral() {
                 <InputGroup.Append>
                   <InputGroup.Text
                     style={{
-                      backgroundColor: '#cce3d9',
-                      borderLeftColor: '#cce3d9',
+                      backgroundColor: '#ecc085',
+                      borderLeftColor: '#ecbf85',
                     }}
                   >
                     <FaSistrix style={{ fontSize: '18px' }} />
