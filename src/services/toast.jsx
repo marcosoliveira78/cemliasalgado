@@ -1,19 +1,22 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable object-shorthand */
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { FaCheck, FaExclamationCircle, FaExclamationTriangle, FaTimes } from 'react-icons/fa';
+import {
+  FaCheck, FaExclamationCircle, FaExclamationTriangle, FaTimes,
+} from 'react-icons/fa';
 import { Flip, toast } from 'react-toastify';
 
 const Layout = ({ icon, title, message }) => (
+  <div>
     <div>
-        <div>
-            <h4>
-                {icon}
-                {title}
-            </h4>
-        </div>
-        <div style={{ fontSize: 'small' }}>{message}</div>
+      <h4>
+        {icon}
+        {title}
+      </h4>
     </div>
+    <div style={{ fontSize: 'small' }}>{message}</div>
+  </div>
 );
 
 const ShowMessage = (type, message, autoClose, toastId) => {

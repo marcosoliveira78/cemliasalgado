@@ -1,6 +1,9 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import {
+  Box, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow,
+} from '@material-ui/core';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { uniqueId } from 'lodash';
 import { Label } from '../FormSelect/styles';
@@ -37,7 +40,8 @@ function TableRows(props) {
               <IconButton
                 aria-label="expand row"
                 size="small"
-                onClick={() => setOpen(!open)}>
+                onClick={() => setOpen(!open)}
+              >
                 {open ? <FaChevronUp /> : <FaChevronDown />}
               </IconButton>
             </TableCell>
@@ -63,7 +67,8 @@ function TableRows(props) {
             <TableCell
               key={uniqueId}
               style={{ paddingBottom: 0, paddingTop: 0 }}
-              colSpan={6}>
+              colSpan={6}
+            >
               <Collapse in={open} timeout="auto" unmountOnExit>
                 <Box margin={1}>
                   <Label className="subtitulo">

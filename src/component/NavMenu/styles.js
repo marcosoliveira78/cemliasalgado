@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FaEdit } from 'react-icons/fa';
-import Button from '../Buttons/ButtonLink';
+import { Button } from 'react-bootstrap';
+// import Button from '../Buttons/ButtonLink';
 
 export const LogoEnergisa = styled.img`
   max-width: 120px;

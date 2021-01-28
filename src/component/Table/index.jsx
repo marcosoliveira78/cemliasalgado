@@ -1,5 +1,8 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
-import { Paper, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@material-ui/core';
+import {
+  Paper, TableBody, TableCell, TableContainer, TablePagination, TableRow,
+} from '@material-ui/core';
 import { Table } from 'react-bootstrap';
 import { uniqueId } from 'lodash';
 import TableHeader from '../TableHeader';

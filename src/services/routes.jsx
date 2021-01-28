@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
@@ -7,41 +8,41 @@ import PaginaNaoEncontrada from '../pages/PageNotFound';
 import ListagemGeral from '../pages/ListagemGeral';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
-    <Route
-        {...rest}
-        render={(props) => (Auth.isAuthenticated() ? (
-            <Component {...props} />
-        ) : (
-                <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        ))}
-    />
+  <Route
+    {...rest}
+    render={(props) => (Auth.isAuthenticated() ? (
+      <Component {...props} />
+    ) : (
+      <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+    ))}
+  />
 );
 
 const PrivateRouteLogged = ({ component: Component, ...rest }) => (
-    <Route
-        {...rest}
-        render={(props) => (!Auth.isAuthenticated() ? (
-            <Component {...props} />
-        ) : (
-                <Redirect to={{ pathname: '/Home', state: { from: props.location } }} />
-        ))}
-    />
+  <Route
+    {...rest}
+    render={(props) => (!Auth.isAuthenticated() ? (
+      <Component {...props} />
+    ) : (
+      <Redirect to={{ pathname: '/Home', state: { from: props.location } }} />
+    ))}
+  />
 );
 
 const AdminPrivateRoute = ({ component: Component, ...rest }) => (
-    <Route
-        {...rest}
-        render={(props) => (Auth.isAuthenticated() && Auth.getUserLogged().isAdmin ? (
-            <Component {...props} />
-        ) : (
-                <Redirect to={{ pathname: '/Home', state: { from: props.location } }} />
-        ))}
-    />
+  <Route
+    {...rest}
+    render={(props) => (Auth.isAuthenticated() && Auth.getUserLogged().isAdmin ? (
+      <Component {...props} />
+    ) : (
+      <Redirect to={{ pathname: '/Home', state: { from: props.location } }} />
+    ))}
+  />
 );
 
 const Routes = () => (
-    <Switch>
-        {/* <PrivateRouteLogged exact path="/" component={Login} />
+  <Switch>
+    {/* <PrivateRouteLogged exact path="/" component={Login} />
         <PrivateRoute exact path="/Home" component={Home} />
         <PrivateRoute exact path="/Contato" component={Contato} />
         <PrivateRoute exact path="/Home/:tipoSolicitacao" component={Home} />
@@ -56,10 +57,10 @@ const Routes = () => (
         <AdminPrivateRoute name="editGroup" exact path="/Grupo/Editar/:codigoGrupo/:status" component={EditaGrupo} />
         <AdminPrivateRoute name="editItem" exact path="/Item/Editar/:codigoItem/:codigoGrupo/:status" component={EditaItem} />
         <AdminPrivateRoute exatc path="/Backgrounds" component={Background} /> */}
-        <PrivateRouteLogged exact path="/" component={ListagemGeral} />
-        <Route exact path="/listagemGeral" component={ListagemGeral} />
-        <Route component={PaginaNaoEncontrada} />
-    </Switch>
+    <PrivateRouteLogged exact path="/" component={ListagemGeral} />
+    <Route exact path="/listagemGeral" component={ListagemGeral} />
+    <Route component={PaginaNaoEncontrada} />
+  </Switch>
 );
 
 export default Routes;

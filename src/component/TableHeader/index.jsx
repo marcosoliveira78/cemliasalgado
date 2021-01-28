@@ -1,6 +1,9 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableCell, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
+import {
+  TableCell, TableHead, TableRow, TableSortLabel,
+} from '@material-ui/core';
 
 function TableHeader(props) {
   // Destructuring

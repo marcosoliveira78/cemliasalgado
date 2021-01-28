@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import styled from 'styled-components';
 import Footer from '../Footer';
@@ -18,15 +19,15 @@ const Main = styled.main`
 function PageDefault(props) {
   const { children } = props;
   return (
-        <>
-            {/* <Wallpaper />
+    <>
+      {/* <Wallpaper />
             <Watermark /> */}
-            <NavMenu />
-            <Main>
-                {children}
-            </Main>
-            <Footer />
-        </>
+      <NavMenu />
+      <Main>
+        {children}
+      </Main>
+      <Footer />
+    </>
   );
 }
 

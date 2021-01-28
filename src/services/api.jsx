@@ -2,7 +2,6 @@ import axios from 'axios';
 import { uniqueId } from 'lodash';
 import ShowMessage from './toast';
 
-
 const api = axios.create({
   baseURL: 'https://localhost:8080/Matriculas',
   // baseURL: 'https://awcseapi_ds.energisa.corp/',
@@ -19,12 +18,8 @@ api.interceptors.request.use(async (config) => {
 });
 
 const request = async (method, url, param) => {
-    try {
-      let response;
-if(!url){
-    url = '';
-}
-    response = await api[method](url, param);
+  try {
+    const response = await api[method](url, param);
     if (response.status === 200) {
       if (method !== 'get') {
         ShowMessage('success', response.data.mensagem);
@@ -42,7 +37,8 @@ if(!url){
         errors = 'Conexão com banco de dados não encontrada.';
       } else {
         errors = error.response.data.msgError
-          ? error.response.data.msgError : error.response.data.title; }
+          ? error.response.data.msgError : error.response.data.title;
+      }
     } else {
       errors = 'Falha na comunicação com o servidor.';
     }

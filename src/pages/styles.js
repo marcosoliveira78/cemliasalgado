@@ -166,7 +166,7 @@ export const FiltroItem = styled.div`
     
   }
     `;
-    
+
 export const FlexColumnLeft = styled.div`
   display: flex;
   align-items: flex-start;
