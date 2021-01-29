@@ -1,3 +1,6 @@
+/* eslint-disable prefer-const */
+/* eslint-disable no-cond-assign */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Tooltip } from '@material-ui/core';
@@ -47,6 +50,28 @@ function ListagemGeral() {
   // functions
   function replaceSpecialChars(str) {
     return str.normalize('NFD').replace(/[^a-zA-Zs]/g, '');
+  }
+
+  function multiSearchOr(text, searchWords) {
+    const searchExp = new RegExp(searchWords.join('|'), 'gi');
+    return (searchExp.test(text)) ? 'Found!' : 'Not found!';
+  }
+
+  function multiSearchAnd(text, searchWords) {
+    const searchExp = new RegExp(`(${searchWords.join(')|(')})`, 'gi');
+    let resultado = false;
+    if (text.match(searchExp) !== null) {
+      resultado = (replaceSpecialChars(text).match(searchExp).length === searchWords.length);
+    }
+    return resultado;
+  }
+
+  function multiSearchAnds(text, searchWords) {
+    let currTest;
+    while (currTest = searchWords.pop()) {
+      if (!text.match(new RegExp(currTest, 'i'))) return false;
+    }
+    return true;
   }
 
   // Hooks
@@ -128,13 +153,24 @@ function ListagemGeral() {
 
   useEffect(() => {
     if (filtro !== null && filtro !== undefined) {
+      let arrayMatriculas = [];
       if (filtro.length >= 3) {
         const filtroPorPalavras = filtro.split(' ');
-        console.log('filtro:', filtroPorPalavras);
-        const filtrado = matriculas.filter((matricula) => (
-          replaceSpecialChars(matricula.nome).toLowerCase()
-            .includes(replaceSpecialChars(filtro).toLowerCase())));
-        setResultado([...filtrado]);
+        const filtraMatriculas = matriculas.map((matricula) => (multiSearchAnd(matricula.nome, filtroPorPalavras) ? matricula : ''));
+        filtraMatriculas.map((matricula) => {
+          if (matricula !== '') {
+            arrayMatriculas.push(matricula);
+          }
+          return null;
+        });
+        if (filtroPorPalavras.length > 1) {
+          setResultado([...arrayMatriculas]);
+        } else {
+          const filtrado = matriculas.filter((matricula) => (
+            replaceSpecialChars(matricula.nome).toLowerCase()
+              .includes(replaceSpecialChars(filtro).toLowerCase())));
+          setResultado([...filtrado]);
+        }
       }
       if (filtro.length === 0) {
         setResultado([...matriculas]);
@@ -145,25 +181,19 @@ function ListagemGeral() {
   return (
     <>
       <div className="root">
+        <Jumbotron className="jumbotron">
+          <h2>Listagem de Alunos</h2>
+          <span>
+            Alunos que preencheram o formulário de matrícula.
+          </span>
+        </Jumbotron>
+        <SearchWrapper>
 
-        <SearchWrapper style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          width: '100%',
-        }}
-        >
           {/* <Link to="/Item/Cadastrar">
                         <Button variant="warning" className="btn btn-info">Cadastrar Aluno</Button>
                     </Link> */}
-          <Jumbotron className="jumbotron">
-            <h1>Listagem de Alunos</h1>
-            <span>
-              Listagem dos alunos que preencheram o formulário de matrícula em 2021.
-            </span>
-          </Jumbotron>
-          <OverlayTrigger placement="left" overlay={<TooltipBs id={uniqueId()}>Filtrar por Nome</TooltipBs>}>
+
+          <OverlayTrigger placement="auto" overlay={<TooltipBs id={uniqueId()}>Filtrar por Nome</TooltipBs>}>
             <FiltroItem style={{ padding: '0', height: 'auto' }}>
               <InputGroup size="lg">
                 <FormControl className="searchInputItens" onChange={handleChange} />

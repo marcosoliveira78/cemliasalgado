@@ -40,6 +40,11 @@ html, body {
   background-size: auto 100%;
   background-attachment: fixed;
 }
+@media (max-width: 465px) {
+  html,body {
+      width: 123% !important;
+  }
+}
 
 body {
   width: 100%;

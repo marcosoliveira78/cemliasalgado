@@ -237,10 +237,10 @@ padding: 0 1vh;
 
 export const SearchWrapper = styled.div`
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    align-content: center;  
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
 `;
 
 export const Wrapper = styled.div`

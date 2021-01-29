@@ -46,7 +46,7 @@ function Tables(props) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('ordem');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   // Handles
   const handleRequestSort = (event, property) => {
