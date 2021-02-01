@@ -6,6 +6,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import Auth from './auth';
 import PaginaNaoEncontrada from '../pages/PageNotFound';
 import ListagemGeral from '../pages/ListagemGeral';
+import Matricula from '../pages/Matricula';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -59,6 +60,7 @@ const Routes = () => (
         <AdminPrivateRoute exatc path="/Backgrounds" component={Background} /> */}
     <PrivateRouteLogged exact path="/" component={ListagemGeral} />
     <Route exact path="/listagemGeral" component={ListagemGeral} />
+    <Route exact path="/matricula" component={Matricula} />
     <Route component={PaginaNaoEncontrada} />
   </Switch>
 );

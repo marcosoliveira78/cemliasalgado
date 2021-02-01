@@ -245,7 +245,7 @@ export const SearchWrapper = styled.div`
 
 export const Wrapper = styled.div`
 margin-bottom: 50px;
-background-color: #efefef;
+background-color: #fff;
 border-radius: 5px;
 padding: 10px;
 width: 100%;

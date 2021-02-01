@@ -147,12 +147,13 @@ justify-content: flex-start;
 }
 
 .jumbotron {
+  color: #7e4700 !important;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   z-index: 10;
-  margin-bottom: 0 important;
+  margin-bottom: 0 !important;
   background-color: transparent !important;
   padding: 0 !important;
 }

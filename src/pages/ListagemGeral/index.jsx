@@ -11,7 +11,7 @@ import {
 } from 'react-bootstrap';
 import { uniqueId } from 'lodash';
 import Tables from '../../component/Table';
-import { SearchWrapper, FiltroItem } from '../styles';
+import { SearchWrapper, FiltroItem, Buttons } from '../styles';
 // import jsonRep from '../../repositories/json';
 
 // Table Headers
@@ -44,7 +44,10 @@ const headCells = [
 
 function ListagemGeral() {
   // const urlBd = 'http://localhost:8080/Matriculas';
-  const urlBd = 'https://cemliasalgado.herokuapp.com/matriculas';
+  // const urlBd = 'https://cemliasalgado.herokuapp.com/matriculas';
+  const urlBd = window.location.hostname.includes('localhost')
+    ? 'http://localhost:8080/Matriculas'
+    : 'https://cemliasalgado.herokuapp.com/matriculas';
   // console.log(urlBd);
 
   // functions
@@ -189,9 +192,9 @@ function ListagemGeral() {
         </Jumbotron>
         <SearchWrapper>
 
-          {/* <Link to="/Item/Cadastrar">
-                        <Button variant="warning" className="btn btn-info">Cadastrar Aluno</Button>
-                    </Link> */}
+          <Link to="/matricula">
+            <Buttons style={{ color: '#7e4700' }} variant="warning" className="btn btn-info">Cadastrar Aluno</Buttons>
+          </Link>
 
           <OverlayTrigger placement="auto" overlay={<TooltipBs id={uniqueId()}>Filtrar por Nome</TooltipBs>}>
             <FiltroItem style={{ padding: '0', height: 'auto' }}>
