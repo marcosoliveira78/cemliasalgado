@@ -1,30 +1,57 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
 import { Form, Jumbotron } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
+import request from '../../services/api';
 import FormField from '../../component/FormField';
 import {
   ButtonContainer, Wrapper, Buttons,
 } from '../styles';
 
 const Matricula = () => {
-  const [contato, setContato] = useState([]);
-  const [matricula] = useState([]);
+  const [matricula, setMatricula] = useState([]);
 
   const history = useHistory();
   const isValid = true;
+  let nextId;
+  const pasta = 'matriculas';
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setContato({ ...contato, [name]: value });
+    setMatricula({ ...matricula, [name]: value });
   };
 
   const handleSubmit = async (form) => {
     form.preventDefault();
-    // const response = await itemRep.save([item]);
-    // if (response !== null && response.success) {
-    history.push('/listagemGeral');
-    // }
+    console.log('NOME: ', matricula.nome);
+    axios.post('http://localhost:8080/matriculas', {
+      id: nextId,
+      nome: matricula.nome,
+      dataNascimento: '30/03/1978',
+      email: 'marcsantos@hotmail.com',
+    }).then((resp) => {
+      console.log(resp.data);
+      history.push('/listagemGeral');
+    }).catch((error) => {
+      console.log(error);
+    });
   };
+
+  useEffect(() => {
+    request('get', `http://localhost:8080/${pasta}`)
+      .then(async (resp) => {
+        const resultado = await resp;
+        const lastKey = Object.keys(resultado).reverse()[0];
+        nextId = resultado[lastKey].id + 1;
+        console.log('ID: ', nextId);
+      });
+  }, []);
+
+  // const response = await itemRep.save([item]);
+  // if (response !== null && response.success) {
+  // }
 
   return (
     <>
@@ -47,7 +74,7 @@ const Matricula = () => {
             {errors.codigoGrupo && <MessageError>{errors.codigoGrupo}</MessageError>} */}
             <FormField
               label="Nome do Aluno"
-              name="nomeItem"
+              name="nome"
               type="text"
               value={matricula.nome}
               maxLength={200}

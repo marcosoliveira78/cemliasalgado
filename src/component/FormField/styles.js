@@ -48,11 +48,11 @@ export const Input = styled.input`
   font-size: 18px;
   text-align:left;
   outline: 0;
-  border: 0;
+  /* border: 0; */
   border-left: 1px solid #5d5d5d5d;
   border-right: 1px solid #5d5d5d5d;
   border-top: 1px solid #5d5d5d5d;
-  border-bottom: 4px solid #a9afb58a;
+  border-bottom: 4px solid #cf8c34 !important;
   
   padding: 16px 16px;
   margin-bottom: 0 !important;
