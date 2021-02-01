@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
@@ -11,8 +10,8 @@ import {
 } from 'react-bootstrap';
 import { uniqueId } from 'lodash';
 import Tables from '../../component/Table';
+import request from '../../services/api';
 import { SearchWrapper, FiltroItem, Buttons } from '../styles';
-// import jsonRep from '../../repositories/json';
 
 // Table Headers
 const headCells = [
@@ -43,12 +42,9 @@ const headCells = [
 ];
 
 function ListagemGeral() {
-  // const urlBd = 'http://localhost:8080/Matriculas';
-  // const urlBd = 'https://cemliasalgado.herokuapp.com/matriculas';
   const urlBd = window.location.hostname.includes('localhost')
     ? 'http://localhost:8080/Matriculas'
     : 'https://cemliasalgado.herokuapp.com/matriculas';
-  // console.log(urlBd);
 
   // functions
   function replaceSpecialChars(str) {
@@ -145,7 +141,8 @@ function ListagemGeral() {
   ));
 
   // Triggers
-  useLayoutEffect(() => {
+  useEffect(() => {
+    // request('get', 'matriculas')
     fetch(urlBd)
       .then(async (resp) => {
         const result = await resp.json();
@@ -156,7 +153,7 @@ function ListagemGeral() {
 
   useEffect(() => {
     if (filtro !== null && filtro !== undefined) {
-      let arrayMatriculas = [];
+      const arrayMatriculas = [];
       if (filtro.length >= 3) {
         const filtroPorPalavras = filtro.split(' ');
         const filtraMatriculas = matriculas.map((matricula) => (multiSearchAnd(matricula.nome, filtroPorPalavras) ? matricula : ''));

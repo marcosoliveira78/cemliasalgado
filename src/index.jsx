@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import cors from 'cors';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import App from './App';

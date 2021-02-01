@@ -3,7 +3,10 @@ import { uniqueId } from 'lodash';
 import ShowMessage from './toast';
 
 const api = axios.create({
-  baseURL: 'https://localhost:8080/Matriculas',
+  baseURL: window.location.hostname.includes('localhost')
+    ? 'http://localhost:8080/'
+    : 'https://cemliasalgado.herokuapp.com/',
+  // baseURL: 'https://localhost:8080/Matriculas',
   // baseURL: 'https://awcseapi_ds.energisa.corp/',
   // baseURL: base,
   timeout: 90000,
