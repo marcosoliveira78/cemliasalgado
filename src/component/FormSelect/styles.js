@@ -33,7 +33,7 @@ export const FormGroup = styled.div`
 align-items: flex-start;
 background-color: #f5f5f5;
 border: 1px solid #5d5d5d5d;
-border-bottom: 4px solid #a9afb58a;
+border-bottom: 4px solid #cf8c34;
 border-radius: 5px;
 display: flex;
 flex-direction: column;
@@ -43,7 +43,7 @@ padding: 5px 25px 0 0;
 width: 100%;
 
 &:hover {
-  border-bottom: 4px solid var(--primary) !important;
+  border-bottom: 4px solid #cf8c34 !important;
 }
 `;
 

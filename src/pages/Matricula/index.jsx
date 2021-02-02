@@ -1,26 +1,49 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Form, Jumbotron } from 'react-bootstrap';
+import { Col, Form, Jumbotron } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import uniqueId from 'lodash';
+// import cidades from 'cidades-estados-brasil-json';
 import axios from 'axios';
 import request from '../../services/api';
+import FormSelect from '../../component/FormSelect';
 import FormField from '../../component/FormField';
 import {
-  ButtonContainer, Wrapper, Buttons,
+  ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
 } from '../styles';
+import { Label } from '../../component/FormSelect/styles';
 
 const Matricula = () => {
-  const [matricula, setMatricula] = useState([]);
-
+  const valoresInciais = { codigoGenero: 2 };
   const history = useHistory();
   const isValid = true;
   let nextId;
   const pasta = 'matriculas';
 
+  const [matricula, setMatricula] = useState([]);
+  const [genero, setGenero] = useState([]);
+  const [naturalidade] = useState(['Leopoldina', 'Cataguases', 'Ubá', 'Muriaé']);
+
+  // $get.cidades;
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setMatricula({ ...matricula, [name]: value });
+  };
+
+  const handleChangeNaturalidade = (event) => {
+    const { value, label } = event.target;
+    setMatricula({ ...matricula, naturalidade: label, codigoNaturalidade: value });
+    // setMatricula({ ...matricula, codigoNaturalidade: value });
+    // getSwitchNaturalidade(value);
+  };
+
+  const handleChangeGenero = (event) => {
+    const { value, label } = event.target;
+    setMatricula({ ...matricula, codigoGenero: value, genero: label });
+    setGenero(value);
   };
 
   const handleSubmit = async (form) => {
@@ -49,10 +72,20 @@ const Matricula = () => {
       });
   }, []);
 
+  let cidadeId = 1;
+  // Options
+  const naturalidadeOptions = naturalidade.map((cidade) => (
+    {
+      value: cidadeId++,
+      label: cidade,
+    }
+  ));
+
   // const response = await itemRep.save([item]);
   // if (response !== null && response.success) {
   // }
 
+  console.log(matricula);
   return (
     <>
       <div className="root">
@@ -72,6 +105,93 @@ const Matricula = () => {
               options={groupOptions}
             />
             {errors.codigoGrupo && <MessageError>{errors.codigoGrupo}</MessageError>} */}
+            <FormField
+              label="Nome do Aluno"
+              name="nome"
+              type="text"
+              value={matricula.nome}
+              maxLength={200}
+              onChange={handleChange}
+            />
+            <FormField
+              label="CPF"
+              name="cpf"
+              type="text"
+              value={matricula.cpf}
+              maxLength={13}
+              onChange={handleChange}
+            />
+            <FormField
+              label="Data de Nascimento"
+              name="dataNascimento"
+              type="text"
+              value={matricula.dataNascimento}
+              maxLength={10}
+              onChange={handleChange}
+            />
+            <FormSelect
+              label="Naturalidade:"
+              name="naturalidade"
+              value={matricula.codigoNaturalidade}
+              onChange={handleChangeNaturalidade}
+              options={naturalidadeOptions}
+            />
+            <fieldset>
+              <ContainerAlignLeft className="TipoContainer">
+                <Label style={{ fontSize: '18px', margin: 0 }}>
+                  Tipo:
+                </Label>
+                <Col sm={10} className="column">
+                  <Form.Check
+                    inline
+                    label="Masculino"
+                    type="radio"
+                    checked={genero === '1'}
+                    name="genero"
+                    id="inline-radio-1"
+                    value="1"
+                    onChange={handleChangeGenero}
+                  />
+                  <Form.Check
+                    inline
+                    label="Feminino"
+                    type="radio"
+                    checked={genero === '2'}
+                    name="genero"
+                    id="inline-radio-2"
+                    value="2"
+                    onChange={handleChangeGenero}
+                  />
+                  <Form.Check
+                    inline
+                    label="Outros"
+                    type="radio"
+                    checked={genero === '3'}
+                    name="genero"
+                    id="inline-radio-3"
+                    value="3"
+                    onChange={handleChangeGenero}
+                  />
+                </Col>
+              </ContainerAlignLeft>
+              {/* {errors.tipoSolicitacao && <MessageError>{errors.tipoSolicitacao}</MessageError>} */}
+            </fieldset>
+            <FormField
+              label="Nome do Aluno"
+              name="nome"
+              type="text"
+              value={matricula.nome}
+              maxLength={200}
+              onChange={handleChange}
+            />
+            <FormField
+              label="Nome do Aluno"
+              name="nome"
+              type="text"
+              value={matricula.nome}
+              maxLength={200}
+              onChange={handleChange}
+            />
             <FormField
               label="Nome do Aluno"
               name="nome"
