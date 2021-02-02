@@ -1,5 +1,4 @@
 /* eslint-disable no-plusplus */
-/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Col, Form, Jumbotron } from 'react-bootstrap';
@@ -15,6 +14,7 @@ import {
   ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
+import ShowMessage from '../../services/toast';
 
 const Matricula = () => {
   const history = useHistory();
@@ -26,11 +26,6 @@ const Matricula = () => {
   const [estadosOptions, setEstadosOptions] = useState([]);
   const [cidadesOptions, setCidadesOptions] = useState([]);
   const [cidades, setCidades] = useState([]);
-
-  // const [genero, setGenero] = useState([]);
-  // const [naturalidade] = useState(['Leopoldina', 'Cataguases', 'Ubá', 'Muriaé']);
-
-  // $get.cidades;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -51,30 +46,16 @@ const Matricula = () => {
     const { value } = event.target;
     const label = event.target.labels[0].textContent;
     setMatricula({ ...matricula, codigoGenero: value, genero: label });
-    // setGenero(value);
   };
 
   const handleChangeNacionalidade = (event) => {
     const { value } = event.target;
     const label = event.target.labels[0].textContent;
     setMatricula({ ...matricula, codigoNacionalidade: value, nacionalidade: label });
-    // setGenero(value);
   };
 
   const handleSubmit = async (form) => {
     form.preventDefault();
-    console.log('NOME: ', matricula.nome);
-    // axios.post('http://localhost:8080/matriculas', {
-    //   id: nextId,
-    //   nome: matricula.nome,
-    //   dataNascimento: '30/03/1978',
-    //   email: 'marcsantos@hotmail.com',
-    // }).then((resp) => {
-    //   console.log(resp.data);
-    //   history.push('/listagemGeral');
-    // }).catch((error) => {
-    //   console.log(error);
-    // });
     fetch(`http://localhost:8080/${pasta}`,
       {
         method: 'POST',
@@ -87,12 +68,22 @@ const Matricula = () => {
         body: JSON.stringify({
           id: nextId,
           nome: matricula.nome,
+          cpf: matricula.cpf,
           dataNascimento: matricula.dataNascimento,
-          email: 'marcsantos@hotmail.com',
+          email: matricula.email,
+          genero: matricula.genero,
+          nacionalidade: matricula.nacionalidade,
+          naturalidade: matricula.naturalidade,
+          naturalidadeUF: matricula.naturalidadeUF,
+          status: 'A',
         }),
       })
       .then(async (resp) => {
-        console.log(resp);
+        if (resp.ok) {
+          ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
+          history.push('/listagemGeral');
+        }
+
       // const resultado = await resp.json();
       // const lastKey = Object.keys(resultado).reverse()[0];
       // nextId = resultado[lastKey].id + 1;
@@ -116,7 +107,6 @@ const Matricula = () => {
         const resultado = await resp.json();
         const lastKey = Object.keys(resultado).reverse()[0];
         nextId = resultado[lastKey].id + 1;
-        console.log('ID: ', nextId);
       });
 
     setEstadosOptions(estados.map((estado) => (
@@ -131,24 +121,27 @@ const Matricula = () => {
   useEffect(() => {
     if (matricula.naturalidadeUF !== undefined) {
       setCidades(municipios.map((c) => c));
-      const municipiosFiltrados = cidades.filter((cidade) => (
-        cidade.microrregiao.mesorregiao.UF.id.toString().includes(matricula.codigoNaturalidadeUF)));
-
-      setCidadesOptions(municipiosFiltrados.map((cidade) => (
-        {
-          value: cidade.id,
-          label: `${cidade.nome} - ${cidade.microrregiao.mesorregiao.UF.sigla}`,
-        }
-      )));
     }
   }, [matricula.codigoNaturalidadeUF]);
 
-  // console.log('Cidades: ', cidadesOptions);
+  useEffect(() => {
+    const municipiosFiltrados = cidades.filter((cidade) => (
+      cidade.microrregiao.mesorregiao.UF.id.toString()
+        .includes(matricula.codigoNaturalidadeUF)));
+    setCidadesOptions(municipiosFiltrados.map((cidade) => (
+      {
+        value: cidade.id,
+        label: `${cidade.nome} - ${cidade.microrregiao.mesorregiao.UF.sigla}`,
+      }
+    )));
+  }, [cidades]);
+
+  // console.log('Cidades Options: ', cidadesOptions);
   // const response = await itemRep.save([item]);
   // if (response !== null && response.success) {
   // }
 
-  console.log(matricula);
+  // console.log(matricula);
   return (
     <>
       <div className="root">
