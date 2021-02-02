@@ -17,6 +17,9 @@ import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
 
 const Matricula = () => {
+  const urlBd = window.location.hostname.includes('localhost')
+    ? 'http://localhost:8080'
+    : 'https://cemliasalgado.herokuapp.com';
   const history = useHistory();
   const isValid = true;
   let nextId;
@@ -56,7 +59,7 @@ const Matricula = () => {
 
   const handleSubmit = async (form) => {
     form.preventDefault();
-    fetch(`http://localhost:8080/${pasta}`,
+    fetch(`${urlBd}/${pasta}`,
       {
         method: 'POST',
         headers: {
@@ -93,7 +96,7 @@ const Matricula = () => {
 
   useEffect(() => {
     // request('get', `http://localhost:8080/${pasta}`)
-    fetch(`http://localhost:8080/${pasta}`,
+    fetch(`${urlBd}/${pasta}`,
       {
         method: 'GET',
         headers: {
