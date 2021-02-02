@@ -65,14 +65,6 @@ function ListagemGeral() {
     return resultado;
   }
 
-  function multiSearchAnds(text, searchWords) {
-    let currTest;
-    while (currTest = searchWords.pop()) {
-      if (!text.match(new RegExp(currTest, 'i'))) return false;
-    }
-    return true;
-  }
-
   // Hooks
   const [matriculas, setMatriculas] = useState([]);
   const [resultado, setResultado] = useState([]);
