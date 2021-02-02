@@ -313,12 +313,12 @@ justify-content: flex-start;
   padding-bottom: 5px;
   padding-top: 5px;
   margin-top: 5px;
-  border-bottom: 4px solid #a9afb58a;
+  border-bottom: 4px solid #cf8c34;
   
 }
 
 .TipoContainer:hover {
-border-bottom: 4px solid var(--primary) !important;
+border-bottom: 4px solid #cf8c34 !important;
 };
 
 .title {
