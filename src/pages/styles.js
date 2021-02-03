@@ -137,6 +137,14 @@ export const ContainerAlignLeft = styled.div`
   width: 100%;
 `;
 
+export const ContainerMultipleColumns = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
 export const ContainerCentered = styled.div`
   display: flex;
   flex-direction: row;

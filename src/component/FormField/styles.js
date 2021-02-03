@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 export const FormFieldWrapper = styled.div`
   position: relative; 
   margin-top: 20px;
+  width: 100% !important;
   textarea {
     min-height: 150px;
   }

@@ -11,7 +11,7 @@ import cpfMask from '../../component/mask/cpf/index';
 import FormSelect from '../../component/FormSelect';
 import FormField from '../../component/FormField';
 import {
-  ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
+  ButtonContainer, Wrapper, Buttons, ContainerAlignLeft, ContainerMultipleColumns,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
@@ -33,18 +33,6 @@ const Matricula = () => {
   const [cidades, setCidades] = useState([]);
 
   // Functions
-  // const cpfMask = (value) => {
-  //   if (value !== undefined) {
-  //     const str = value.replace(/\D/g, '')
-  //       .replace(/\D/g, '') // substitui qualquer caracter que nao seja numero por nada
-  //       .replace(/(\d{3})(\d)/, '$1.$2') // captura 2 grupos de numero o primeiro de 3 e o segundo de 1, apos capturar o primeiro grupo ele adiciona um ponto antes do segundo grupo de numero
-  //       .replace(/(\d{3})(\d)/, '$1.$2')
-  //       .replace(/(\d{3})(\d{1,2})/, '$1-$2')
-  //       .replace(/(-\d{2})\d+?$/, '$1'); // captura 2 numeros seguidos de um traço e não deixa ser digitado mais nada
-  //     return str;
-  //   }
-  //   return null;
-  // };
 
   // handles
   const handleChange = (event) => {
@@ -54,18 +42,30 @@ const Matricula = () => {
 
   const handleChangeSelect = (event) => {
     const { value, label } = event;
-    setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
+    let tipo;
+    if (label.indexOf('(') >= 0) tipo = 'naturalidadeUF';
+    if (label.indexOf('-') >= 0) tipo = 'naturalidade';
+    switch (tipo) {
+      case 'naturalidadeUF':
+        setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
+        break;
+      case 'naturalidade':
+        setMatricula({ ...matricula, naturalidade: label, codigoNaturalidade: value });
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleChangeNaturalidadeUF = (event) => {
-    const { value, label } = event;
-    setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
-  };
+  // const handleChangeNaturalidadeUF = (event) => {
+  //   const { value, label } = event;
+  //   setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
+  // };
 
-  const handleChangeNaturalidade = (event) => {
-    const { value, label } = event;
-    setMatricula({ ...matricula, naturalidade: label, codigoNaturalidade: value });
-  };
+  // const handleChangeNaturalidade = (event) => {
+  //   const { value, label } = event;
+  //   setMatricula({ ...matricula, naturalidade: label, codigoNaturalidade: value });
+  // };
 
   const handleChangeRadio = (event) => {
     const label = event.target.labels[0].textContent;
@@ -172,7 +172,7 @@ const Matricula = () => {
   // if (response !== null && response.success) {
   // }
 
-  // console.log(matricula);
+  console.log(matricula);
   return (
     <>
       <div className="root">
@@ -193,6 +193,8 @@ const Matricula = () => {
               maxLength={200}
               onChange={handleChange}
             />
+            <ContainerMultipleColumns>
+            <div style={{ width: '100%', margin: '0 5px 0 0' }}>
             <FormField
               label="E-mail"
               name="email"
@@ -201,6 +203,8 @@ const Matricula = () => {
               maxLength={200}
               onChange={handleChange}
             />
+            </div>
+            <div style={{ width: '100%', margin: '0 0 0 5px' }}>
             <FormField
               label="CPF"
               name="cpf"
@@ -209,6 +213,8 @@ const Matricula = () => {
               maxLength={14}
               onChange={handleChange}
             />
+            </div>
+            </ContainerMultipleColumns>
             <FormField
               label="Data de Nascimento"
               name="dataNascimento"
@@ -299,7 +305,7 @@ const Matricula = () => {
               label="Naturalidade: (Cidade de Origem)"
               name="naturalidade"
               value={matricula.codigoNaturalidade}
-              onChange={handleChangeNaturalidade}
+              onChange={handleChangeSelect}
               options={cidadesOptions}
             />
             )}
