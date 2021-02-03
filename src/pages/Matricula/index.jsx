@@ -172,7 +172,7 @@ const Matricula = () => {
   // if (response !== null && response.success) {
   // }
 
-  console.log(matricula);
+  // console.log(matricula);
   return (
     <>
       <div className="root">
