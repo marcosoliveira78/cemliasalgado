@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
@@ -10,11 +11,13 @@ import municipios from '../../repositories/municipios.json';
 import cpfMask from '../../component/mask/cpf/index';
 import FormSelect from '../../component/FormSelect';
 import FormField from '../../component/FormField';
+import FormDatePicker from '../../component/FormDatePicker';
 import {
   ButtonContainer, Wrapper, Buttons, ContainerAlignLeft, ContainerMultipleColumns,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
+import dateMask from '../../component/mask/data';
 
 const Matricula = () => {
   // variables
@@ -31,7 +34,7 @@ const Matricula = () => {
   const [estadosOptions, setEstadosOptions] = useState([]);
   const [cidadesOptions, setCidadesOptions] = useState([]);
   const [cidades, setCidades] = useState([]);
-
+  const [startDate, setStartDate] = useState(new Date());
   // Functions
 
   // handles
@@ -56,16 +59,6 @@ const Matricula = () => {
         break;
     }
   };
-
-  // const handleChangeNaturalidadeUF = (event) => {
-  //   const { value, label } = event;
-  //   setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
-  // };
-
-  // const handleChangeNaturalidade = (event) => {
-  //   const { value, label } = event;
-  //   setMatricula({ ...matricula, naturalidade: label, codigoNaturalidade: value });
-  // };
 
   const handleChangeRadio = (event) => {
     const label = event.target.labels[0].textContent;
@@ -167,6 +160,13 @@ const Matricula = () => {
     }
   }, [matricula.cpf]);
 
+  useEffect(() => {
+    if (matricula.dataNascimento) {
+      const mascaraDataNascimento = dateMask(matricula.dataNascimento);
+      setMatricula({ ...matricula, dataNascimento: mascaraDataNascimento });
+    }
+  }, [matricula.dataNascimento]);
+
   // console.log('Cidades Options: ', cidadesOptions);
   // const response = await itemRep.save([item]);
   // if (response !== null && response.success) {
@@ -223,6 +223,10 @@ const Matricula = () => {
               maxLength={10}
               onChange={handleChange}
             />
+            {/* <FormDatePicker
+            label="Data de Nascimento"
+            selected={startDate}
+            onChange={(date) => setStartDate(date)} /> */}
             <fieldset style={{ marginTop: '15px' }}>
               <ContainerAlignLeft className="TipoContainer">
                 <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
