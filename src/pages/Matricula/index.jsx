@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { Col, Form, Jumbotron } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import uniqueId from 'lodash';
-import axios from 'axios';
+// import request from '../../services/api';
 import estados from '../../repositories/estados.json';
 import municipios from '../../repositories/municipios.json';
-import request from '../../services/api';
+import cpfMask from '../../component/mask/cpf/index';
 import FormSelect from '../../component/FormSelect';
 import FormField from '../../component/FormField';
 import {
@@ -17,22 +17,44 @@ import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
 
 const Matricula = () => {
+  // variables
   const urlBd = window.location.hostname.includes('localhost')
     ? 'http://localhost:8080'
     : 'https://cemliasalgado.herokuapp.com';
   const history = useHistory();
-  const isValid = true;
+  const isValid = false;
   let nextId;
   const pasta = 'matriculas';
 
+  // hooks
   const [matricula, setMatricula] = useState([]);
   const [estadosOptions, setEstadosOptions] = useState([]);
   const [cidadesOptions, setCidadesOptions] = useState([]);
   const [cidades, setCidades] = useState([]);
 
+  // Functions
+  // const cpfMask = (value) => {
+  //   if (value !== undefined) {
+  //     const str = value.replace(/\D/g, '')
+  //       .replace(/\D/g, '') // substitui qualquer caracter que nao seja numero por nada
+  //       .replace(/(\d{3})(\d)/, '$1.$2') // captura 2 grupos de numero o primeiro de 3 e o segundo de 1, apos capturar o primeiro grupo ele adiciona um ponto antes do segundo grupo de numero
+  //       .replace(/(\d{3})(\d)/, '$1.$2')
+  //       .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+  //       .replace(/(-\d{2})\d+?$/, '$1'); // captura 2 numeros seguidos de um traço e não deixa ser digitado mais nada
+  //     return str;
+  //   }
+  //   return null;
+  // };
+
+  // handles
   const handleChange = (event) => {
     const { name, value } = event.target;
     setMatricula({ ...matricula, [name]: value });
+  };
+
+  const handleChangeSelect = (event) => {
+    const { value, label } = event;
+    setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
   };
 
   const handleChangeNaturalidadeUF = (event) => {
@@ -45,16 +67,21 @@ const Matricula = () => {
     setMatricula({ ...matricula, naturalidade: label, codigoNaturalidade: value });
   };
 
-  const handleChangeGenero = (event) => {
-    const { value } = event.target;
+  const handleChangeRadio = (event) => {
     const label = event.target.labels[0].textContent;
-    setMatricula({ ...matricula, codigoGenero: value, genero: label });
-  };
-
-  const handleChangeNacionalidade = (event) => {
-    const { value } = event.target;
-    const label = event.target.labels[0].textContent;
-    setMatricula({ ...matricula, codigoNacionalidade: value, nacionalidade: label });
+    switch (event.target.name) {
+      case 'genero':
+        setMatricula({ ...matricula, genero: label });
+        break;
+      case 'nacionalidade':
+        setMatricula({ ...matricula, nacionalidade: label });
+        break;
+      case 'parentesco':
+        setMatricula({ ...matricula, parentesco: label });
+        break;
+      default:
+        break;
+    }
   };
 
   const handleSubmit = async (form) => {
@@ -86,16 +113,10 @@ const Matricula = () => {
           ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
           history.push('/listagemGeral');
         }
-
-      // const resultado = await resp.json();
-      // const lastKey = Object.keys(resultado).reverse()[0];
-      // nextId = resultado[lastKey].id + 1;
-      // console.log('ID: ', nextId);
       });
   };
 
   useEffect(() => {
-    // request('get', `http://localhost:8080/${pasta}`)
     fetch(`${urlBd}/${pasta}`,
       {
         method: 'GET',
@@ -139,12 +160,19 @@ const Matricula = () => {
     )));
   }, [cidades]);
 
+  useEffect(() => {
+    if (matricula.cpf) {
+      const mascaraCPF = cpfMask(matricula.cpf);
+      setMatricula({ ...matricula, cpf: mascaraCPF });
+    }
+  }, [matricula.cpf]);
+
   // console.log('Cidades Options: ', cidadesOptions);
   // const response = await itemRep.save([item]);
   // if (response !== null && response.success) {
   // }
 
-  // console.log(matricula);
+  console.log(matricula);
   return (
     <>
       <div className="root">
@@ -162,6 +190,14 @@ const Matricula = () => {
               name="nome"
               type="text"
               value={matricula.nome}
+              maxLength={200}
+              onChange={handleChange}
+            />
+            <FormField
+              label="E-mail"
+              name="email"
+              type="text"
+              value={matricula.email}
               maxLength={200}
               onChange={handleChange}
             />
@@ -191,31 +227,31 @@ const Matricula = () => {
                     inline
                     label="Masculino"
                     type="radio"
-                    checked={matricula.codigoGenero === '1'}
+                    checked={matricula.genero === 'Masculino'}
                     name="genero"
                     id="inline-genero-1"
                     value="1"
-                    onChange={handleChangeGenero}
+                    onChange={handleChangeRadio}
                   />
                   <Form.Check
                     inline
                     label="Feminino"
                     type="radio"
-                    checked={matricula.codigoGenero === '2'}
+                    checked={matricula.genero === 'Feminino'}
                     name="genero"
                     id="inline-genero-2"
                     value="2"
-                    onChange={handleChangeGenero}
+                    onChange={handleChangeRadio}
                   />
                   <Form.Check
                     inline
                     label="Outros"
                     type="radio"
-                    checked={matricula.codigoGenero === '3'}
+                    checked={matricula.genero === 'Outros'}
                     name="genero"
                     id="inline-genero-3"
                     value="3"
-                    onChange={handleChangeGenero}
+                    onChange={handleChangeRadio}
                   />
                 </Col>
               </ContainerAlignLeft>
@@ -231,21 +267,21 @@ const Matricula = () => {
                     inline
                     label="Brasileira"
                     type="radio"
-                    checked={matricula.codigoNacionalidade === '1'}
+                    checked={matricula.nacionalidade === 'Brasileira'}
                     name="nacionalidade"
                     id="inline-nacionalidade-1"
                     value="1"
-                    onChange={handleChangeNacionalidade}
+                    onChange={handleChangeRadio}
                   />
                   <Form.Check
                     inline
                     label="Estrangeira"
                     type="radio"
-                    checked={matricula.codigoNacionalidade === '2'}
+                    checked={matricula.nacionalidade === 'Estrangeira'}
                     name="nacionalidade"
                     id="inline-nacionalidade-2"
                     value="2"
-                    onChange={handleChangeNacionalidade}
+                    onChange={handleChangeRadio}
                   />
                 </Col>
               </ContainerAlignLeft>
@@ -255,9 +291,10 @@ const Matricula = () => {
               label="Naturalidade: (Estado de Origem)"
               name="naturalidadUF"
               value={matricula.codigoNaturalidadeUF}
-              onChange={handleChangeNaturalidadeUF}
+              onChange={handleChangeSelect}
               options={estadosOptions}
             />
+            { matricula.codigoNaturalidadeUF && (
             <FormSelect
               label="Naturalidade: (Cidade de Origem)"
               name="naturalidade"
@@ -265,30 +302,83 @@ const Matricula = () => {
               onChange={handleChangeNaturalidade}
               options={cidadesOptions}
             />
+            )}
             <FormField
-              label="E-mail"
-              name="email"
+              label="Nome do Pai"
+              name="nomePai"
               type="text"
-              value={matricula.email}
-              maxLength={200}
+              value={matricula.nomePai}
+              maxLength={300}
               onChange={handleChange}
             />
             <FormField
-              label="Nome do Aluno"
-              name="nome"
+              label="Nome do Mãe"
+              name="nomeMae"
               type="text"
-              value={matricula.nome}
-              maxLength={200}
+              value={matricula.nomeMae}
+              maxLength={300}
               onChange={handleChange}
             />
             <FormField
-              label="Nome do Aluno"
-              name="nome"
+              label="Responsável"
+              name="responsavel"
               type="text"
-              value={matricula.nome}
-              maxLength={200}
+              value={matricula.responsavel}
+              maxLength={300}
               onChange={handleChange}
             />
+            { matricula.responsavel && (
+            <fieldset style={{ marginTop: '15px' }}>
+              <ContainerAlignLeft className="TipoContainer">
+                <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
+                  Parentesco:
+                </Label>
+                <Col sm={10} className="column">
+                  <Form.Check
+                    inline
+                    label="Mãe/Pai"
+                    type="radio"
+                    checked={matricula.parentesco === 'Mãe/Pai'}
+                    name="parentesco"
+                    id="inline-parentesco-1"
+                    value="1"
+                    onChange={handleChangeRadio}
+                  />
+                  <Form.Check
+                    inline
+                    label="Avô/Avó"
+                    type="radio"
+                    checked={matricula.parentesco === 'Avô/Avó'}
+                    name="parentesco"
+                    id="inline-parentesco-2"
+                    value="2"
+                    onChange={handleChangeRadio}
+                  />
+                  <Form.Check
+                    inline
+                    label="Tio/Tia"
+                    type="radio"
+                    checked={matricula.parentesco === 'Tio/Tia'}
+                    name="parentesco"
+                    id="inline-parentesco-3"
+                    value="3"
+                    onChange={handleChangeRadio}
+                  />
+                  <Form.Check
+                    inline
+                    label="o(a) próprio(a)"
+                    type="radio"
+                    checked={matricula.parentesco === 'o(a) próprio(a)'}
+                    name="parentesco"
+                    id="inline-parentesco-4"
+                    value="4"
+                    onChange={handleChangeRadio}
+                  />
+                </Col>
+              </ContainerAlignLeft>
+              {/* {errors.tipoSolicitacao && <MessageError>{errors.tipoSolicitacao}</MessageError>} */}
+            </fieldset>
+            )}
             {/* {errors.nomeItem && <MessageError>{errors.nomeItem}</MessageError>} */}
             {/* <FormField
               label="Imagem de Fundo "

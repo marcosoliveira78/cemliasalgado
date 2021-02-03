@@ -59065,6 +59065,20 @@
       "educacaoEspecial": "Nenhuma",
       "confirmacaoDesejoMatricula": "Sim",
       "instrumento2": "BATERIA (à partir 8 anos)"
+    },
+    {
+      "genero": "Masculino",
+      "nacionalidade": "Estrangeira",
+      "status": "A",
+      "id": 1657
+    },
+    {
+      "status": "A",
+      "id": 1658
+    },
+    {
+      "status": "A",
+      "id": 1659
     }
   ]
 }
