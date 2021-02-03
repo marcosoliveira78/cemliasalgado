@@ -1,14 +1,14 @@
 .menu {
     background-color: #cf8c34 !important;
     z-index: 999;
-    position: fixed;
+    position: relative;
     width: auto !important;
     /* max-height: 50px; */
 }
 @media (max-width: 465px) {
     .menu {
         padding: 10px;
-        width: min-content !important;
+        /* width: min-content !important; */
         /* background-color: #9e7b57 !important; */
     }
   }

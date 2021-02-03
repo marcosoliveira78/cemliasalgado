@@ -48,10 +48,10 @@ function NavMenu() {
   return (
     <>
       <Navbar className="menu">
-        <Container>
+        <Container style={{ display: 'flex', alignItens: 'center', justifyContent: 'center' }}>
           <Navbar.Brand>
-            <img src={logo} style={{ margin: '0 5px 15px 0' }} alt="Logo" className="sub-menu-imagem" />
             <span style={{ fontFamily: 'Lovers Quarrel', fontSize: '40px', color: '#f5f5f5' }}>Conservatório Estadual de Música Lia Salgado</span>
+            {/* <img src={logo} style={{ margin: '0 5px 15px 0' }} alt="Logo" className="sub-menu-imagem" /> */}
           </Navbar.Brand>
         </Container>
       </Navbar>
