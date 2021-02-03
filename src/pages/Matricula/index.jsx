@@ -18,6 +18,9 @@ import {
 import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
 import dateMask from '../../component/mask/data';
+import telefoneMask from '../../component/mask/telefone';
+import celularMask from '../../component/mask/celular';
+import { useMatricula } from '../../context/matricula';
 
 const Matricula = () => {
   // variables
@@ -30,7 +33,7 @@ const Matricula = () => {
   const pasta = 'matriculas';
 
   // hooks
-  const [matricula, setMatricula] = useState([]);
+  const { matricula, setMatricula } = useMatricula({});
   const [estadosOptions, setEstadosOptions] = useState([]);
   const [cidadesOptions, setCidadesOptions] = useState([]);
   const [cidades, setCidades] = useState([]);
@@ -167,10 +170,30 @@ const Matricula = () => {
     }
   }, [matricula.dataNascimento]);
 
+  useEffect(() => {
+    if (matricula.telefonePrincipal) {
+      if (Object.keys(matricula.telefonePrincipal).length <= 14) {
+        const mascaraTelefone = telefoneMask(matricula.telefonePrincipal);
+        setMatricula({ ...matricula, telefonePrincipal: mascaraTelefone });
+      } else {
+        const mascaraCelular = celularMask(matricula.telefonePrincipal);
+        setMatricula({ ...matricula, telefonePrincipal: mascaraCelular });
+      }
+    }
+  }, [matricula.telefonePrincipal]);
+
+  useEffect(() => {
+    if (matricula.telefoneSecundario) {
+      if (Object.keys(matricula.telefoneSecundario).length <= 14) {
+        const mascaraTelefone = telefoneMask(matricula.telefoneSecundario);
+        setMatricula({ ...matricula, telefoneSecundario: mascaraTelefone });
+      } else {
+        const mascaraCelular = celularMask(matricula.telefoneSecundario);
+        setMatricula({ ...matricula, telefoneSecundario: mascaraCelular });
+      }
+    }
+  }, [matricula.telefoneSecundario]);
   // console.log('Cidades Options: ', cidadesOptions);
-  // const response = await itemRep.save([item]);
-  // if (response !== null && response.success) {
-  // }
 
   console.log(matricula);
   return (
@@ -215,6 +238,30 @@ const Matricula = () => {
             />
             </div>
             </ContainerMultipleColumns>
+            <ContainerMultipleColumns>
+            <div style={{ width: '100%', margin: '0 5px 0 0' }}>
+            <FormField
+              label="Telefone (Principal)"
+              name="telefonePrincipal"
+              type="text"
+              value={matricula.telefonePrincipal}
+              maxLength={15}
+              onChange={handleChange}
+            />
+            </div>
+            <div style={{ width: '100%', margin: '0 0 0 5px' }}>
+            <FormField
+              label="Telefone (Secundário)"
+              name="telefoneSecundario"
+              type="text"
+              value={matricula.telefoneSecundario}
+              maxLength={15}
+              onChange={handleChange}
+            />
+            </div>
+            </ContainerMultipleColumns>
+            {/* <ContainerMultipleColumns>
+            <div style={{ width: '100%', margin: '0 5px 0 0' }}> */}
             <FormField
               label="Data de Nascimento"
               name="dataNascimento"
@@ -227,7 +274,9 @@ const Matricula = () => {
             label="Data de Nascimento"
             selected={startDate}
             onChange={(date) => setStartDate(date)} /> */}
-            <fieldset style={{ marginTop: '15px' }}>
+            {/* </div>
+            <div style={{ width: '100%', margin: '0 0 0 5px' }}> */}
+            <fieldset style={{ marginTop: '5px' }}>
               <ContainerAlignLeft className="TipoContainer">
                 <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
                   Gênero:
@@ -267,6 +316,8 @@ const Matricula = () => {
               </ContainerAlignLeft>
               {/* {errors.tipoSolicitacao && <MessageError>{errors.tipoSolicitacao}</MessageError>} */}
             </fieldset>
+            {/* </div>
+            </ContainerMultipleColumns> */}
             <fieldset style={{ marginTop: '15px' }}>
               <ContainerAlignLeft className="TipoContainer">
                 <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>

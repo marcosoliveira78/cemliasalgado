@@ -135,6 +135,7 @@ export const ContainerAlignLeft = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  padding: 10px 0;
 `;
 
 export const ContainerMultipleColumns = styled.div`
