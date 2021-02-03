@@ -50,7 +50,7 @@ function NavMenu() {
       <Navbar className="menu">
         <Container style={{ display: 'flex', alignItens: 'center', justifyContent: 'center' }}>
           <Navbar.Brand>
-            <span style={{ fontFamily: 'Lovers Quarrel', fontSize: '40px', color: '#f5f5f5' }}>Conservatório Estadual de Música Lia Salgado</span>
+            <span style={{ fontFamily: 'Great Vibes', fontSize: '35px', color: '#f5f5f5' }}>Conservatório Estadual de Música Lia Salgado</span>
             {/* <img src={logo} style={{ margin: '0 5px 15px 0' }} alt="Logo" className="sub-menu-imagem" /> */}
           </Navbar.Brand>
         </Container>
