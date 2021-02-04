@@ -142,7 +142,7 @@ export const ContainerMultipleColumns = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
 `;
 
@@ -239,9 +239,9 @@ justify-content: flex-start;
 align-items: flex-start;
 font-size: 12px;
 color: #ff0000;
-margin-bottom: 1vh;
-margin-top: 0 !important;
-padding: 0 1vh;
+margin-bottom: -17px !important;
+margin: 0;
+padding: 3px 0 0 2px;
 `;
 
 export const SearchWrapper = styled.div`

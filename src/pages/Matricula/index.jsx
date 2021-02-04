@@ -13,7 +13,8 @@ import FormSelect from '../../component/FormSelect';
 import FormField from '../../component/FormField';
 import FormDatePicker from '../../component/FormDatePicker';
 import {
-  ButtonContainer, Wrapper, Buttons, ContainerAlignLeft, ContainerMultipleColumns,
+  ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
+  ContainerMultipleColumns, MessageError,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
@@ -27,18 +28,173 @@ const Matricula = () => {
   const urlBd = window.location.hostname.includes('localhost')
     ? 'http://localhost:8080'
     : 'https://cemliasalgado.herokuapp.com';
-  const history = useHistory();
-  const isValid = false;
-  let nextId;
   const pasta = 'matriculas';
+  const history = useHistory();
+  let nextId;
+  const now = new Date();
+  // const dataAtual = `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
 
   // hooks
   const { matricula, setMatricula } = useMatricula({});
   const [estadosOptions, setEstadosOptions] = useState([]);
   const [cidadesOptions, setCidadesOptions] = useState([]);
   const [cidades, setCidades] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(new Date());
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
   // Functions
+
+  // Conversions
+  const convertDate = (data) => {
+    const date = new Date(data);
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hour = (`0${(date.getHours() % 60)}`).slice(-2);
+    const minutes = (`0${(date.getMinutes() % 60)}`).slice(-2);
+    const seconds = (`0${(date.getSeconds() % 60)}`).slice(-2);
+
+    return (`${day}/${month}/${year} ${hour}:${minutes}:${seconds}`);
+  };
+
+  const validateEmail = (elementValue) => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(elementValue);
+  };
+
+  const validateCPF = (CPF) => {
+    const strCPF = CPF.replace(/\D/g, '');
+    let Soma = 0;
+    let Resto;
+    if (strCPF === '00000000000') return false;
+
+    for (let i = 1; i <= 9; i++) Soma += parseInt(strCPF.substring(i - 1, i), 10) * (11 - i);
+    Resto = (Soma * 10) % 11;
+
+    if ((Resto === 10) || (Resto === 11)) Resto = 0;
+    if (Resto !== parseInt(strCPF.substring(9, 10), 10)) return false;
+
+    Soma = 0;
+    for (let i = 1; i <= 10; i++) Soma += parseInt(strCPF.substring(i - 1, i), 10) * (12 - i);
+    Resto = (Soma * 10) % 11;
+
+    if ((Resto === 10) || (Resto === 11)) Resto = 0;
+    if (Resto !== parseInt(strCPF.substring(10, 11), 10)) return false;
+    return true;
+  };
+
+  const dataAtual = convertDate(now);
+  console.log(dataAtual);
+
+  //  Validations
+  const validate = (data) => {
+    const { nome, email, cpf, telefonePrincipal,
+      telefoneSecundario, dataNascimento, genero,
+      nacionalidade, naturalidade, naturalidadeUF,
+      nomePai, nomeMae, responsavel, parentesco,
+    } = data;
+    const erro = {};
+    if (nome !== undefined) {
+      if (nome === '') {
+        const mensagem = 'Nome do Aluno deve ser preenchido.';
+        erro.nome = mensagem;
+      }
+    }
+    if (email !== undefined) {
+      if (email === '') {
+        const mensagem = 'E-mail deve ser preenchido.';
+        erro.email = mensagem;
+      }
+      if (email.length > 0 && !validateEmail(email)) {
+        const mensagem = 'e-mail inválido.';
+        erro.email = mensagem;
+      }
+    }
+    if (cpf !== undefined) {
+      if (cpf.length > 0 && !validateCPF(cpf)) {
+        const mensagem = 'CPF inválido.';
+        erro.cpf = mensagem;
+      }
+    }
+    if (telefonePrincipal !== undefined) {
+      if (telefonePrincipal === '') {
+        const mensagem = 'Telefone deve ser preenchido.';
+        erro.telefonePrincipal = mensagem;
+      }
+      if (telefonePrincipal.length > 0 && telefonePrincipal.length < 14) {
+        const mensagem = 'Telefone inválido.';
+        erro.telefonePrincipal = mensagem;
+      }
+    }
+    if (telefoneSecundario !== undefined) {
+      if (telefoneSecundario.length > 0 && telefoneSecundario.length < 14) {
+        const mensagem = 'Telefone inválido.';
+        erro.telefoneSecundario = mensagem;
+      }
+    }
+    // if (nomeItem !== undefined) {
+    //   if (nomeItem.length > 0 && nomeItem.length < 3) {
+    //     const mensagem = 'Mínimo 3 caracteres.';
+    //     erro.nomeItem = mensagem;
+    //   }
+    //   if (nomeItem === '') {
+    //     const mensagem = 'O campo Nome do Item deve ser preenchido.';
+    //     erro.nomeItem = mensagem;
+    //   }
+    // }
+    // if (caminhoImagemFundo !== undefined) {
+    //   if (caminhoImagemFundo.split('.')[1] !== undefined) {
+    //     switch (caminhoImagemFundo.split('.')[1].toUpperCase()) {
+    //       case 'JPG': case 'JPEG': case 'PNG': case 'BMP': case 'GIF': case 'SVG': case 'TIF':
+    //         break;
+    //       default:
+    //         {
+    //           const mensagem = 'O campo Imagem de Fundo deve conter uma extensão válida.';
+    //           erro.caminhoImagemFundo = mensagem;
+    //         }
+    //         break;
+    //     }
+    //   }
+    //   if (caminhoImagemFundo.split('.')[1] === '' || caminhoImagemFundo.split('.')[1] === undefined) {
+    //     const mensagem = 'O campo Imagem de Fundo deve conter uma extensão.';
+    //     erro.caminhoImagemFundo = mensagem;
+    //   }
+    //   if (caminhoImagemFundo.split('.')[0].length < 3) {
+    //     const mensagem = 'O nome da Imagem de Fundo deve conter no mínimo 3 caracteres.';
+    //     erro.caminhoImagemFundo = mensagem;
+    //   }
+    //   if (caminhoImagemFundo === '') {
+    //     const mensagem = 'O campo Imagem de Fundo deve ser preenchido.';
+    //     erro.caminhoImagemFundo = mensagem;
+    //   }
+    // }
+    // if (ordemExibicaoItem !== undefined) {
+    //   if (ordemExibicaoItem === 0) {
+    //     const mensagem = 'Uma Ordem de Exibição deve ser selecionada.';
+    //     erro.ordemExibicaoItem = mensagem;
+    //   }
+    // }
+    // if (tags !== undefined && tags !== null) {
+    //   if (tags.length > 0 && tags.length < 3) {
+    //     const mensagem = 'Mínimo 3 caracteres.';
+    //     erro.tags = mensagem;
+    //   }
+    //   if (tags === '') {
+    //     const mensagem = 'O campo Palavras-Chave deve ser preenchido.';
+    //     erro.tags = mensagem;
+    //   }
+    // }
+    return erro;
+  };
+
+  const validateIsValid = () => {
+    if (Object.keys(errors).length === 0) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  };
 
   // handles
   const handleChange = (event) => {
@@ -135,9 +291,10 @@ const Matricula = () => {
         label: `${estado.nome} (${estado.sigla})`,
       }
     )));
+    setMatricula({ ...matricula, dataHora: dataAtual });
   }, []);
 
-  // Options
+  // Triggers
   useEffect(() => {
     if (matricula.naturalidadeUF !== undefined) {
       setCidades(municipios.map((c) => c));
@@ -193,8 +350,25 @@ const Matricula = () => {
       }
     }
   }, [matricula.telefoneSecundario]);
-  // console.log('Cidades Options: ', cidadesOptions);
 
+  useEffect(() => {
+    if (matricula.responsavel === '') {
+      setMatricula({ ...matricula, parentesco: '' });
+    }
+  }, [matricula.responsavel]);
+
+  useEffect(() => {
+    validateIsValid();
+  }, [errors]);
+
+  useEffect(() => {
+    if (matricula.dataHora) {
+      setErrors(validate(matricula));
+    }
+  }, [matricula]);
+
+  console.log('Responsavel:', matricula.responsavel);
+  console.log('Parentesco:', matricula.parentesco);
   console.log(matricula);
   return (
     <>
@@ -207,7 +381,6 @@ const Matricula = () => {
 
         <Wrapper>
           <Form onSubmit={handleSubmit}>
-            {/* {errors.codigoGrupo && <MessageError>{errors.codigoGrupo}</MessageError>}  */}
             <FormField
               label="Nome do Aluno"
               name="nome"
@@ -215,7 +388,8 @@ const Matricula = () => {
               value={matricula.nome}
               maxLength={200}
               onChange={handleChange}
-            />
+              />
+            {errors.nome && <MessageError>{errors.nome}</MessageError>}
             <ContainerMultipleColumns>
             <div style={{ width: '100%', margin: '0 5px 0 0' }}>
             <FormField
@@ -226,6 +400,7 @@ const Matricula = () => {
               maxLength={200}
               onChange={handleChange}
             />
+            {errors.email && <MessageError>{errors.email}</MessageError>}
             </div>
             <div style={{ width: '100%', margin: '0 0 0 5px' }}>
             <FormField
@@ -236,6 +411,7 @@ const Matricula = () => {
               maxLength={14}
               onChange={handleChange}
             />
+            {errors.cpf && <MessageError>{errors.cpf}</MessageError>}
             </div>
             </ContainerMultipleColumns>
             <ContainerMultipleColumns>
@@ -248,6 +424,7 @@ const Matricula = () => {
               maxLength={15}
               onChange={handleChange}
             />
+            {errors.telefonePrincipal && <MessageError>{errors.telefonePrincipal}</MessageError>}
             </div>
             <div style={{ width: '100%', margin: '0 0 0 5px' }}>
             <FormField
@@ -258,6 +435,7 @@ const Matricula = () => {
               maxLength={15}
               onChange={handleChange}
             />
+            {errors.telefoneSecundario && <MessageError>{errors.telefoneSecundario}</MessageError>}
             </div>
             </ContainerMultipleColumns>
             {/* <ContainerMultipleColumns>
@@ -441,46 +619,18 @@ const Matricula = () => {
             </fieldset>
             )}
             {/* {errors.nomeItem && <MessageError>{errors.nomeItem}</MessageError>} */}
-            {/* <FormField
-              label="Imagem de Fundo "
-              name="caminhoImagemFundo"
-              type="text"
-              value={item.caminhoImagemFundo}
-              maxLength={300}
-              onChange={handleChange}
-            />
-            {errors.caminhoImagemFundo && <MessageError>{errors.caminhoImagemFundo}</MessageError>}
-            <FormSelect
-              label="Ordem:"
-              name="ordemExibicaoItem"
-              value={item.ordemExibicaoItem}
-              onChange={handleChangeOrdem}
-              options={valores}
-            />
-            {errors.ordemExibicaoItem && <MessageError>{errors.ordemExibicaoItem}</MessageError>}
-            <FormSwitch
-              name="status"
-              checked={isChecked}
-              label="Status:"
-              labelInline
-              getValue={(checked) => getSwitchValue(checked)}
-              onChange={getSwitchValue}
-            />
-            <FormField
-              label="Palavres-Chave"
-              name="tags"
-              type="textarea"
-              value={item.tags}
-              maxLength={4000}
-              onChange={handleChange}
-            />
-            {errors.tags && <MessageError>{errors.tags}</MessageError>} */}
+            {/* {errors.tags && <MessageError>{errors.tags}</MessageError>} */}
 
             <ButtonContainer>
               <Link to="/listagemGeral">
                 <Buttons variant="danger">Cancelar</Buttons>
               </Link>
-              <Buttons type="submit" variant="success" disabled={!isValid}>Cadastrar</Buttons>
+              <Buttons
+                // type="submit"
+                variant="success"
+                disabled={!isValid}>
+                Próxima
+              </Buttons>
             </ButtonContainer>
           </Form>
         </Wrapper>
