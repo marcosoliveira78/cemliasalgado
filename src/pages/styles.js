@@ -39,6 +39,8 @@ export const ButtonContainer = styled.div`
 
 export const Buttons = styled(Button)`
   margin-right: 2vh;
+  padding: 5px 15px;
+  min-width: 100px;
 `;
 
 export const ButtonChamado = styled(Button)`
@@ -127,6 +129,10 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: center;
   width: 100%;
+  @media (max-width: 600px) {
+    justify-content: flex-start;
+    padding-left: 10px;
+  }
 `;
 
 export const ContainerAlignLeft = styled.div`

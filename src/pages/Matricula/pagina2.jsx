@@ -394,15 +394,15 @@ const Matricula = () => {
         <Wrapper>
           <Form onSubmit={handleSubmit}>
             <FormField
-              label="Nome do Aluno"
-              name="nome"
+              label="Logradouro"
+              name="logradouro"
               type="text"
-              value={matricula.nome}
-              maxLength={200}
+              value={matricula.logradouro}
+              maxLength={300}
               onChange={handleChange}
               />
-            {errors.nome && <MessageError>{errors.nome}</MessageError>}
-            <ContainerMultipleColumns>
+            {errors.logradouro && <MessageError>{errors.logradouro}</MessageError>}
+            {/* <ContainerMultipleColumns>
             <div style={{ width: '100%', margin: '0 5px 0 0' }}>
             <FormField
               label="E-mail"
@@ -450,8 +450,6 @@ const Matricula = () => {
             {errors.telefoneSecundario && <MessageError>{errors.telefoneSecundario}</MessageError>}
             </div>
             </ContainerMultipleColumns>
-            {/* <ContainerMultipleColumns>
-            <div style={{ width: '100%', margin: '0 5px 0 0' }}> */}
             <FormField
               label="Data de Nascimento"
               name="dataNascimento"
@@ -461,12 +459,6 @@ const Matricula = () => {
               onChange={handleChange}
             />
             {errors.dataNascimento && <MessageError>{errors.dataNascimento}</MessageError>}
-            {/* <FormDatePicker
-            label="Data de Nascimento"
-            selected={startDate}
-            onChange={(date) => setStartDate(date)} /> */}
-            {/* </div>
-            <div style={{ width: '100%', margin: '0 0 0 5px' }}> */}
             <fieldset style={{ marginTop: '5px' }}>
               <ContainerAlignLeft className="TipoContainer">
                 <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
@@ -507,8 +499,6 @@ const Matricula = () => {
               </ContainerAlignLeft>
               {errors.genero && <MessageError>{errors.genero}</MessageError>}
             </fieldset>
-            {/* </div>
-            </ContainerMultipleColumns> */}
             <fieldset style={{ marginTop: '15px' }}>
               <ContainerAlignLeft className="TipoContainer">
                 <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
@@ -634,24 +624,22 @@ const Matricula = () => {
                   />
                 </Col>
               </ContainerAlignLeft>
-              {/* {errors.tipoSolicitacao && <MessageError>{errors.tipoSolicitacao}</MessageError>} */}
             </fieldset>
-            )}
+            )} */}
+            {/* {errors.tipoSolicitacao && <MessageError>{errors.tipoSolicitacao}</MessageError>} */}
             {/* {errors.nomeItem && <MessageError>{errors.nomeItem}</MessageError>} */}
             {/* {errors.tags && <MessageError>{errors.tags}</MessageError>} */}
 
             <ButtonContainer>
-              <Link to="/listagemGeral">
-                <Buttons variant="danger">Cancelar</Buttons>
+              <Link to="/Matricula">
+                <Buttons variant="danger"> Voltar </Buttons>
               </Link>
-              <Link to="/Matricula2">
               <Buttons
                 // type="submit"
                 variant="success"
                 disabled={!isValid}>
                 Próxima
               </Buttons>
-              </Link>
             </ButtonContainer>
           </Form>
         </Wrapper>

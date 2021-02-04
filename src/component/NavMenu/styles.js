@@ -23,6 +23,18 @@ export const LogoSistema = styled.img`
   }
 `;
 
+export const NavTitle = styled.span`
+font-family: 'Great Vibes', cursive;
+font-size: 35px; 
+color: #f5f5f5;
+@media (max-width: 600px){
+  font-size: 25px; 
+  @media (max-width: 465px){
+  font-size: 15px; 
+  }
+  }
+`;
+
 export const NavMenuWrapper = styled.nav`
   align-items: center;
   background-color: var(--primary);  
