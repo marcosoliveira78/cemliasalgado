@@ -15,7 +15,7 @@ import FormField from '../../component/FormField';
 import FormDatePicker from '../../component/FormDatePicker';
 import {
   ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
-  ContainerMultipleColumns, MessageError,
+  ContainerMultipleColumns, MessageError, BorderLabel,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
@@ -39,6 +39,7 @@ const Matricula = () => {
   const { matricula, setMatricula } = useMatricula({});
   const [estadosOptions, setEstadosOptions] = useState([]);
   const [cidadesOptions, setCidadesOptions] = useState([]);
+  const [distritosOptions, setDistritosOptions] = useState([]);
   const [cidades, setCidades] = useState([]);
   // const [startDate, setStartDate] = useState(new Date());
   const [errors, setErrors] = useState({});
@@ -93,7 +94,9 @@ const Matricula = () => {
 
   //  Validations
   const validate = (data) => {
-    const { logradouro,
+    const {
+      cep,
+      logradouro,
       numero,
       bairro,
       distrito,
@@ -101,6 +104,12 @@ const Matricula = () => {
       uf,
     } = data;
     const erro = {};
+    if (cep !== undefined) {
+      if (cep === '') {
+        const mensagem = 'CEP deve ser preenchido.';
+        erro.cep = mensagem;
+      }
+    }
     if (logradouro !== undefined) {
       if (logradouro === '') {
         const mensagem = 'Logradouro deve ser preenchido.';
@@ -118,6 +127,14 @@ const Matricula = () => {
         const mensagem = 'Bairro deve ser preenchido.';
         erro.bairro = mensagem;
       }
+    }
+    if (municipio === undefined) {
+      const mensagem = 'Município deve ser selecionado.';
+      erro.municipio = mensagem;
+    }
+    if (uf === undefined) {
+      const mensagem = 'Estado deve ser selecionado.';
+      erro.uf = mensagem;
     }
     // if (cpf !== undefined) {
     //   if (cpf.length > 0 && !validateCPF(cpf)) {
@@ -203,14 +220,18 @@ const Matricula = () => {
   const handleChangeSelect = (event) => {
     const { value, label } = event;
     let tipo;
-    if (label.indexOf('(') >= 0) tipo = 'naturalidadeUF';
-    if (label.indexOf('-') >= 0) tipo = 'naturalidade';
+    if (value.toString().length === 2) tipo = 'codigoUf';
+    if (value.toString().length === 7) tipo = 'codigoMunicipio';
+    if (value.toString().length === 9) tipo = 'codigoDistrito';
     switch (tipo) {
-      case 'naturalidadeUF':
-        setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
+      case 'codigoUf':
+        setMatricula({ ...matricula, uf: label, codigoUf: value, cep: '' });
         break;
-      case 'naturalidade':
-        setMatricula({ ...matricula, naturalidade: label, codigoNaturalidade: value });
+      case 'codigoMunicipio':
+        setMatricula({ ...matricula, municipio: label, codigoMunicipio: value, cep: '' });
+        break;
+      case 'codigoDistrito':
+        setMatricula({ ...matricula, distrito: label, codigoDistrito: value });
         break;
       default:
         break;
@@ -339,28 +360,36 @@ const Matricula = () => {
           })
           .then(async (resp) => {
             const resultado = await resp.json();
-            const codigoUF = estados.filter((e) => (e.sigla === resultado.uf));
-            setMatricula({ ...matricula,
-              logradouro: resultado.logradouro,
-              numero: resultado.numero,
-              complemento: resultado.complemento,
-              bairro: resultado.bairro,
-              municipio: resultado.localidade,
-              codigoMunicipio: parseInt(resultado.ibge, 10),
-              codigoUf: codigoUF[0].id,
-              uf: resultado.uf,
-            });
+            if (resultado.erro) {
+              setErrors({ ...errors, cep: 'CEP inválido' });
+            } else {
+              const codigoUF = estados.filter((e) => (e.sigla === resultado.uf));
+              setMatricula({ ...matricula,
+                logradouro: resultado.logradouro,
+                complemento: resultado.complemento !== '' ? resultado.complemento : matricula.complemento,
+                bairro: resultado.bairro,
+                municipio: resultado.localidade,
+                codigoMunicipio: parseInt(resultado.ibge, 10),
+                codigoUf: codigoUF[0].id,
+                uf: resultado.uf,
+              });
+            }
           });
       }
     }
   }, [matricula.cep]);
 
-  // useEffect(() => {
-  //   if (matricula.dataNascimento) {
-  //     const mascaraDataNascimento = dateMask(matricula.dataNascimento);
-  //     setMatricula({ ...matricula, dataNascimento: mascaraDataNascimento });
-  //   }
-  // }, [matricula.dataNascimento]);
+  useEffect(() => {
+    if (matricula.codigoMunicipio && matricula.codigoMunicipio > 0) {
+      const distritosFiltrados = distritos.filter((d) => d.id.toString().includes(matricula.codigoMunicipio));
+      setDistritosOptions(distritosFiltrados.map((distrito) => (
+        {
+          value: distrito.id,
+          label: `${distrito.nome}`,
+        }
+      )));
+    }
+  }, [matricula.codigoMunicipio]);
 
   // useEffect(() => {
   //   if (matricula.telefonePrincipal) {
@@ -412,9 +441,10 @@ const Matricula = () => {
           <span>Formulário de preenchimento de Matrícula.</span>
         </Jumbotron>
         <div className="divider" />
-
         <Wrapper>
           <Form onSubmit={handleSubmit}>
+          <BorderLabel className="borderLabel">
+          <Label>Endereço:</Label>
             <ContainerMultipleColumns>
             <div style={{ width: '35%', margin: '0 5px 0 0' }}>
             <FormField
@@ -475,17 +505,6 @@ const Matricula = () => {
             />
             {errors.bairro && <MessageError>{errors.bairro}</MessageError>}
             </div>
-            <div style={{ width: '100%', margin: '0 0 0 5px' }}>
-            <FormField
-              label="Distrito"
-              name="distrito"
-              type="text"
-              value={matricula.distrito}
-              maxLength={200}
-              onChange={handleChange}
-            />
-            {errors.distrito && <MessageError>{errors.distrito}</MessageError>}
-            </div>
             </ContainerMultipleColumns>
             <ContainerMultipleColumns>
             <div style={{ width: '100%', margin: '0 5px 0 0' }}>
@@ -507,6 +526,16 @@ const Matricula = () => {
               options={estadosOptions}
             />
             {errors.uf && <MessageError>{errors.uf}</MessageError>}
+            </div>
+            <div style={{ width: '100%', margin: '0 0 0 5px' }}>
+            <FormSelect
+              label="Distrito:"
+              name="distrito"
+              value={matricula.codigoDistrito}
+              onChange={handleChangeSelect}
+              options={distritosOptions}
+            />
+            {errors.distrito && <MessageError>{errors.distrito}</MessageError>}
             </div>
             </ContainerMultipleColumns>
             {/* <FormField
@@ -689,6 +718,7 @@ const Matricula = () => {
             {/* {errors.nomeItem && <MessageError>{errors.nomeItem}</MessageError>} */}
             {/* {errors.tags && <MessageError>{errors.tags}</MessageError>} */}
 
+          </BorderLabel>
             <ButtonContainer>
               <Link to="/Matricula">
                 <Buttons variant="danger"> Voltar </Buttons>

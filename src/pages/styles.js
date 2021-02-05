@@ -27,6 +27,18 @@ export const CadastroBody = styled.div`
   width: 100%;
 `;
 
+export const BorderLabel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: #5d5d5d5d;
+  border: 2px solid #5d5d5d5d;
+  border-radius: 5px;
+  padding: 3px;
+  width: 100%;
+`;
+
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -261,7 +273,7 @@ export const SearchWrapper = styled.div`
 
 export const Wrapper = styled.div`
 margin-bottom: 50px;
-background-color: #fff;
+background-color: #f5f5f5;
 border-radius: 5px;
 padding: 10px;
 width: 100%;

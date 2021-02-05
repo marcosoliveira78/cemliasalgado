@@ -15,7 +15,7 @@ import FormField from '../../component/FormField';
 import FormDatePicker from '../../component/FormDatePicker';
 import {
   ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
-  ContainerMultipleColumns, MessageError,
+  ContainerMultipleColumns, MessageError, BorderLabel,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
@@ -395,6 +395,8 @@ const Matricula = () => {
 
         <Wrapper>
           <Form onSubmit={handleSubmit}>
+          <BorderLabel className="borderLabel">
+          <Label>Dados Pessoais:</Label>
             <FormField
               label="Nome do Aluno"
               name="nome"
@@ -509,6 +511,7 @@ const Matricula = () => {
               </ContainerAlignLeft>
               {errors.genero && <MessageError>{errors.genero}</MessageError>}
             </fieldset>
+          </BorderLabel>
             {/* </div>
             </ContainerMultipleColumns> */}
             <fieldset style={{ marginTop: '15px' }}>

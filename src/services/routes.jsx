@@ -8,6 +8,7 @@ import PaginaNaoEncontrada from '../pages/PageNotFound';
 import ListagemGeral from '../pages/ListagemGeral';
 import Matricula from '../pages/Matricula';
 import Matricula2 from '../pages/Matricula/index2';
+import Matricula3 from '../pages/Matricula/index3';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -63,6 +64,7 @@ const Routes = () => (
     <Route exact path="/listagemGeral" component={ListagemGeral} />
     <Route exact path="/matricula" component={Matricula} />
     <Route exact path="/matricula2" component={Matricula2} />
+    <Route exact path="/matricula3" component={Matricula3} />
     <Route component={PaginaNaoEncontrada} />
   </Switch>
 );
