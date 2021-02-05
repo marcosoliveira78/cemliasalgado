@@ -38,6 +38,7 @@ export const ButtonContainer = styled.div`
 `;
 
 export const Buttons = styled(Button)`
+  margin-top: 5px;
   margin-right: 2vh;
   padding: 5px 15px;
   min-width: 100px;

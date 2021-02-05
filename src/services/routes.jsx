@@ -7,7 +7,7 @@ import Auth from './auth';
 import PaginaNaoEncontrada from '../pages/PageNotFound';
 import ListagemGeral from '../pages/ListagemGeral';
 import Matricula from '../pages/Matricula';
-import Matricula2 from '../pages/Matricula/pagina2';
+import Matricula2 from '../pages/Matricula/index2';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route

@@ -96,7 +96,7 @@ const Matricula = () => {
     const { nome, email, cpf, telefonePrincipal,
       telefoneSecundario, dataNascimento, genero,
       nacionalidade, naturalidade, naturalidadeUF,
-      nomePai, nomeMae, responsavel, parentesco,
+      nomePai, nomeMae, responsavel, grauParentesco,
     } = data;
     const erro = {};
     if (nome !== undefined) {
@@ -199,8 +199,8 @@ const Matricula = () => {
   const handleChangeSelect = (event) => {
     const { value, label } = event;
     let tipo;
-    if (label.indexOf('(') >= 0) tipo = 'naturalidadeUF';
-    if (label.indexOf('-') >= 0) tipo = 'naturalidade';
+    if (label.length === 2) tipo = 'naturalidadeUF';
+    if (label.length > 2) tipo = 'naturalidade';
     switch (tipo) {
       case 'naturalidadeUF':
         setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
@@ -222,8 +222,8 @@ const Matricula = () => {
       case 'nacionalidade':
         setMatricula({ ...matricula, nacionalidade: label });
         break;
-      case 'parentesco':
-        setMatricula({ ...matricula, parentesco: label });
+      case 'grauParentesco':
+        setMatricula({ ...matricula, grauParentesco: label });
         break;
       default:
         break;
@@ -295,7 +295,8 @@ const Matricula = () => {
         setEstadosOptions(estados.map((estado) => (
           {
             value: estado.id,
-            label: `${estado.nome} (${estado.sigla})`,
+            label: `${estado.sigla}`,
+            // label: `${estado.nome} (${estado.sigla})`,
           }
         )));
       } else {
@@ -322,7 +323,8 @@ const Matricula = () => {
     setCidadesOptions(municipiosFiltrados.map((cidade) => (
       {
         value: cidade.id,
-        label: `${cidade.nome} - ${cidade.microrregiao.mesorregiao.UF.sigla}`,
+        label: `${cidade.nome}`,
+        // label: `${cidade.nome} - ${cidade.microrregiao.mesorregiao.UF.sigla}`,
       }
     )));
   }, [cidades]);
@@ -367,7 +369,7 @@ const Matricula = () => {
 
   useEffect(() => {
     if (matricula.responsavel === '') {
-      setMatricula({ ...matricula, parentesco: '' });
+      setMatricula({ ...matricula, grauParentesco: '' });
     }
   }, [matricula.responsavel]);
 
@@ -540,23 +542,31 @@ const Matricula = () => {
               {errors.nacionalidade && <MessageError>{errors.nacionalidade}</MessageError>}
             </fieldset>
             { matricula.nacionalidade === 'Brasileira' && (
+            <ContainerMultipleColumns>
+            <div style={{ width: '45%', margin: '0 5px 0 0' }}>
             <FormSelect
-              label="Naturalidade: (Estado de Origem)"
+              label="Estado de Origem:"
               name="naturalidadUF"
               value={matricula.codigoNaturalidadeUF}
               onChange={handleChangeSelect}
               options={estadosOptions}
             />
-            )}
+            </div>
+            )
             {errors.codigoNaturalidadeUF && <MessageError>{errors.codigoNaturalidadeUF}</MessageError>}
             { matricula.codigoNaturalidadeUF && (
+              <div style={{ width: '100%', margin: '0 5px 0 0' }}>
             <FormSelect
-              label="Naturalidade: (Cidade de Origem)"
+              label="Cidade de Origem:"
               name="naturalidade"
               value={matricula.codigoNaturalidade}
               onChange={handleChangeSelect}
               options={cidadesOptions}
             />
+              </div>
+            )}
+            (
+            </ContainerMultipleColumns>
             )}
             <FormField
               label="Nome do Pai"
@@ -596,9 +606,9 @@ const Matricula = () => {
                     inline
                     label="Mãe/Pai"
                     type="radio"
-                    checked={matricula.parentesco === 'Mãe/Pai'}
-                    name="parentesco"
-                    id="inline-parentesco-1"
+                    checked={matricula.grauParentesco === 'Mãe/Pai'}
+                    name="grauParentesco"
+                    id="inline-grauParentesco-1"
                     value="1"
                     onChange={handleChangeRadio}
                   />
@@ -606,9 +616,9 @@ const Matricula = () => {
                     inline
                     label="Avô/Avó"
                     type="radio"
-                    checked={matricula.parentesco === 'Avô/Avó'}
-                    name="parentesco"
-                    id="inline-parentesco-2"
+                    checked={matricula.grauParentesco === 'Avô/Avó'}
+                    name="grauParentesco"
+                    id="inline-grauParentesco-2"
                     value="2"
                     onChange={handleChangeRadio}
                   />
@@ -616,9 +626,9 @@ const Matricula = () => {
                     inline
                     label="Tio/Tia"
                     type="radio"
-                    checked={matricula.parentesco === 'Tio/Tia'}
-                    name="parentesco"
-                    id="inline-parentesco-3"
+                    checked={matricula.grauParentesco === 'Tio/Tia'}
+                    name="grauParentesco"
+                    id="inline-grauParentesco-3"
                     value="3"
                     onChange={handleChangeRadio}
                   />
@@ -626,9 +636,9 @@ const Matricula = () => {
                     inline
                     label="o(a) próprio(a)"
                     type="radio"
-                    checked={matricula.parentesco === 'o(a) próprio(a)'}
-                    name="parentesco"
-                    id="inline-parentesco-4"
+                    checked={matricula.grauParentesco === 'o(a) próprio(a)'}
+                    name="grauParentesco"
+                    id="inline-grauParentesco-4"
                     value="4"
                     onChange={handleChangeRadio}
                   />
@@ -644,7 +654,7 @@ const Matricula = () => {
               <Link to="/listagemGeral">
                 <Buttons variant="danger">Cancelar</Buttons>
               </Link>
-              <Link to="/Matricula2">
+              <Link to="/matricula2">
               <Buttons
                 // type="submit"
                 variant="success"
