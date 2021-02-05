@@ -395,8 +395,8 @@ const Matricula = () => {
 
         <Wrapper>
           <Form onSubmit={handleSubmit}>
-          <BorderLabel className="borderLabel">
-          <Label>Dados Pessoais:</Label>
+          {/* <BorderLabel className="borderLabel">
+          <Label>Dados Pessoais:</Label> */}
             <FormField
               label="Nome do Aluno"
               name="nome"
@@ -511,7 +511,7 @@ const Matricula = () => {
               </ContainerAlignLeft>
               {errors.genero && <MessageError>{errors.genero}</MessageError>}
             </fieldset>
-          </BorderLabel>
+          {/* </BorderLabel> */}
             {/* </div>
             </ContainerMultipleColumns> */}
             <fieldset style={{ marginTop: '15px' }}>

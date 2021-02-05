@@ -443,8 +443,8 @@ const Matricula = () => {
         <div className="divider" />
         <Wrapper>
           <Form onSubmit={handleSubmit}>
-          <BorderLabel className="borderLabel">
-          <Label>Endereço:</Label>
+          {/* <BorderLabel className="borderLabel">
+          <Label>Endereço:</Label> */}
             <ContainerMultipleColumns>
             <div style={{ width: '35%', margin: '0 5px 0 0' }}>
             <FormField
@@ -718,7 +718,7 @@ const Matricula = () => {
             {/* {errors.nomeItem && <MessageError>{errors.nomeItem}</MessageError>} */}
             {/* {errors.tags && <MessageError>{errors.tags}</MessageError>} */}
 
-          </BorderLabel>
+          {/* </BorderLabel> */}
             <ButtonContainer>
               <Link to="/Matricula">
                 <Buttons variant="danger"> Voltar </Buttons>
