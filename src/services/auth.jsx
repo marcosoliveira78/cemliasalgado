@@ -1,46 +1,55 @@
 /* eslint-disable */
 
-class Auth {
-    constructor(props) {
-        USER_LOGGED: null;
-    }
+import { useState } from "react";
 
-    setUserLogged(userLogged) {
-        this.USER_LOGGED = userLogged;
-    }
+// const Auth = () => {
 
-    getUserLogged() {
+    // const [userLogged, setUserLogged] = useState();
+    let USER_LOGGED = '';
+    
+    // setUserLogged(user_Logged);
+
+    const getUserLogged = () => {
         return JSON.parse(localStorage.getItem('USER_LOGGED'));
-    }
+    };
 
-    isAuthenticated() {
-        return localStorage.getItem('USER_LOGGED') !== null;
-    }
+    const isAuthenticated = () => {
+        return false;
+        // return localStorage.getItem('USER_LOGGED') !== null;
+    };
 
-    isLogged() {
-        return this.USER_LOGGED;
-    }
+    const isLogged = () => {
+        return USER_LOGGED;
+    };
 
-    login(userLogged) {
+    const login = (userLogged) => {
         localStorage.setItem('USER_LOGGED', JSON.stringify(userLogged));
-        this.USER_LOGGED = JSON.stringify(userLogged);
-    }
+        USER_LOGGED = JSON.stringify(userLogged);
+    };
 
-    logout(tipo) {
+    const logout = (tipo) => {
         localStorage.removeItem('USER_LOGGED');
         localStorage.setItem('LOGOUT', tipo)
-        this.USER_LOGGED = null;
-    }
+        USER_LOGGED = null;
+    };
     
-    extendSession(minutos) {
+    const extendSession = (minutos) => {
         const dadosUsuario = JSON.parse(localStorage.USER_LOGGED);
         const horaAtual = Math.floor(+new Date() / 1000);
         const tempoAdicionado = horaAtual + (minutos * 60)
         dadosUsuario.expireSession = tempoAdicionado ;
         localStorage.setItem('USER_LOGGED', JSON.stringify(dadosUsuario));
-        this.USER_LOGGED = JSON.stringify(dadosUsuario);
+        USER_LOGGED = JSON.stringify(dadosUsuario);
       };
 
-}
+    // }
 
-export default new Auth();
+export {
+    // setUserLogged,
+    getUserLogged,
+    isAuthenticated,
+    isLogged,
+    login,
+    logout,
+    extendSession,
+};

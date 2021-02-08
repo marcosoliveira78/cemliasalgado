@@ -1,26 +1,21 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Col, Form, Jumbotron } from 'react-bootstrap';
+import { Form, Jumbotron } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import uniqueId from 'lodash';
-// import request from '../../services/api';
 import estados from '../../repositories/estados.json';
 import municipios from '../../repositories/municipios.json';
 import distritos from '../../repositories/distritos.json';
 import FormSelect from '../../component/FormSelect';
 import FormField from '../../component/FormField';
-import FormDatePicker from '../../component/FormDatePicker';
 import {
-  ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
-  ContainerMultipleColumns, MessageError, BorderLabel,
+  ButtonContainer, Wrapper, Buttons,
+  ContainerMultipleColumns, MessageError,
 } from '../styles';
-import { Label } from '../../component/FormSelect/styles';
 import ShowMessage from '../../services/toast';
-import dateMask from '../../component/mask/data';
-import { useMatricula } from '../../context/matricula';
+import { useMatricula } from '../../context/Matricula';
 import cepMask from '../../component/mask/cep';
 
 const Matricula = () => {
@@ -31,9 +26,6 @@ const Matricula = () => {
   const urlCEP = 'https://viacep.com.br/';
   const pasta = 'matriculas';
   const history = useHistory();
-  let nextId;
-  const now = new Date();
-  // const dataAtual = `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
 
   // hooks
   const { matricula, setMatricula } = useMatricula({});
@@ -41,56 +33,8 @@ const Matricula = () => {
   const [cidadesOptions, setCidadesOptions] = useState([]);
   const [distritosOptions, setDistritosOptions] = useState([]);
   const [cidades, setCidades] = useState([]);
-  // const [startDate, setStartDate] = useState(new Date());
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
-  // Functions
-  // Conversions
-  // const convertDate = (data) => {
-  //   const date = new Date(data);
-
-  //   const day = date.getDate().toString().padStart(2, '0');
-  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  //   const year = date.getFullYear();
-  //   const hour = (`0${(date.getHours() % 60)}`).slice(-2);
-  //   const minutes = (`0${(date.getMinutes() % 60)}`).slice(-2);
-  //   const seconds = (`0${(date.getSeconds() % 60)}`).slice(-2);
-
-  //   return (`${day}/${month}/${year} ${hour}:${minutes}:${seconds}`);
-  // };
-
-  // const validateEmail = (elementValue) => {
-  //   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  //   return emailPattern.test(elementValue);
-  // };
-
-  // const validateCPF = (CPF) => {
-  //   const strCPF = CPF.replace(/\D/g, '');
-  //   let Soma = 0;
-  //   let Resto;
-  //   if (strCPF === '00000000000') return false;
-
-  //   for (let i = 1; i <= 9; i++) Soma += parseInt(strCPF.substring(i - 1, i), 10) * (11 - i);
-  //   Resto = (Soma * 10) % 11;
-
-  //   if ((Resto === 10) || (Resto === 11)) Resto = 0;
-  //   if (Resto !== parseInt(strCPF.substring(9, 10), 10)) return false;
-
-  //   Soma = 0;
-  //   for (let i = 1; i <= 10; i++) Soma += parseInt(strCPF.substring(i - 1, i), 10) * (12 - i);
-  //   Resto = (Soma * 10) % 11;
-
-  //   if ((Resto === 10) || (Resto === 11)) Resto = 0;
-  //   if (Resto !== parseInt(strCPF.substring(10, 11), 10)) return false;
-  //   return true;
-  // };
-
-  // const validateData = (elementValue) => {
-  //   const dataPattern = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
-  //   return dataPattern.test(elementValue);
-  // };
-
-  // const dataAtual = convertDate(now);
 
   //  Validations
   const validate = (data) => {
@@ -99,7 +43,6 @@ const Matricula = () => {
       logradouro,
       numero,
       bairro,
-      distrito,
       municipio,
       uf,
     } = data;
@@ -136,70 +79,6 @@ const Matricula = () => {
       const mensagem = 'Estado deve ser selecionado.';
       erro.uf = mensagem;
     }
-    // if (cpf !== undefined) {
-    //   if (cpf.length > 0 && !validateCPF(cpf)) {
-    //     const mensagem = 'CPF inválido.';
-    //     erro.cpf = mensagem;
-    //   }
-    // }
-    // if (telefonePrincipal !== undefined) {
-    //   if (telefonePrincipal === '') {
-    //     const mensagem = 'Telefone deve ser preenchido.';
-    //     erro.telefonePrincipal = mensagem;
-    //   }
-    //   if (telefonePrincipal.length > 0 && telefonePrincipal.length < 14) {
-    //     const mensagem = 'Telefone inválido.';
-    //     erro.telefonePrincipal = mensagem;
-    //   }
-    // }
-    // if (telefoneSecundario !== undefined) {
-    //   if (telefoneSecundario.length > 0 && telefoneSecundario.length < 14) {
-    //     const mensagem = 'Telefone inválido.';
-    //     erro.telefoneSecundario = mensagem;
-    //   }
-    // }
-    // if (dataNascimento !== undefined) {
-    //   if (dataNascimento === '') {
-    //     const mensagem = 'Data de Nascimento deve ser preenchida.';
-    //     erro.dataNascimento = mensagem;
-    //   }
-    //   if (dataNascimento.length > 0 && !validateData(dataNascimento)) {
-    //     const mensagem = 'Data inválida.';
-    //     erro.dataNascimento = mensagem;
-    //   }
-    // }
-    // if (genero === undefined) {
-    //   const mensagem = 'Gênero deve ser selecionado.';
-    //   erro.genero = mensagem;
-    // }
-    // if (nacionalidade === undefined) {
-    //   const mensagem = 'Nacionalidade deve ser selecionada.';
-    //   erro.nacionalidade = mensagem;
-    // }
-    // if (naturalidadeUF !== undefined) {
-    //   if (nacionalidade === 'Brasileira' && naturalidadeUF === '') {
-    //     const mensagem = 'Selecione um Estado.';
-    //     erro.naturalidadeUF = mensagem;
-    //   }
-    // }
-    // if (naturalidade !== undefined) {
-    //   if (nacionalidade === 'Brasileira' && naturalidade === '') {
-    //     const mensagem = 'Selecione um Município.';
-    //     erro.naturalidadeUF = mensagem;
-    //   }
-    // }
-    // if (nomeMae !== undefined) {
-    //   if (nomeMae === '') {
-    //     const mensagem = 'Nome da Mãe deve ser preenchido.';
-    //     erro.nomeMae = mensagem;
-    //   }
-    // }
-    // if (responsavel !== undefined) {
-    //   if (responsavel === '') {
-    //     const mensagem = 'Responsável deve ser preenchido.';
-    //     erro.responsavel = mensagem;
-    //   }
-    // }
     return erro;
   };
 
@@ -238,23 +117,6 @@ const Matricula = () => {
     }
   };
 
-  const handleChangeRadio = (event) => {
-    const label = event.target.labels[0].textContent;
-    switch (event.target.name) {
-      case 'genero':
-        setMatricula({ ...matricula, genero: label });
-        break;
-      case 'nacionalidade':
-        setMatricula({ ...matricula, nacionalidade: label });
-        break;
-      case 'parentesco':
-        setMatricula({ ...matricula, parentesco: label });
-        break;
-      default:
-        break;
-    }
-  };
-
   const handleSubmit = async (form) => {
     form.preventDefault();
     fetch(`${urlBd}/${pasta}`,
@@ -267,7 +129,7 @@ const Matricula = () => {
         mode: 'cors',
         cache: 'default',
         body: JSON.stringify({
-          id: nextId,
+          // id: nextId,
           nome: matricula.nome,
           cpf: matricula.cpf,
           dataNascimento: matricula.dataNascimento,
@@ -300,28 +162,7 @@ const Matricula = () => {
         // label: `${estado.nome} (${estado.sigla})`,
       }
     )));
-    // setMatricula({ ...matricula, dataHora: dataAtual });
   }, []);
-
-  // useEffect(() => {
-  //   if (matricula.nacionalidade !== undefined) {
-  //     if (matricula.nacionalidade === 'Brasileira') {
-  //       setEstadosOptions(estados.map((estado) => (
-  //         {
-  //           value: estado.id,
-  //           label: `${estado.nome} (${estado.sigla})`,
-  //         }
-  //       )));
-  //     } else {
-  //       setMatricula({ ...matricula,
-  //         naturalidadeUF: '',
-  //         naturalidade: '',
-  //         codigoNaturalidadeUF: '',
-  //         codigoNaturalidade: '',
-  //       });
-  //     }
-  //   }
-  // }, [matricula.nacionalidade]);
 
   useEffect(() => {
     if (matricula.uf !== undefined) {
@@ -391,30 +232,6 @@ const Matricula = () => {
     }
   }, [matricula.codigoMunicipio]);
 
-  // useEffect(() => {
-  //   if (matricula.telefonePrincipal) {
-  //     if (Object.keys(matricula.telefonePrincipal).length <= 14) {
-  //       const mascaraTelefone = telefoneMask(matricula.telefonePrincipal);
-  //       setMatricula({ ...matricula, telefonePrincipal: mascaraTelefone });
-  //     } else {
-  //       const mascaraCelular = celularMask(matricula.telefonePrincipal);
-  //       setMatricula({ ...matricula, telefonePrincipal: mascaraCelular });
-  //     }
-  //   }
-  // }, [matricula.telefonePrincipal]);
-
-  // useEffect(() => {
-  //   if (matricula.telefoneSecundario) {
-  //     if (Object.keys(matricula.telefoneSecundario).length <= 14) {
-  //       const mascaraTelefone = telefoneMask(matricula.telefoneSecundario);
-  //       setMatricula({ ...matricula, telefoneSecundario: mascaraTelefone });
-  //     } else {
-  //       const mascaraCelular = celularMask(matricula.telefoneSecundario);
-  //       setMatricula({ ...matricula, telefoneSecundario: mascaraCelular });
-  //     }
-  //   }
-  // }, [matricula.telefoneSecundario]);
-
   useEffect(() => {
     if (matricula.responsavel === '') {
       setMatricula({ ...matricula, parentesco: '' });
@@ -443,8 +260,6 @@ const Matricula = () => {
         <div className="divider" />
         <Wrapper>
           <Form onSubmit={handleSubmit}>
-          {/* <BorderLabel className="borderLabel">
-          <Label>Endereço:</Label> */}
             <ContainerMultipleColumns>
             <div style={{ width: '35%', margin: '0 5px 0 0' }}>
             <FormField
@@ -538,197 +353,18 @@ const Matricula = () => {
             {errors.distrito && <MessageError>{errors.distrito}</MessageError>}
             </div>
             </ContainerMultipleColumns>
-            {/* <FormField
-              label="Data de Nascimento"
-              name="dataNascimento"
-              type="text"
-              value={matricula.dataNascimento}
-              maxLength={10}
-              onChange={handleChange}
-            />
-            {errors.dataNascimento && <MessageError>{errors.dataNascimento}</MessageError>}
-            <fieldset style={{ marginTop: '5px' }}>
-              <ContainerAlignLeft className="TipoContainer">
-                <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
-                  Gênero:
-                </Label>
-                <Col sm={10} className="column">
-                  <Form.Check
-                    inline
-                    label="Masculino"
-                    type="radio"
-                    checked={matricula.genero === 'Masculino'}
-                    name="genero"
-                    id="inline-genero-1"
-                    value="1"
-                    onChange={handleChangeRadio}
-                  />
-                  <Form.Check
-                    inline
-                    label="Feminino"
-                    type="radio"
-                    checked={matricula.genero === 'Feminino'}
-                    name="genero"
-                    id="inline-genero-2"
-                    value="2"
-                    onChange={handleChangeRadio}
-                  />
-                  <Form.Check
-                    inline
-                    label="Outros"
-                    type="radio"
-                    checked={matricula.genero === 'Outros'}
-                    name="genero"
-                    id="inline-genero-3"
-                    value="3"
-                    onChange={handleChangeRadio}
-                  />
-                </Col>
-              </ContainerAlignLeft>
-              {errors.genero && <MessageError>{errors.genero}</MessageError>}
-            </fieldset>
-            <fieldset style={{ marginTop: '15px' }}>
-              <ContainerAlignLeft className="TipoContainer">
-                <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
-                  Nacionalidade:
-                </Label>
-                <Col sm={10} className="column">
-                  <Form.Check
-                    inline
-                    label="Brasileira"
-                    type="radio"
-                    checked={matricula.nacionalidade === 'Brasileira'}
-                    name="nacionalidade"
-                    id="inline-nacionalidade-1"
-                    value="1"
-                    onChange={handleChangeRadio}
-                  />
-                  <Form.Check
-                    inline
-                    label="Estrangeira"
-                    type="radio"
-                    checked={matricula.nacionalidade === 'Estrangeira'}
-                    name="nacionalidade"
-                    id="inline-nacionalidade-2"
-                    value="2"
-                    onChange={handleChangeRadio}
-                  />
-                </Col>
-              </ContainerAlignLeft>
-              {errors.nacionalidade && <MessageError>{errors.nacionalidade}</MessageError>}
-            </fieldset>
-            { matricula.nacionalidade === 'Brasileira' && (
-            <FormSelect
-              label="Naturalidade: (Estado de Origem)"
-              name="naturalidadUF"
-              value={matricula.codigoNaturalidadeUF}
-              onChange={handleChangeSelect}
-              options={estadosOptions}
-            />
-            )}
-            {errors.codigoNaturalidadeUF && <MessageError>{errors.codigoNaturalidadeUF}</MessageError>}
-            { matricula.codigoNaturalidadeUF && (
-            <FormSelect
-              label="Naturalidade: (Cidade de Origem)"
-              name="naturalidade"
-              value={matricula.codigoNaturalidade}
-              onChange={handleChangeSelect}
-              options={cidadesOptions}
-            />
-            )}
-            <FormField
-              label="Nome do Pai"
-              name="nomePai"
-              type="text"
-              value={matricula.nomePai}
-              maxLength={300}
-              onChange={handleChange}
-            />
-            {errors.nomePai && <MessageError>{errors.nomePai}</MessageError>}
-            <FormField
-              label="Nome do Mãe"
-              name="nomeMae"
-              type="text"
-              value={matricula.nomeMae}
-              maxLength={300}
-              onChange={handleChange}
-            />
-            {errors.nomeMae && <MessageError>{errors.nomeMae}</MessageError>}
-            <FormField
-              label="Responsável"
-              name="responsavel"
-              type="text"
-              value={matricula.responsavel}
-              maxLength={300}
-              onChange={handleChange}
-            />
-            {errors.responsavel && <MessageError>{errors.responsavel}</MessageError>}
-            { matricula.responsavel && (
-            <fieldset style={{ marginTop: '15px' }}>
-              <ContainerAlignLeft className="TipoContainer">
-                <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
-                  Parentesco:
-                </Label>
-                <Col sm={10} className="column">
-                  <Form.Check
-                    inline
-                    label="Mãe/Pai"
-                    type="radio"
-                    checked={matricula.parentesco === 'Mãe/Pai'}
-                    name="parentesco"
-                    id="inline-parentesco-1"
-                    value="1"
-                    onChange={handleChangeRadio}
-                  />
-                  <Form.Check
-                    inline
-                    label="Avô/Avó"
-                    type="radio"
-                    checked={matricula.parentesco === 'Avô/Avó'}
-                    name="parentesco"
-                    id="inline-parentesco-2"
-                    value="2"
-                    onChange={handleChangeRadio}
-                  />
-                  <Form.Check
-                    inline
-                    label="Tio/Tia"
-                    type="radio"
-                    checked={matricula.parentesco === 'Tio/Tia'}
-                    name="parentesco"
-                    id="inline-parentesco-3"
-                    value="3"
-                    onChange={handleChangeRadio}
-                  />
-                  <Form.Check
-                    inline
-                    label="o(a) próprio(a)"
-                    type="radio"
-                    checked={matricula.parentesco === 'o(a) próprio(a)'}
-                    name="parentesco"
-                    id="inline-parentesco-4"
-                    value="4"
-                    onChange={handleChangeRadio}
-                  />
-                </Col>
-              </ContainerAlignLeft>
-            </fieldset>
-            )} */}
-            {/* {errors.tipoSolicitacao && <MessageError>{errors.tipoSolicitacao}</MessageError>} */}
-            {/* {errors.nomeItem && <MessageError>{errors.nomeItem}</MessageError>} */}
-            {/* {errors.tags && <MessageError>{errors.tags}</MessageError>} */}
-
-          {/* </BorderLabel> */}
             <ButtonContainer>
-              <Link to="/Matricula">
+              <Link to="/Matricula2">
                 <Buttons variant="danger"> Voltar </Buttons>
               </Link>
+              <Link to="/Matricula4">
               <Buttons
                 // type="submit"
                 variant="success"
                 disabled={!isValid}>
                 Próxima
               </Buttons>
+              </Link>
             </ButtonContainer>
           </Form>
         </Wrapper>

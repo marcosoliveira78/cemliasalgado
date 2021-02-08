@@ -182,7 +182,7 @@ function ListagemGeral() {
         <SearchWrapper>
 
           <Link to="/matricula">
-            <Buttons style={{ color: '#7e4700' }} variant="warning" className="btn btn-info">Cadastrar Aluno</Buttons>
+            <Buttons variant="warning" className="btn btn-info">Cadastrar Aluno</Buttons>
           </Link>
 
           <OverlayTrigger placement="auto" overlay={<TooltipBs id={uniqueId()}>Filtrar por Nome</TooltipBs>}>

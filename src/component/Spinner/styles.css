@@ -1,0 +1,9 @@
+.content-modal-spinner{
+    border: none;
+    background: none;
+}
+
+.modal-spinner {
+    width: 100px;
+    height: 100px;
+}
