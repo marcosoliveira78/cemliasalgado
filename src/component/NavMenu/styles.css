@@ -4,20 +4,8 @@
     position: relative;
     width: auto !important;
     padding: 0px !important;
-    /* max-height: 50px; */
+    max-width: auto !important;
 }
-@media (max-width: 600px) {
-    .menu {
-        max-width: 600px !important;
-        /* width: 600px !important; */
-    }
-  }
-@media (max-width: 465px) {
-    .menu {
-        max-width: 465px !important;
-        /* width: 465px !important; */
-    }
-  }
 
 .menu-imagem {
     max-width: 120px;

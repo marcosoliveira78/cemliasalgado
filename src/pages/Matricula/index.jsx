@@ -514,7 +514,7 @@ const Matricula = () => {
           {/* </BorderLabel> */}
             {/* </div>
             </ContainerMultipleColumns> */}
-            <fieldset style={{ marginTop: '15px' }}>
+            {/* <fieldset style={{ marginTop: '15px' }}>
               <ContainerAlignLeft className="TipoContainer">
                 <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
                   Nacionalidade:
@@ -646,12 +646,9 @@ const Matricula = () => {
                     onChange={handleChangeRadio}
                   />
                 </Col>
-              </ContainerAlignLeft>
-              {/* {errors.tipoSolicitacao && <MessageError>{errors.tipoSolicitacao}</MessageError>} */}
-            </fieldset>
-            )}
-            {/* {errors.nomeItem && <MessageError>{errors.nomeItem}</MessageError>} */}
-            {/* {errors.tags && <MessageError>{errors.tags}</MessageError>} */}
+                </ContainerAlignLeft>
+                </fieldset>
+            )} */}
 
             <ButtonContainer>
               <Link to="/listagemGeral">
