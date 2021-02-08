@@ -1,4 +1,12 @@
 {
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "Marcos Santos Oliveira",
+      "sigla": "mso10",
+      "password": "123456#@"
+    }
+  ],
   "matriculas": [
     {
       "id": 1,
