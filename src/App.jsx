@@ -1,17 +1,17 @@
 import React from 'react';
 import PageDefault from './component/PageDefault';
+// import MatriculaProvider from './context/Matricula';
 import LoginProvider from './context/Login';
-import MatriculaProvider from './context/Matricula';
 import Routes from './services/routes';
 
 const App = () => (
-  <MatriculaProvider>
+  // <MatriculaProvider>
     <LoginProvider>
       <PageDefault>
         <Routes />
       </PageDefault>
     </LoginProvider>
-  </MatriculaProvider>
+  // </MatriculaProvider>
 );
 
 export default App;
