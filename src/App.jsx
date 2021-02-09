@@ -1,6 +1,6 @@
 import React from 'react';
 import PageDefault from './component/PageDefault';
-import MatriculaProvider from './Context/Matricula';
+import MatriculaProvider from './Context/matricula';
 import LoginProvider from './Context/Login';
 import Routes from './services/routes';
 
