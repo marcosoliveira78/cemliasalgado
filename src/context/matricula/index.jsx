@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { createContext, useState, useContext } from 'react';
 
 const MatriculaContext = createContext();

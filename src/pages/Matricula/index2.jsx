@@ -13,7 +13,7 @@ import {
   ContainerMultipleColumns, MessageError,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
-import { useMatricula } from '../../context/Matricula';
+import { useMatricula } from '../../Context/Matricula';
 
 const Matricula = () => {
   // variables

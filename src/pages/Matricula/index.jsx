@@ -19,7 +19,7 @@ import telefoneMask from '../../component/mask/telefone';
 import celularMask from '../../component/mask/celular';
 import convertDate from '../../component/Convert/Date';
 import { validateEmail, validateCPF, validateData } from '../../component/Validate';
-import { useMatricula } from '../../context/Matricula';
+import { useMatricula } from '../../Context/Matricula';
 
 const Matricula = () => {
   // variables
