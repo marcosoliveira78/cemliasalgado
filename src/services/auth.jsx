@@ -14,8 +14,8 @@ import { useState } from "react";
     };
 
     const isAuthenticated = () => {
-        return false;
-        // return localStorage.getItem('USER_LOGGED') !== null;
+        // return false;
+        return localStorage.getItem('USER_LOGGED') !== null;
     };
 
     const isLogged = () => {

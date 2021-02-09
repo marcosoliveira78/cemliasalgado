@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Container, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { FaUser, FaUserCircle } from 'react-icons/fa';
 import { useHistory } from 'react-router';
 import { uniqueId } from 'lodash';
-import login from '../../assets/image/login.png';
-import logo from '../../assets/image/LiaSalgado.png';
+import { login } from '../../services/auth';
+import loginLogo from '../../assets/image/login.png';
+import liaSalgadoLogo from '../../assets/image/LiaSalgado.png';
+import CEMLogo from '../../assets/image/CEM.png';
+import iconeCEM from '../../assets/image/IconeCEM.png';
 import CustomSpinner from '../../component/Spinner';
 import { useLogin } from '../../context/Login';
 import ShowMessage from '../../services/toast';
@@ -39,11 +41,11 @@ const Login = () => {
     // const response = await loginRep.IntegracaoEllevoLogin(newLogin);
 
     // if (response !== null && response.sessionID !== undefined && response.sessionID !== '') {
-    //   Auth.login(response);
     if (newLogin.user === 'mso10' && newLogin.pass === '123456') {
       setLogin(true);
+      login(newLogin);
       //   setAdmin(response.isAdmin);
-      history.push('/Home');
+      history.push('/ListagemGeral');
     } else {
       ShowMessage('error', 'Erro ao realizar login. Verifique seus dados e novamente.');
       setSpinnerShow(false);
@@ -60,19 +62,21 @@ const Login = () => {
     <>
     <div className="Login" />
     <CustomSpinner show={spinnerShow} onHide={() => setSpinnerShow(false)} />
-    <Container style={{ maxWidth: '400px' }} fluid="md">
+    <Container style={{ maxWidth: '400px', paddingBottom: '40px' }} fluid="md">
         <Form onSubmit={handleSubmit}>
           <div className="content-form-login">
             <div className="logo">
+                <img src={CEMLogo} alt="CEM" className="title-form-menu" />
               <OverlayTrigger placement="auto" overlay={<Tooltip id={uniqueId()}>CEM Lia Salgado</Tooltip>}>
-                <img src={logo} alt="Login" className="logo-form-menu" />
+                <img src={liaSalgadoLogo} alt="Lia Salgado" className="logo-form-menu" />
               </OverlayTrigger>
             </div>
             <div className="flexRow">
-              <FaUserCircle className="icon-form-menu" />
+              <img src={iconeCEM} alt="CEM" className="icon-form-menu" />
+              {/* <FaUserCircle className="icon-form-menu" /> */}
             </div>
             <div className="flexRow">
-              <img src={login} alt="Login" className="login-form-menu" />
+              <img src={loginLogo} alt="Login" className="login-form-menu" />
             </div>
             <Form.Group size="lg" controlId="user">
               <Form.Control

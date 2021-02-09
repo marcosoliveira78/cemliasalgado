@@ -20,7 +20,7 @@
 }
 
 .sub-menu-imagem {
-    max-height: 45px;
+    max-height: 35px;
 }
 
 .nav-bar-text {
@@ -36,7 +36,7 @@
 
 .colors:hover {
     text-decoration: none;
-    background-color: #0199b6;
+    /* background-color: #0199b6; */
     color: #f5f5f5 !important;
 }
 
@@ -81,7 +81,7 @@ a:hover {
 
 .dropdown-item:hover {
     text-decoration: none;
-    background-color: #0199b6;
+    /* background-color: #0199b6; */
     color: #f5f5f5 !important;
 }
 
@@ -90,7 +90,7 @@ a:hover {
 }
 
 .link:hover {
-    background-color: #0199b6;
+    /* background-color: #0199b6; */
 }
 
 .fa-style {
