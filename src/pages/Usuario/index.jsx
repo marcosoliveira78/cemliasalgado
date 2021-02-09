@@ -35,7 +35,7 @@ const headCells = [
 function ListagemGeral() {
   const urlBd = window.location.hostname.includes('localhost')
     ? 'http://localhost:8080/Matriculas'
-    : 'https://cemliasalgado.herokuapp.com/matriculas';
+    : 'https://cemliasalgado.herokuapp.com/usuarios';
 
   // functions
   function replaceSpecialChars(str) {
