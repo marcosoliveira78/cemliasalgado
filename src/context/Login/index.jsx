@@ -3,8 +3,8 @@ import React, { createContext, useState, useContext } from 'react';
 const LoginContext = createContext();
 
 export default function LoginProvider({ children }) {
-  const [login, setLogin] = useState(localStorage.getItem('USER_LOGGED') !== null);
   const [admin, setAdmin] = useState(localStorage.getItem('USER_LOGGED') !== null && JSON.parse(localStorage.getItem('USER_LOGGED')).isAdmin);
+  const [login, setLogin] = useState(localStorage.getItem('USER_LOGGED') !== null);
   return (
         <LoginContext.Provider
             value={{
