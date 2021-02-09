@@ -15,7 +15,7 @@ import {
   ContainerMultipleColumns, MessageError,
 } from '../styles';
 import ShowMessage from '../../services/toast';
-import { useMatricula } from '../../Context/matricula';
+import { useMatricula } from '../../context/matricula';
 import cepMask from '../../component/mask/cep';
 
 const Matricula = () => {

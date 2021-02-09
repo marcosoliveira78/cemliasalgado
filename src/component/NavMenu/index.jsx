@@ -14,7 +14,7 @@ import logo from '../../assets/image/logo(white).png';
 import './styles.css';
 import { NavTitle } from './styles';
 import { Container } from '../../pages/styles';
-import { useLogin } from '../../Context/Login';
+import { useLogin } from '../../context/Login';
 import { logout } from '../../services/auth';
 
 function NavMenu() {

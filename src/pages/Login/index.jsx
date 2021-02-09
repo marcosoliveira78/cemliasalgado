@@ -10,7 +10,7 @@ import liaSalgadoLogo from '../../assets/image/LiaSalgado.png';
 import CEMLogo from '../../assets/image/CEM.png';
 import iconeCEM from '../../assets/image/IconeCEM.png';
 import CustomSpinner from '../../component/Spinner';
-import { useLogin } from '../../Context/Login';
+import { useLogin } from '../../context/Login';
 import ShowMessage from '../../services/toast';
 import { Buttons } from '../styles';
 import './styles.css';
