@@ -17,7 +17,7 @@ export default function MatriculaProvider({ children }) {
 
 export function useMatricula() {
   const context = useContext(MatriculaContext);
-  if (!context) throw new Error('useMatricula precisa ser usado dentro de um MatriculaProvider.');
+  if (!context) throw new Error('useMatricula precisa ser usado dentro de um MatriculaProvider');
   const { matricula, setMatricula } = context;
   return { matricula, setMatricula };
 }
