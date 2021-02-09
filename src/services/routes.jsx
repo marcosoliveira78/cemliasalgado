@@ -7,6 +7,7 @@ import { isAuthenticated, getUserLogged } from './auth';
 import PaginaNaoEncontrada from '../pages/PageNotFound';
 import Login from '../pages/Login';
 import ListagemGeral from '../pages/ListagemGeral';
+import Usuario from '../pages/Usuario';
 import Matricula from '../pages/Matricula';
 import Matricula2 from '../pages/Matricula/index2';
 import Matricula3 from '../pages/Matricula/index3';
@@ -68,6 +69,7 @@ const Routes = () => (
     <PrivateRoute exact path="/matricula2" component={Matricula2} />
     <PrivateRoute exact path="/matricula3" component={Matricula3} />
     <PrivateRoute exact path="/matricula4" component={Matricula4} />
+    <PrivateRoute exact path="/usuario" component={Usuario} />
     <PrivateRoute component={PaginaNaoEncontrada} />
   </Switch>
 );

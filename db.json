@@ -3,8 +3,18 @@
     {
       "id": 1,
       "nome": "Marcos Santos Oliveira",
-      "sigla": "mso10",
-      "password": "123456#@"
+      "usuario": "marcos",
+      "email": "marcsantos@hotmail.com",
+      "password": "MTIzNDU2",
+      "status": "ativo"
+    },
+    {
+      "id": 2,
+      "nome": "Sabrina Oliveira de Almeida",
+      "usuario": "sabrinalmeida",
+      "email": "sabrinalmeida@gmail.com",
+      "password": "MTIzNDU2",
+      "status": "ativo"
     }
   ],
   "matriculas": [

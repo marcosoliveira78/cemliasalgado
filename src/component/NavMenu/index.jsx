@@ -5,7 +5,7 @@ import {
   Nav, Navbar, NavDropdown, OverlayTrigger, Tooltip,
 } from 'react-bootstrap';
 import {
-  FaDoorOpen, FaUserCircle, FaUserTie, FaWhmcs, FaBookReader, FaItunesNote, FaMusic, FaUniversity,
+  FaDoorOpen, FaUniversity,
 } from 'react-icons/fa';
 import { DropdownSubmenu, NavDropdownMenu } from 'react-bootstrap-submenu';
 import { uniqueId } from 'lodash';
@@ -85,7 +85,7 @@ function NavMenu() {
                         </Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item as="span">
-                        <Link to="/Usuarios" className="link">
+                        <Link to="/Usuario" className="link">
                             <span className="span">Usuários</span>
                         </Link>
                     </NavDropdown.Item>

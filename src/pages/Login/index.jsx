@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import { uniqueId } from 'lodash';
+import CryptoJS from 'crypto-js';
 import { login } from '../../services/auth';
 import loginLogo from '../../assets/image/login.png';
 import liaSalgadoLogo from '../../assets/image/LiaSalgado.png';
@@ -21,12 +22,29 @@ const Login = () => {
   const [spinnerShow, setSpinnerShow] = useState(false);
   const { setLogin } = useLogin(false);
   const { setAdmin } = useLogin(false);
+  const [response, setResponse] = useState();
 
   // Variables
   const history = useHistory();
+  const urlBd = window.location.hostname.includes('localhost')
+    ? 'http://localhost:8080'
+    : 'https://cemliasalgado.herokuapp.com';
+  const pasta = 'usuarios';
 
   // Functions
   const validateForm = () => user.length > 0 && password.length > 0;
+
+  const encryptPass = (textPass) => {
+    const words = CryptoJS.enc.Utf8.parse(textPass);
+    const base64 = CryptoJS.enc.Base64.stringify(words);
+    return base64;
+  };
+
+  const decryptPass = (encryptText) => {
+    const wordsDecrypt = CryptoJS.enc.Base64.parse(encryptText);
+    const stringDecrypt = CryptoJS.enc.Utf8.stringify(wordsDecrypt);
+    return stringDecrypt;
+  };
 
   // Handles
   const handleSubmit = async (form) => {
@@ -38,19 +56,37 @@ const Login = () => {
       pass: password,
     };
 
-    // const response = await loginRep.IntegracaoEllevoLogin(newLogin);
+    // const encrypted = encryptPass(newLogin.pass);
+    // const decrypted = decryptPass(encrypted);
+    // console.log('Criptografado:', encrypted);
+    // console.log('Descriptografado:', decrypted);
 
-    // if (response !== null && response.sessionID !== undefined && response.sessionID !== '') {
-    if (newLogin.user === 'mso10' && newLogin.pass === '123456') {
-      setLogin(true);
-      login(newLogin);
-      //   setAdmin(response.isAdmin);
-      history.push('/ListagemGeral');
-    } else {
-      ShowMessage('error', 'Erro ao realizar login. Verifique seus dados e novamente.');
-      setSpinnerShow(false);
-    }
+    fetch(`${urlBd}/${pasta}`)
+      .then((resp) => resp.json())
+      .then((usuarios) => {
+        const allowed = usuarios.filter((usuario) => usuario.password === encryptPass(newLogin.pass)
+        && usuario.usuario === newLogin.user);
+        if (allowed) {
+          setResponse(allowed);
+        }
+      });
+    setSpinnerShow(false);
   };
+
+  useEffect(() => {
+    // setSpinnerShow(true);
+    if (response !== undefined) {
+      if (response.length > 0) {
+        setLogin(true);
+        login(response);
+        //   setAdmin(response.isAdmin);
+        history.push('/ListagemGeral');
+      } else {
+        ShowMessage('error', 'Erro ao realizar login. Verifique seus dados e novamente.');
+      }
+      // setSpinnerShow(false);
+    }
+  }, [response]);
 
   useEffect(() => {
     if (localStorage.LOGOUT === 'expireSession') {
