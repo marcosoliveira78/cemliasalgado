@@ -1,20 +1,24 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tooltip } from '@material-ui/core';
 import { FaEdit, FaSistrix } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import {
-  FormControl, InputGroup, Jumbotron, OverlayTrigger, Tooltip as TooltipBs,
+  FormControl, InputGroup, Jumbotron, OverlayTrigger,
+  Tooltip as TooltipBs,
 } from 'react-bootstrap';
 import { uniqueId } from 'lodash';
 import Tables from '../../component/Table';
-import request from '../../services/api';
+// import request from '../../services/api';
 import { SearchWrapper, FiltroItem, Buttons } from '../styles';
 
 // Table Headers
 const headCells = [
+  {
+    id: 'key', numeric: false, disablePadding: true, label: 'Nº',
+  },
   {
     id: 'nome', numeric: false, disablePadding: true, label: 'Nome',
   },
@@ -32,9 +36,9 @@ const headCells = [
   },
 ];
 
-function ListagemGeral() {
+function ListaUsuario() {
   const urlBd = window.location.hostname.includes('localhost')
-    ? 'http://localhost:8080/Matriculas'
+    ? 'http://localhost:8080/usuarios'
     : 'https://cemliasalgado.herokuapp.com/usuarios';
 
   // functions
@@ -57,7 +61,7 @@ function ListagemGeral() {
   }
 
   // Hooks
-  const [matriculas, setMatriculas] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   const [resultado, setResultado] = useState([]);
   const [filtro, setFiltro] = useState([]);
 
@@ -70,52 +74,17 @@ function ListagemGeral() {
   };
 
   // Table Rows
-  const rows = resultado.map((matricula) => (
+  const rows = resultado.map((usuario) => (
     {
-      key: matricula.id,
-      dataHora: matricula.dataHora,
-      nome: matricula.nome,
-      cpf: matricula.cpf,
-      dataNascimento: matricula.dataNascimento,
-      genero: matricula.genero,
-      nacionalidade: matricula.nacionalidade,
-      naturalidade: matricula.naturalidade,
-      naturalidadeUf: matricula.naturalidadeUf,
-      nomePai: matricula.nomePai,
-      nomeMae: matricula.nomeMae,
-      responsavel: matricula.responsavel,
-      grauParentesco: matricula.grauParentesco,
-      telefonePrincipal: matricula.telefonePrincipal,
-      telefoneSecundario: matricula.telefoneSecundario,
-      email: matricula.email,
-      logradouro: matricula.logradouro,
-      numero: matricula.numero,
-      bairro: matricula.bairro,
-      distrito: matricula.distrito,
-      municipio: matricula.municipio,
-      uf: matricula.uf,
-      cep: matricula.cep,
-      tipoMatricula: matricula.tipoMatricula,
-      ultimaSerieCursada: matricula.ultimaSerieCursada,
-      instrumentoCursado1: matricula.instrumentoCursado1,
-      instrumentoCursado2: matricula.instrumentoCursado2,
-      educacaoMusical: matricula.educacaoMusical,
-      educacaoTecnica: matricula.educacaoTecnica,
-      instrumento: matricula.instrumento,
-      turma: matricula.turma,
-      turno: matricula.turno,
-      procedencia: matricula.procedencia,
-      escolaridade: matricula.escolaridade,
-      projeto: matricula.projeto,
-      educacaoEspecial: matricula.educacaoEspecial,
-      confirmacaoDesejoMatricula: matricula.confirmacaoDesejoMatricula,
-      instrumento2: matricula.instrumento2,
-      AnoaSerCursado: matricula.AnoaSerCursado,
-      status: 'A',
+      key: usuario.id,
+      nome: usuario.nome,
+      usuario: usuario.usuario,
+      email: usuario.email,
+      status: usuario.status,
       acoes:
   <>
     <Tooltip title="Editar">
-      <Link to={{ pathname: `/Matricula/Editar/${matricula.id}` }}>
+      <Link to={{ pathname: `/usuario/formulario/${usuario.id}/${usuario.status}` }}>
         <FaEdit className="icone" />
       </Link>
     </Tooltip>
@@ -125,55 +94,54 @@ function ListagemGeral() {
 
   // Triggers
   useEffect(() => {
-    // request('get', 'matriculas')
     fetch(urlBd)
       .then(async (resp) => {
         const result = await resp.json();
-        setMatriculas([...result]);
+        setUsuarios([...result]);
         setResultado([...result]);
       });
   }, []);
 
   useEffect(() => {
     if (filtro !== null && filtro !== undefined) {
-      const arrayMatriculas = [];
+      const arrayUsuarios = [];
       if (filtro.length >= 3) {
         const filtroPorPalavras = filtro.split(' ');
-        const filtraMatriculas = matriculas.map((matricula) => (multiSearchAnd(matricula.nome, filtroPorPalavras) ? matricula : ''));
-        filtraMatriculas.map((matricula) => {
-          if (matricula !== '') {
-            arrayMatriculas.push(matricula);
+        const filtraUsuarios = usuarios.map((usuario) => (multiSearchAnd(usuario.usuario, filtroPorPalavras) ? usuario : ''));
+        filtraUsuarios.map((usuario) => {
+          if (usuario !== '') {
+            arrayUsuarios.push(usuario);
           }
           return null;
         });
         if (filtroPorPalavras.length > 1) {
-          setResultado([...arrayMatriculas]);
+          setResultado([...arrayUsuarios]);
         } else {
-          const filtrado = matriculas.filter((matricula) => (
-            replaceSpecialChars(matricula.nome).toLowerCase()
+          const filtrado = usuarios.filter((usuario) => (
+            replaceSpecialChars(usuario.usuario).toLowerCase()
               .includes(replaceSpecialChars(filtro).toLowerCase())));
           setResultado([...filtrado]);
         }
       }
       if (filtro.length === 0) {
-        setResultado([...matriculas]);
+        setResultado([...usuarios]);
       }
     }
-  }, [filtro, matriculas]);
+  }, [filtro, usuarios]);
 
   return (
     <>
       <div className="root">
         <Jumbotron className="jumbotron">
-          <h2>Listagem de Alunos</h2>
+          <h2>Lista de Usuários.</h2>
           <span>
-            Alunos que preencheram o formulário de matrícula.
+            Usuários com acesso ao sistema.
           </span>
         </Jumbotron>
         <SearchWrapper>
 
-          <Link to="/matricula">
-            <Buttons variant="warning" className="btn btn-info">Cadastrar Aluno</Buttons>
+          <Link to="/usuario/formulario">
+            <Buttons variant="warning" className="btn btn-info">Cadastrar Novo Usuário</Buttons>
           </Link>
 
           <OverlayTrigger placement="auto" overlay={<TooltipBs id={uniqueId()}>Filtrar por Nome</TooltipBs>}>
@@ -201,4 +169,4 @@ function ListagemGeral() {
   );
 }
 
-export default ListagemGeral;
+export default ListaUsuario;

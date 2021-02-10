@@ -30,8 +30,14 @@ const validateData = (elementValue) => {
   return dataPattern.test(elementValue);
 };
 
+const validateSenha = (elementValue) => {
+  const senhaPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#+-])[A-Za-z\d@$!%*?&#+-]{8,}$/;
+  return senhaPattern.test(elementValue);
+};
+
 export {
   validateEmail,
   validateCPF,
   validateData,
+  validateSenha,
 };

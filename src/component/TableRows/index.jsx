@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -31,6 +32,22 @@ function TableRows(props) {
 
   const renderStatus = (status) => (status === 'I' ? 'Inativo' : 'Ativo');
 
+  const tableCell = [];
+  Object.keys(row).map((item) => {
+    switch (item) {
+      case 'key':
+        tableCell.push(<TableCell component="td" scope="row" align="left" key={uniqueId()} id={labelId}>{row[item]}</TableCell>);
+        break;
+      case 'status':
+        tableCell.push(<TableCell align="left" key={uniqueId()}>{renderStatus(row[item])}</TableCell>);
+        break;
+      default:
+        tableCell.push(<TableCell align="left" key={uniqueId()}>{row[item]}</TableCell>);
+        break;
+    }
+    return tableCell;
+  });
+
   return (
     <>
       <TableRow hover>
@@ -46,20 +63,7 @@ function TableRows(props) {
               </IconButton>
             </TableCell>
           )}
-        <TableCell component="th" scope="row" align="left" id={labelId}>
-          {row.nome}
-        </TableCell>
-        {/* {collapsable && (
-        <TableCell align="left">{row.grupo}</TableCell>)} */}
-        {/* {!collapsable && ( */}
-        <TableCell align="left">{row.telefonePrincipal}</TableCell>
-        {/* )} */}
-        <TableCell align="center">{row.educacaoMusical}</TableCell>
-        <TableCell align="center">{row.educacaoTecnica}</TableCell>
-        <TableCell align="center">{row.instrumento}</TableCell>
-        <TableCell align="center">{row.instrumento2}</TableCell>
-        <TableCell align="center">{renderStatus(row.status)}</TableCell>
-        <TableCell align="center">{row.acoes}</TableCell>
+         { tableCell }
       </TableRow>
       {collapsable
         && (

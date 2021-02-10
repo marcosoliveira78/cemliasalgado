@@ -5,16 +5,39 @@
       "nome": "Marcos Santos Oliveira",
       "usuario": "marcos",
       "email": "marcsantos@hotmail.com",
-      "password": "MTIzNDU2",
-      "status": "ativo"
+      "password": "MzAwM21zb0Er",
+      "status": "A"
     },
     {
       "id": 2,
       "nome": "Sabrina Oliveira de Almeida",
       "usuario": "sabrinalmeida",
       "email": "sabrinalmeida@gmail.com",
-      "password": "MTIzNDU2",
-      "status": "ativo"
+      "password": "MjcwNG1zb0Er",
+      "status": "A"
+    },
+    {
+      "id": 3,
+      "nome": "MARCOS SANTOS OLIVEIRA",
+      "email": "marcsantos@hotmail.com",
+      "password": "MzAwM21zb0Er",
+      "status": "A"
+    },
+    {
+      "id": 4,
+      "nome": "MARCOS SANTOS OLIVEIRA",
+      "usuario": "marcsantos",
+      "email": "marcsantos@hotmail.com",
+      "password": "MzAwM21zb0Er",
+      "status": "A"
+    },
+    {
+      "id": 5,
+      "nome": "CEM LIA SALGADO",
+      "usuario": "cemliasalgado",
+      "email": "conservatorioliasalgado@gmail.com",
+      "password": "TWF0cmljdWxhKzE=",
+      "status": "I"
     }
   ],
   "matriculas": [

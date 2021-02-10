@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useHistory } from 'react-router';
 import { uniqueId } from 'lodash';
-import CryptoJS from 'crypto-js';
+// import CryptoJS from 'crypto-js';
 import { login } from '../../services/auth';
 import loginLogo from '../../assets/image/login.png';
 import liaSalgadoLogo from '../../assets/image/LiaSalgado.png';
@@ -14,6 +14,7 @@ import { useLogin } from '../../context/Login';
 import ShowMessage from '../../services/toast';
 import { Buttons } from '../styles';
 import './styles.css';
+import encryptPass from '../../component/Convert/Encrypt';
 
 const Login = () => {
   // Hooks
@@ -34,17 +35,17 @@ const Login = () => {
   // Functions
   const validateForm = () => user.length > 0 && password.length > 0;
 
-  const encryptPass = (textPass) => {
-    const words = CryptoJS.enc.Utf8.parse(textPass);
-    const base64 = CryptoJS.enc.Base64.stringify(words);
-    return base64;
-  };
+  // const encryptPass = (textPass) => {
+  //   const words = CryptoJS.enc.Utf8.parse(textPass);
+  //   const base64 = CryptoJS.enc.Base64.stringify(words);
+  //   return base64;
+  // };
 
-  const decryptPass = (encryptText) => {
-    const wordsDecrypt = CryptoJS.enc.Base64.parse(encryptText);
-    const stringDecrypt = CryptoJS.enc.Utf8.stringify(wordsDecrypt);
-    return stringDecrypt;
-  };
+  // const decryptPass = (encryptText) => {
+  //   const wordsDecrypt = CryptoJS.enc.Base64.parse(encryptText);
+  //   const stringDecrypt = CryptoJS.enc.Utf8.stringify(wordsDecrypt);
+  //   return stringDecrypt;
+  // };
 
   // Handles
   const handleSubmit = async (form) => {
