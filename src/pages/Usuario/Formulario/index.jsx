@@ -71,9 +71,13 @@ const UsuarioForm = ({ match }) => {
         mensagem = 'Nome de Login deve possuir no mínimo 6 caracteres.';
         erro.login = mensagem;
       }
-      if (params.id === undefined && login.length >= 6) {
-        const existe = listaUsuarios.filter((u) => u.usuario === login);
-        console.log(existe);
+      if (login.length >= 6) {
+        let existe;
+        if (params.id === undefined) {
+          existe = listaUsuarios.filter((u) => u.usuario === login);
+        } else {
+          existe = listaUsuarios.filter((u) => (u.usuario === login && u.id.toString() !== params.id));
+        }
         if (existe.length > 0) {
           mensagem = 'Nome de login já utilizado.';
           erro.login = mensagem;
@@ -178,25 +182,17 @@ const UsuarioForm = ({ match }) => {
 
   // Triggers
   useEffect(() => {
-    if (params.id === undefined) {
-      fetch(`${urlBd}/${pasta}`,
-        {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          mode: 'cors',
-          cache: 'default',
-        })
-        .then(async (resp) => {
-          const resultado = await resp.json();
-          setListaUsuarios(resultado);
+    fetch(`${urlBd}/${pasta}`)
+      .then(async (resp) => {
+        const resultado = await resp.json();
+        setListaUsuarios(resultado);
+        if (params.id === undefined) {
           const lastKey = Object.keys(resultado).reverse()[0];
           nextId = resultado[lastKey].id + 1;
           setUsuario({ ...usuario, id: nextId });
-        });
-    } else {
+        }
+      });
+    if (params.id !== undefined) {
       fetch(`${urlBd}/${pasta}/${params.id}`).then(async (resp) => {
         const resultado = await resp.json();
         const data = {

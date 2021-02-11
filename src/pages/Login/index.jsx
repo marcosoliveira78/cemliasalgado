@@ -66,7 +66,7 @@ const Login = () => {
       .then((resp) => resp.json())
       .then((usuarios) => {
         const allowed = usuarios.filter((usuario) => usuario.password === encryptPass(newLogin.pass)
-        && usuario.usuario === newLogin.user);
+        && usuario.usuario === newLogin.user && usuario.status === 'A');
         if (allowed) {
           setResponse(allowed);
         }
