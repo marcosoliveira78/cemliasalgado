@@ -20,6 +20,7 @@ import celularMask from '../../component/mask/celular';
 import convertDate from '../../component/Convert/Date';
 import { validateEmail, validateCPF, validateData } from '../../component/Validate';
 import { useMatricula } from '../../context/matricula';
+import { calculaIdadeEscolar } from '../../component/Convert/Idade';
 
 const Matricula = () => {
   // variables
@@ -43,8 +44,6 @@ const Matricula = () => {
   const validate = (data) => {
     const { nome, email, cpf, telefonePrincipal,
       telefoneSecundario, dataNascimento, genero,
-      nacionalidade, naturalidade, naturalidadeUF,
-      nomePai, nomeMae, responsavel, grauParentesco,
     } = data;
     const erro = {};
     if (nome !== undefined) {
@@ -219,6 +218,13 @@ const Matricula = () => {
   }, [matricula.telefoneSecundario]);
 
   useEffect(() => {
+    if (matricula.dataNascimento !== undefined && matricula.dataNascimento.length === 10) {
+      setMatricula({ ...matricula, idadeEscolar: calculaIdadeEscolar(matricula.dataNascimento).toString() });
+    } else {
+      setMatricula({ ...matricula, idadeEscolar: '0' });
+    }
+  }, [matricula.dataNascimento]);
+  useEffect(() => {
     validateIsValid();
   }, [errors]);
 
@@ -297,6 +303,8 @@ const Matricula = () => {
             {errors.telefoneSecundario && <MessageError>{errors.telefoneSecundario}</MessageError>}
             </div>
             </ContainerMultipleColumns>
+            <ContainerMultipleColumns>
+            <div style={{ width: '100%', margin: '0 5px 0 0' }}>
             <FormField
               label="Data de Nascimento"
               name="dataNascimento"
@@ -306,6 +314,19 @@ const Matricula = () => {
               onChange={handleChange}
             />
             {errors.dataNascimento && <MessageError>{errors.dataNascimento}</MessageError>}
+            </div>
+            <div style={{ width: '100%', margin: '0 0 0 5px' }}>
+            <FormField
+            label="Idade Escolar"
+            name="idadeEscolar"
+            type="text"
+            value={matricula.idadeEscolar === undefined ? '0' : matricula.idadeEscolar}
+            maxLength={3}
+            onChange={handleChange}
+            disabled
+          />
+            </div>
+            </ContainerMultipleColumns>
             <fieldset style={{ marginTop: '5px' }}>
               <ContainerAlignLeft className="TipoContainer">
                 <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FormFieldWrapper, Input, Label } from './styles';
 
 function FormField({
-  label, type, name, value, onChange, suggestions, register, maxLength,
+  disabled, label, type, name, value, onChange, suggestions, register, maxLength,
 }) {
   const fieldId = `id_${name}`;
   const isTypeTextarea = type === 'textarea';
@@ -27,6 +27,7 @@ function FormField({
           hasValue={hasValue}
           onChange={onChange}
           autoComplete={hasSuggestions ? 'off' : 'on'}
+          disabled={disabled !== undefined}
           list={hasSuggestions ? `suggestionFor_${fieldId}` : undefined}
         />
         {/* <Field name={name} type={type} /> */}

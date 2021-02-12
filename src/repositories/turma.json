@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "nome": "06 Anos"
+    },
+    {
+        "id": "2",
+        "nome": "07 Anos"
+    },
+    {
+        "id": "3",
+        "nome": "08 e 09 Anos"
+    },
+    {
+        "id": "4",
+        "nome": "10 a 12 Anos"
+    },
+    {
+        "id": "5",
+        "nome": "13 a 15 Anos"
+    },
+    {
+        "id": "6",
+        "nome": "16 Anos ou mais"
+    }
+]

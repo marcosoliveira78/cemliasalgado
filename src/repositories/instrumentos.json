@@ -1,50 +1,50 @@
 [
     {
         "id": "201",
-        "nome": "BATERIA"
+        "nome": "BATERIA (à partir 8 anos)"
     },
     {
         "id": "202",
-        "nome": "CANTO"
+        "nome": "CANTO (à partir 14 anos)"
     },
     {
         "id": "203",
-        "nome": "CONTRABAIXO"
+        "nome": "CONTRABAIXO (à partir 12 anos)"
     },
     {
         "id": "204",
-        "nome": "FLAUTA DOCE"
+        "nome": "FLAUTA DOCE (à partir 6 anos)"
     },
     {
         "id": "205",
-        "nome": "FLAUTA TRANSVERSA"
+        "nome": "FLAUTA TRANSVERSA (à partir 8 anos)"
     },
     {
         "id": "206",
-        "nome": "GUITARRA"
+        "nome": "GUITARRA (à partir 8 anos)"
     },
     {
         "id": "207",
-        "nome": "PIANO"
+        "nome": "PIANO (à partir 6 anos)"
     },
     {
         "id": "208",
-        "nome": "SAXOFONE"
+        "nome": "SAXOFONE (à partir 12 anos)"
     },
     {
         "id": "209",
-        "nome": "TECLADO"
+        "nome": "TECLADO (à partir 6 anos)"
     },
     {
         "id": "210",
-        "nome": "VIOLÃO"
+        "nome": "VIOLÃO (à partir 6 anos)"
     },
     {
-        "id": "210",
-        "nome": "VIOLINO"
+        "id": "211",
+        "nome": "VIOLINO (à partir 6 anos)"
     },
     {
-        "id": "210",
-        "nome": "VIOLONCELO"
+        "id": "212",
+        "nome": "VIOLONCELO (à partir 12 anos)"
     }
 ]
