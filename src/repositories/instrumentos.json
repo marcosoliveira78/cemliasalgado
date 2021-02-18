@@ -1,50 +1,62 @@
 [
     {
         "id": "201",
-        "nome": "BATERIA (à partir 8 anos)"
+        "nome": "BATERIA",
+        "idadeMinima": "8"
     },
     {
         "id": "202",
-        "nome": "CANTO (à partir 14 anos)"
+        "nome": "CANTO",
+        "idadeMinima": "14"
     },
     {
         "id": "203",
-        "nome": "CONTRABAIXO (à partir 12 anos)"
+        "nome": "CONTRABAIXO",
+        "idadeMinima": "12"
     },
     {
         "id": "204",
-        "nome": "FLAUTA DOCE (à partir 6 anos)"
+        "nome": "FLAUTA DOCE",
+        "idadeMinima": "6"
     },
     {
         "id": "205",
-        "nome": "FLAUTA TRANSVERSA (à partir 8 anos)"
+        "nome": "FLAUTA TRANSVERSA",
+        "idadeMinima": "8"
     },
     {
         "id": "206",
-        "nome": "GUITARRA (à partir 8 anos)"
+        "nome": "GUITARRA",
+        "idadeMinima": "8"
     },
     {
         "id": "207",
-        "nome": "PIANO (à partir 6 anos)"
+        "nome": "PIANO",
+        "idadeMinima": "6"
     },
     {
         "id": "208",
-        "nome": "SAXOFONE (à partir 12 anos)"
+        "nome": "SAXOFONE",
+        "idadeMinima": "12"
     },
     {
         "id": "209",
-        "nome": "TECLADO (à partir 6 anos)"
+        "nome": "TECLADO",
+        "idadeMinima": "6"
     },
     {
         "id": "210",
-        "nome": "VIOLÃO (à partir 6 anos)"
+        "nome": "VIOLÃO",
+        "idadeMinima": "6"
     },
     {
         "id": "211",
-        "nome": "VIOLINO (à partir 6 anos)"
+        "nome": "VIOLINO",
+        "idadeMinima": "6"
     },
     {
         "id": "212",
-        "nome": "VIOLONCELO (à partir 12 anos)"
+        "nome": "VIOLONCELO",
+        "idadeMinima": "12"
     }
 ]

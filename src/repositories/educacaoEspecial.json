@@ -1,0 +1,38 @@
+[
+    {
+        "id": "0",
+        "nome": "Nenhuma"
+    },
+    {
+        "id": "1",
+        "nome": "Altas Habilidades (Superdotados)"
+    },
+    {
+        "id": "2",
+        "nome": "Condutas Típicas (Problemas de Conduta)"
+    },
+    {
+        "id": "3",
+        "nome": "Deficiência Auditiva"
+    },
+    {
+        "id": "4",
+        "nome": "Deficiência Física"
+    },
+    {
+        "id": "5",
+        "nome": "Deficiência Mental"
+    },
+    {
+        "id": "6",
+        "nome": "Deficiência Multipla"
+    },
+    {
+        "id": "7",
+        "nome": "Deficiência Visual"
+    },
+    {
+        "id": "8",
+        "nome": "Outras..."
+    }
+]

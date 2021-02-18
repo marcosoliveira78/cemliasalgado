@@ -1,0 +1,14 @@
+[
+    {
+        "id": "1",
+        "nome": "Completo"
+    },
+    {
+        "id": "2",
+        "nome": "Incompleto"
+    },
+    {
+        "id": "3",
+        "nome": "Cursando"
+    }
+]

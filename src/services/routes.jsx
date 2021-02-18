@@ -13,6 +13,7 @@ import Matricula from '../pages/Matricula';
 import Matricula2 from '../pages/Matricula/index2';
 import Matricula3 from '../pages/Matricula/index3';
 import Matricula4 from '../pages/Matricula/index4';
+import Matricula5 from '../pages/Matricula/index5';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -70,6 +71,7 @@ const Routes = () => (
     <PrivateRoute exact path="/matricula2" component={Matricula2} />
     <PrivateRoute exact path="/matricula3" component={Matricula3} />
     <PrivateRoute exact path="/matricula4" component={Matricula4} />
+    <PrivateRoute exact path="/matricula5" component={Matricula5} />
     <PrivateRoute exact path="/usuario" component={Usuario} />
     <PrivateRoute exact path="/usuario/formulario" component={Formulario} />
     <PrivateRoute exact path="/usuario/formulario/:id/:status" component={Formulario} />

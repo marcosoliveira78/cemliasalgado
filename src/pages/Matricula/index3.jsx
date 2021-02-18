@@ -255,7 +255,7 @@ const Matricula = () => {
       <div className="root">
         <Jumbotron className="jumbotron">
           <h2>Matrícula de Alunos</h2>
-          <span>Formulário de preenchimento de Matrícula.</span>
+          <span>Endereço</span>
         </Jumbotron>
         <div className="divider" />
         <Wrapper>
@@ -354,10 +354,10 @@ const Matricula = () => {
             </div>
             </ContainerMultipleColumns>
             <ButtonContainer>
-              <Link to="/Matricula2">
+              <Link to="/matricula2">
                 <Buttons variant="danger"> Voltar </Buttons>
               </Link>
-              <Link to="/Matricula4">
+              <Link to="/matricula4">
               <Buttons
                 // type="submit"
                 variant="success"

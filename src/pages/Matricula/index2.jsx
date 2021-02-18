@@ -221,7 +221,7 @@ const Matricula = () => {
       <div className="root">
         <Jumbotron className="jumbotron">
           <h2>Matrícula de Alunos</h2>
-          <span>Formulário de preenchimento de Matrícula.</span>
+          <span>Origem do Aluno</span>
         </Jumbotron>
         <div className="divider" />
 

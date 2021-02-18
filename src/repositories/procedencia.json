@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "nome": "MUNICIPAL"
+    },
+    {
+        "id": "2",
+        "nome": "ESTADUAL"
+    },
+    {
+        "id": "3",
+        "nome": "PARTICULAR"
+    },
+    {
+        "id": "4",
+        "nome": "FEDERAL"
+    },
+    {
+        "id": "5",
+        "nome": "APAE"
+    },
+    {
+        "id": "6",
+        "nome": "Nunca frequentou escolas"
+    }
+]

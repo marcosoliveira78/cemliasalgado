@@ -1,0 +1,14 @@
+[
+    {
+        "id": "1",
+        "nome": "Ensino Fundamental"
+    },
+    {
+        "id": "2",
+        "nome": "Ensino Médio"
+    },
+    {
+        "id": "3",
+        "nome": "Ensino Superior"
+    }
+]
