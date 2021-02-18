@@ -187,9 +187,14 @@ const Matricula = () => {
   }, [matricula.cpf]);
 
   useEffect(() => {
-    if (matricula.dataNascimento) {
-      const mascaraDataNascimento = dateMask(matricula.dataNascimento);
-      setMatricula({ ...matricula, dataNascimento: mascaraDataNascimento });
+    if (matricula.dataNascimento && matricula.dataNascimento.length < 10) {
+      console.log(dateMask(matricula.dataNascimento));
+      setMatricula({ ...matricula, dataNascimento: dateMask(matricula.dataNascimento), idadeEscolar: '0' });
+    }
+    if (matricula.dataNascimento !== undefined && matricula.dataNascimento.length === 10) {
+      setMatricula({ ...matricula, dataNascimento: dateMask(matricula.dataNascimento), idadeEscolar: calculaIdadeEscolar(matricula.dataNascimento).toString() });
+    } else if (matricula.dataNascimento !== undefined) {
+      setMatricula({ ...matricula, dataNascimento: dateMask(matricula.dataNascimento), idadeEscolar: '0' });
     }
   }, [matricula.dataNascimento]);
 
@@ -217,13 +222,6 @@ const Matricula = () => {
     }
   }, [matricula.telefoneSecundario]);
 
-  useEffect(() => {
-    if (matricula.dataNascimento !== undefined && matricula.dataNascimento.length === 10) {
-      setMatricula({ ...matricula, idadeEscolar: calculaIdadeEscolar(matricula.dataNascimento).toString() });
-    } else {
-      setMatricula({ ...matricula, idadeEscolar: '0' });
-    }
-  }, [matricula.dataNascimento]);
   useEffect(() => {
     validateIsValid();
   }, [errors]);

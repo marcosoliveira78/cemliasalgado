@@ -92,8 +92,8 @@ const Matricula = () => {
   const handleChangeSelect = (event) => {
     const { value, label } = event;
     let tipo;
-    if (label.length === 2) tipo = 'naturalidadeUF';
-    if (label.length > 2) tipo = 'naturalidade';
+    if (value.toString().length === 2) tipo = 'naturalidadeUF';
+    if (value.toString().length === 7) tipo = 'naturalidade';
     switch (tipo) {
       case 'naturalidadeUF':
         setMatricula({ ...matricula, naturalidadeUF: label, codigoNaturalidadeUF: value });
