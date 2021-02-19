@@ -2,31 +2,37 @@
     {
         "id": "1",
         "nome": "06 Anos",
+        "idadeMinima": "6",
         "idadeMaxima": "6"
     },
     {
         "id": "2",
         "nome": "07 Anos",
+        "idadeMinima": "7",
         "idadeMaxima": "7"
     },
     {
         "id": "3",
         "nome": "08 e 09 Anos",
-        "idadeMaxima": "8"
+        "idadeMinima": "8",
+        "idadeMaxima": "9"
     },
     {
         "id": "4",
         "nome": "10 a 12 Anos",
-        "idadeMaxima": "10"
+        "idadeMinima": "10",
+        "idadeMaxima": "12"
     },
     {
         "id": "5",
         "nome": "13 a 15 Anos",
-        "idadeMaxima": "13"
+        "idadeMinima": "13",
+        "idadeMaxima": "15"
     },
     {
         "id": "6",
         "nome": "16 Anos ou mais",
-        "idadeMaxima": "16"
+        "idadeMinima": "16",
+        "idadeMaxima": "999"
     }
 ]

@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { Form, Jumbotron } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import FormSelect from '../../component/FormSelect';
 import { useMatricula } from '../../context/matricula';
 import series from '../../repositories/series.json';
@@ -13,6 +13,7 @@ import { ButtonContainer, Buttons, ContainerMultipleColumns, MessageError, Wrapp
 
 const Matricula4 = () => {
   // variables
+  const history = useHistory();
   const tiposMatricula = [
     { value: 1, label: 'Matricula (Primeira matrícula, para quem nunca estudou no Conservatório)' },
     { value: 2, label: 'Re-Matricula (Aluno que já estudou no Conservatório, mas ficou algum tempo afastado' },
@@ -44,7 +45,7 @@ const Matricula4 = () => {
   // context
   const { matricula, setMatricula } = useMatricula({});
 
-  matricula.idadeEscolar = '16';
+  // matricula.idadeEscolar = '43';
   //  Validations
   const validate = (data) => {
     const {
@@ -205,6 +206,9 @@ const Matricula4 = () => {
 
   // triggers
   useEffect(() => {
+    if (!matricula.nome) {
+      history.push('/matricula');
+    }
     setTipoMatriculaOptions(tiposMatricula.map((tipo) => (
       { value: `0-${tipo.value}`, label: `${tipo.label}` }
     )));
@@ -223,7 +227,7 @@ const Matricula4 = () => {
   useEffect(() => {
     const instrumentosFiltrados = instrumentos.filter((instrumento) => (parseInt(instrumento.idadeMinima, 10) <= parseInt(matricula.idadeEscolar, 10)));
     setInstrumentosFilter(instrumentosFiltrados);
-    const turmasFiltradas = turmas.filter((serie) => (parseInt(serie.idadeMaxima, 10) <= parseInt(matricula.idadeEscolar, 10)));
+    const turmasFiltradas = turmas.filter((serie) => (parseInt(serie.idadeMaxima, 10) >= parseInt(matricula.idadeEscolar, 10) && parseInt(serie.idadeMinima, 10) <= parseInt(matricula.idadeEscolar, 10)));
     setTurmaFilter(turmasFiltradas);
   }, [matricula.idadeEscolar]);
 

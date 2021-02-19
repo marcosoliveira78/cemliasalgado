@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { Form, Jumbotron } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import FormSelect from '../../component/FormSelect';
 import { useMatricula } from '../../context/matricula';
 import procedencia from '../../repositories/procedencia.json';
@@ -15,6 +15,7 @@ import { ButtonContainer, Buttons, ContainerMultipleColumns, MessageError, Wrapp
 
 const Matricula5 = () => {
   // Variables
+  const history = useHistory();
   const projetos = [
     { id: 1, nome: 'CAIC' },
     { id: 2, nome: 'APAE' },
@@ -121,6 +122,9 @@ const Matricula5 = () => {
 
   // triggers
   useEffect(() => {
+    if (!matricula.nome) {
+      history.push('/matricula');
+    }
     setProcedenciaOptions(procedencia.map((p) => (
       { value: `9-${p.id}`, label: `${p.nome}` })));
     setEscolaridadeOptions(escolaridade.map((e) => (
