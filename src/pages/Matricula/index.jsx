@@ -42,25 +42,27 @@ const Matricula = () => {
 
   //  Validations
   const validate = (data) => {
-    const { nome, email, cpf, telefonePrincipal,
+    const { nome, email, cpf, telefonePrincipal, idadeEscolar,
       telefoneSecundario, dataNascimento, genero,
     } = data;
     const erro = {};
-    if (nome !== undefined) {
-      if (nome === '') {
-        const mensagem = 'Nome do Aluno deve ser preenchido.';
-        erro.nome = mensagem;
-      }
+    if (nome === undefined || nome === '') {
+      const mensagem = 'Nome do Aluno deve ser preenchido.';
+      erro.nome = mensagem;
+    }
+    if (email === undefined || email === '') {
+      const mensagem = 'E-mail deve ser preenchido.';
+      erro.email = mensagem;
     }
     if (email !== undefined) {
-      if (email === '') {
-        const mensagem = 'E-mail deve ser preenchido.';
-        erro.email = mensagem;
-      }
       if (email.length > 0 && !validateEmail(email)) {
         const mensagem = 'E-mail inválido.';
         erro.email = mensagem;
       }
+    }
+    if (cpf === undefined || cpf === '') {
+      const mensagem = 'CPF deve ser preenchido.';
+      erro.cpf = mensagem;
     }
     if (cpf !== undefined) {
       if (cpf.length > 0 && !validateCPF(cpf)) {
@@ -68,11 +70,11 @@ const Matricula = () => {
         erro.cpf = mensagem;
       }
     }
+    if (telefonePrincipal === undefined || telefonePrincipal === '') {
+      const mensagem = 'Telefone deve ser preenchido.';
+      erro.telefonePrincipal = mensagem;
+    }
     if (telefonePrincipal !== undefined) {
-      if (telefonePrincipal === '') {
-        const mensagem = 'Telefone deve ser preenchido.';
-        erro.telefonePrincipal = mensagem;
-      }
       if (telefonePrincipal.length > 0 && telefonePrincipal.length < 14) {
         const mensagem = 'Telefone inválido.';
         erro.telefonePrincipal = mensagem;
@@ -84,11 +86,11 @@ const Matricula = () => {
         erro.telefoneSecundario = mensagem;
       }
     }
+    if (dataNascimento === undefined || dataNascimento === '') {
+      const mensagem = 'Data de Nascimento deve ser preenchida.';
+      erro.dataNascimento = mensagem;
+    }
     if (dataNascimento !== undefined) {
-      if (dataNascimento === '') {
-        const mensagem = 'Data de Nascimento deve ser preenchida.';
-        erro.dataNascimento = mensagem;
-      }
       if (dataNascimento.length > 0 && !validateData(dataNascimento)) {
         const mensagem = 'Data inválida.';
         erro.dataNascimento = mensagem;
@@ -97,6 +99,10 @@ const Matricula = () => {
     if (genero === undefined) {
       const mensagem = 'Gênero deve ser selecionado.';
       erro.genero = mensagem;
+    }
+    if (idadeEscolar === undefined || idadeEscolar < 6) {
+      const mensagem = 'Idade não permitida.';
+      erro.idadeEscolar = mensagem;
     }
     return erro;
   };
@@ -188,7 +194,7 @@ const Matricula = () => {
 
   useEffect(() => {
     if (matricula.dataNascimento && matricula.dataNascimento.length < 10) {
-      console.log(dateMask(matricula.dataNascimento));
+      // console.log(dateMask(matricula.dataNascimento));
       setMatricula({ ...matricula, dataNascimento: dateMask(matricula.dataNascimento), idadeEscolar: '0' });
     }
     if (matricula.dataNascimento !== undefined && matricula.dataNascimento.length === 10) {
@@ -232,7 +238,7 @@ const Matricula = () => {
     }
   }, [matricula]);
 
-  console.log(matricula);
+  console.log('Página 1', matricula);
   return (
     <>
       <div className="root">
@@ -323,6 +329,7 @@ const Matricula = () => {
             onChange={handleChange}
             disabled
           />
+          {errors.idadeEscolar && <MessageError>{errors.idadeEscolar}</MessageError>}
             </div>
             </ContainerMultipleColumns>
             <fieldset style={{ marginTop: '5px' }}>

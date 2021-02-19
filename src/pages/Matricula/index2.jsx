@@ -44,31 +44,25 @@ const Matricula = () => {
       const mensagem = 'Nacionalidade deve ser selecionada.';
       erro.nacionalidade = mensagem;
     }
-    if (naturalidadeUF !== undefined) {
-      if (nacionalidade === 'Brasileira' && naturalidadeUF === '') {
+    if (nacionalidade === 'Brasileira') {
+      if (naturalidadeUF === undefined || naturalidadeUF === '') {
         const mensagem = 'Selecione um Estado.';
         erro.naturalidadeUF = mensagem;
       }
-    }
-    if (naturalidade !== undefined) {
-      if (nacionalidade === 'Brasileira' && naturalidade === '') {
+      if (naturalidade === undefined || naturalidade === '') {
         const mensagem = 'Selecione um Município.';
-        erro.naturalidadeUF = mensagem;
+        erro.naturalidade = mensagem;
       }
     }
-    if (nomeMae !== undefined) {
-      if (nomeMae === '') {
-        const mensagem = 'Nome da Mãe deve ser preenchido.';
-        erro.nomeMae = mensagem;
-      }
+    if (nomeMae === undefined || nomeMae === '') {
+      const mensagem = 'Nome da Mãe deve ser preenchido.';
+      erro.nomeMae = mensagem;
     }
-    if (responsavel !== undefined) {
-      if (responsavel === '') {
-        const mensagem = 'Responsável deve ser preenchido.';
-        erro.responsavel = mensagem;
-      }
+    if (responsavel === undefined || responsavel === '') {
+      const mensagem = 'Responsável deve ser preenchido.';
+      erro.responsavel = mensagem;
     }
-    if (grauParentesco === undefined) {
+    if (grauParentesco === undefined || grauParentesco === '') {
       const mensagem = 'Parentesco deve ser selecionado.';
       erro.grauParentesco = mensagem;
     }
@@ -215,7 +209,7 @@ const Matricula = () => {
     }
   }, [matricula]);
 
-  console.log(matricula);
+  console.log('Página 2', matricula);
   return (
     <>
       <div className="root">
@@ -267,9 +261,9 @@ const Matricula = () => {
               onChange={handleChangeSelect}
               options={estadosOptions}
             />
+            {errors.naturalidadeUF && <MessageError>{errors.naturalidadeUF}</MessageError>}
             </div>
             )
-            {errors.codigoNaturalidadeUF && <MessageError>{errors.codigoNaturalidadeUF}</MessageError>}
             { matricula.codigoNaturalidadeUF && (
               <div style={{ width: '100%', margin: '0 5px 0 0' }}>
             <FormSelect
@@ -279,6 +273,7 @@ const Matricula = () => {
               onChange={handleChangeSelect}
               options={cidadesOptions}
             />
+            {errors.naturalidade && <MessageError>{errors.naturalidade}</MessageError>}
               </div>
             )}
             (
@@ -311,7 +306,7 @@ const Matricula = () => {
               onChange={handleChange}
             />
             {errors.responsavel && <MessageError>{errors.responsavel}</MessageError>}
-            { matricula.responsavel && (
+            {/* { matricula.responsavel && ( */}
             <fieldset style={{ marginTop: '15px' }}>
               <ContainerAlignLeft className="TipoContainer">
                 <Label style={{ fontSize: '18px', margin: '0 0 0 12px' }}>
@@ -360,11 +355,9 @@ const Matricula = () => {
                   />
                 </Col>
               </ContainerAlignLeft>
-              {/* {errors.tipoSolicitacao && <MessageError>{errors.tipoSolicitacao}</MessageError>} */}
             </fieldset>
-            )}
-            {/* {errors.nomeItem && <MessageError>{errors.nomeItem}</MessageError>} */}
-            {/* {errors.tags && <MessageError>{errors.tags}</MessageError>} */}
+            {errors.grauParentesco && <MessageError>{errors.grauParentesco}</MessageError>}
+            {/* )} */}
 
             <ButtonContainer>
               <Link to="/matricula">

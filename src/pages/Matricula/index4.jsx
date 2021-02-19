@@ -15,9 +15,9 @@ const Matricula4 = () => {
   // variables
   const history = useHistory();
   const tiposMatricula = [
-    { value: 1, label: 'Matricula (Primeira matrícula, para quem nunca estudou no Conservatório)' },
-    { value: 2, label: 'Re-Matricula (Aluno que já estudou no Conservatório, mas ficou algum tempo afastado' },
-    { value: 3, label: 'Renovação (Aluno que estudou em 2020)' },
+    { id: 1, idadeExibicao: '6', nome: 'Matrícula (Primeira matrícula, para quem nunca estudou no Conservatório)' },
+    { id: 2, idadeExibicao: '8', nome: 'Re-Matrícula (Aluno que já estudou no Conservatório, mas ficou algum tempo afastado)' },
+    { id: 3, idadeExibicao: '7', nome: 'Renovação (Aluno que estudou no ano anterior subsequente)' },
   ];
 
   const turnos = [
@@ -28,6 +28,7 @@ const Matricula4 = () => {
 
   // hooks
   const [isValid, setIsValid] = useState(false);
+  const [isSerieValida, setIsSerieValida] = useState(true);
   const [errors, setErrors] = useState({});
   const [tipoMatriculaOptions, setTipoMatriculaOptions] = useState([]);
   const [serieCursadaOptions, setSerieCursadaOptions] = useState([]);
@@ -39,14 +40,22 @@ const Matricula4 = () => {
   const [isInstrumentoPretendido2Disabled, setIsInstrumentoPretendido2Disabled] = useState(false);
   const [turmaOptions, setTurmaOptions] = useState([]);
   const [turnoOptions, setTurnoOptions] = useState([]);
+  const [tipoMatriculaFilter, setTipoMatriculaFilter] = useState([]);
   const [instrumentosFilter, setInstrumentosFilter] = useState([]);
   const [turmaFilter, setTurmaFilter] = useState([]);
+  const [seriesFilter, setSeriesFilter] = useState([]);
 
   // context
   const { matricula, setMatricula } = useMatricula({});
 
-  // matricula.idadeEscolar = '43';
   //  Validations
+  const validateInstrumentoPretendido2 = () => {
+    if (matricula.codigoSeriePretendida === '') { setIsSerieValida(true);
+    } else {
+      setIsSerieValida(parseInt(matricula.codigoSeriePretendida.split('-')[1], 10) < 7);
+    }
+  };
+
   const validate = (data) => {
     const {
       tipoMatricula,
@@ -87,13 +96,14 @@ const Matricula4 = () => {
         const mensagem = 'Instrumento pretendido deve ser selecionado.';
         erro.instrumentoPretendido1 = mensagem;
       }
-      if (matricula.codigoSeriePretendida) {
-        if (parseInt(matricula.codigoSeriePretendida[2].split('-'), 10) < 7) {
-          if (instrumentoPretendido2 === '') {
-            const mensagem = 'Instrumento cursado 2 deve ser selecionado.';
-            erro.instrumentoPretendido2 = mensagem;
-          }
+      if (parseInt(matricula.codigoSeriePretendida.split('-')[1], 10) < 7 || instrumentoPretendido2 === '') {
+        if (instrumentoPretendido1 !== 'CANTO' && instrumentoPretendido2 === '') {
+          const mensagem = 'Instrumento cursado 2 deve ser selecionado.';
+          erro.instrumentoPretendido2 = mensagem;
         }
+      } else {
+        matricula.instrumentoPretendido2 = '';
+        matricula.codigoInstrumentoPretendido2 = '';
       }
       if (turma === '') {
         const mensagem = 'Turma deve ser selecionada.';
@@ -209,9 +219,6 @@ const Matricula4 = () => {
     if (!matricula.nome) {
       history.push('/matricula');
     }
-    setTipoMatriculaOptions(tiposMatricula.map((tipo) => (
-      { value: `0-${tipo.value}`, label: `${tipo.label}` }
-    )));
   }, []);
 
   useEffect(() => {
@@ -225,6 +232,8 @@ const Matricula4 = () => {
   }, [matricula]);
 
   useEffect(() => {
+    const matriculasFiltradas = tiposMatricula.filter((tipoMatricula) => (parseInt(matricula.idadeEscolar, 10) >= parseInt(tipoMatricula.idadeExibicao, 10)));
+    setTipoMatriculaFilter(matriculasFiltradas);
     const instrumentosFiltrados = instrumentos.filter((instrumento) => (parseInt(instrumento.idadeMinima, 10) <= parseInt(matricula.idadeEscolar, 10)));
     setInstrumentosFilter(instrumentosFiltrados);
     const turmasFiltradas = turmas.filter((serie) => (parseInt(serie.idadeMaxima, 10) >= parseInt(matricula.idadeEscolar, 10) && parseInt(serie.idadeMinima, 10) <= parseInt(matricula.idadeEscolar, 10)));
@@ -232,13 +241,43 @@ const Matricula4 = () => {
   }, [matricula.idadeEscolar]);
 
   useEffect(() => {
-    clearTipoMatricula();
-    setSerieCursadaOptions(series.map((serie) => (
+    setTipoMatriculaOptions(tipoMatriculaFilter.map((tipo) => (
+      { value: `0-${tipo.id}`, label: `${tipo.nome}` })));
+  }, [tipoMatriculaFilter]);
+
+  useEffect(() => {
+    setSerieCursadaOptions(seriesFilter.map((serie) => (
       { value: `1-${serie.id}`, label: `${serie.nome}` })));
-    setSeriePretendidaOptions(series.map((serie) => (
-      { value: `2-${serie.id}`, label: `${serie.nome}` })));
+    setSeriePretendidaOptions(seriesFilter.map((serie) => {
+      let disabled = 'no';
+      // if (matricula.tipoMatricula !== undefined) {
+      if (matricula.tipoMatricula.indexOf('Re') === -1
+      && (matricula.instrumentoPretendido1.toLocaleLowerCase() !== 'canto'
+      || matricula.instrumentoPretendido1 === '')
+      && serie.nome !== '1º INICIAL') { disabled = 'yes'; }
+      return (
+        { value: `2-${serie.id}`, label: `${serie.nome}`, disabled });
+      // }
+      // return (
+      //   { value: `2-${serie.id}`, label: `${serie.nome}`, disabled });
+    }));
+
+    // { value: `2-${serie.id}`, label: `${serie.nome}` })));
+  }, [seriesFilter]);
+
+  useEffect(() => {
+    clearTipoMatricula();
     setTurnoOptions(turnos.map((t) => (
       { value: `8-${t.id}`, label: `${t.nome}` })));
+    if (matricula.tipoMatricula !== undefined) {
+      let seriesFiltradas = '';
+      if (matricula.tipoMatricula.indexOf('Primeira') === -1) {
+        seriesFiltradas = series.filter((serie) => (parseInt(serie.idadeMinima, 10) <= parseInt(matricula.idadeEscolar, 10)));
+      } else {
+        seriesFiltradas = series.filter((serie) => (parseInt(serie.idadeMinima, 10) <= parseInt(matricula.idadeEscolar, 10) && serie.primeiraMatricula === true));
+      }
+      setSeriesFilter(seriesFiltradas);
+    }
   }, [matricula.tipoMatricula]);
 
   useEffect(() => {
@@ -264,20 +303,21 @@ const Matricula4 = () => {
   }, [instrumentosFilter]);
 
   useEffect(() => {
+    validateInstrumentoPretendido2();
     if (matricula.codigoSeriePretendida !== undefined) {
-      const serie = parseInt(matricula.codigoSeriePretendida.replace('-', ''), 10);
-      if (matricula.codigoInstrumentoPretendido1 === '5-202') {
+      const serie = parseInt(matricula.codigoSeriePretendida.split('-')[1], 10);
+      if (matricula.instrumentoPretendido1 === 'CANTO') {
         switch (serie) {
-          case 21:
-          case 22:
-          case 23:
-          case 24:
+          case 1:
+          case 2:
+          case 3:
+          case 4:
             changeSelectInstrumento('2-4', '4º INTERMEDIÁRIO', '6-210', 'VIOLÃO');
             break;
-          case 25:
+          case 5:
             changeSelectInstrumento('2-5', '5º INTERMEDIÁRIO', '6-209', 'TECLADO');
             break;
-          case 26:
+          case 6:
             changeSelectInstrumento('2-6', '6º INTERMEDIÁRIO', '6-207', 'PIANO');
             break;
           default:
@@ -286,8 +326,7 @@ const Matricula4 = () => {
             break;
         }
       } else
-      if (matricula.codigoInstrumentoPretendido1 !== '5-202'
-      ) {
+      if (matricula.instrumentoPretendido1 !== 'CANTO') {
         setIsInstrumentoPretendido2Disabled(false);
         setInstrumentoPretendido2Options(instrumentosFilter.map((instrumento) => {
           let disabled = 'no';
@@ -295,12 +334,15 @@ const Matricula4 = () => {
           return (
             { value: `6-${instrumento.id}`, label: `${instrumento.nome}`, disabled });
         }));
+        //   if(seriePretendidaOptions.length === 2){
+      //   matricula.seriePretendida = '';
+      //   matricula.codigoSeriePretendida = '';
+      // }
       }
     }
   }, [matricula.codigoInstrumentoPretendido1, matricula.seriePretendida]);
 
-  // console.log('Matricula:', matricula);
-  // console.log('ERROS: ', errors);
+  console.log('Página 4', matricula);
   return (
     <>
     <div className="root">
@@ -382,8 +424,7 @@ const Matricula4 = () => {
                   />
                   {errors.instrumentoPretendido1 && <MessageError>{errors.instrumentoPretendido1}</MessageError>}
                 </div>
-                { matricula.codigoSeriePretendida
-                && parseInt(matricula.codigoSeriePretendida.replace('-', ''), 10) < 27 && (
+                { isSerieValida && (
                 <div style={{ width: '95%', margin: '0 0 0 5px' }}>
                 <FormSelect
                   id="6"

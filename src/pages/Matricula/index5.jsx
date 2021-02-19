@@ -153,8 +153,7 @@ const Matricula5 = () => {
     validateEscolaridadeStatus();
   }, [matricula.escolaridadeStatus]);
 
-  console.log('Matricula:', matricula);
-  console.log('ERROS: ', errors);
+  console.log('Página 5', matricula);
   return (
       <>
       <div className="root">

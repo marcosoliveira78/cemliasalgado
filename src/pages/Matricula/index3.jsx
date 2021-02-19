@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-console */
@@ -47,29 +48,23 @@ const Matricula = () => {
       uf,
     } = data;
     const erro = {};
-    if (cep !== undefined) {
-      if (cep === '') {
-        const mensagem = 'CEP deve ser preenchido.';
-        erro.cep = mensagem;
-      }
+    // if (cep !== undefined) {
+    //   if (cep === '') {
+    //     const mensagem = 'CEP deve ser preenchido.';
+    //     erro.cep = mensagem;
+    //   }
+    // }
+    if (logradouro === undefined || logradouro === '') {
+      const mensagem = 'Logradouro deve ser preenchido.';
+      erro.logradouro = mensagem;
     }
-    if (logradouro !== undefined) {
-      if (logradouro === '') {
-        const mensagem = 'Logradouro deve ser preenchido.';
-        erro.logradouro = mensagem;
-      }
+    if (numero === undefined || numero === '') {
+      const mensagem = 'Nº deve ser preenchido.';
+      erro.numero = mensagem;
     }
-    if (numero !== undefined) {
-      if (numero === '') {
-        const mensagem = 'Nº deve ser preenchido.';
-        erro.numero = mensagem;
-      }
-    }
-    if (bairro !== undefined) {
-      if (bairro === '') {
-        const mensagem = 'Bairro deve ser preenchido.';
-        erro.bairro = mensagem;
-      }
+    if (bairro === undefined || bairro === '') {
+      const mensagem = 'Bairro deve ser preenchido.';
+      erro.bairro = mensagem;
     }
     if (municipio === undefined) {
       const mensagem = 'Município deve ser selecionado.';
@@ -248,8 +243,7 @@ const Matricula = () => {
     }
   }, [matricula]);
 
-  console.log(matricula);
-  console.log('UF: ', matricula.uf);
+  console.log('Página 3', matricula);
   return (
     <>
       <div className="root">
@@ -322,17 +316,7 @@ const Matricula = () => {
             </div>
             </ContainerMultipleColumns>
             <ContainerMultipleColumns>
-            <div style={{ width: '100%', margin: '0 5px 0 0' }}>
-            <FormSelect
-              label="Município:"
-              name="municipio"
-              value={matricula.codigoMunicipio}
-              onChange={handleChangeSelect}
-              options={cidadesOptions}
-            />
-            {errors.municipio && <MessageError>{errors.municipio}</MessageError>}
-            </div>
-            <div style={{ width: '50%', margin: '0 0 0 5px' }}>
+            <div style={{ width: '50%', margin: '0 5px 0 0' }}>
             <FormSelect
               label="Estado:"
               name="uf"
@@ -341,6 +325,16 @@ const Matricula = () => {
               options={estadosOptions}
             />
             {errors.uf && <MessageError>{errors.uf}</MessageError>}
+            </div>
+            <div style={{ width: '100%', margin: '0 0 0 5px' }}>
+            <FormSelect
+              label="Município:"
+              name="municipio"
+              value={matricula.codigoMunicipio}
+              onChange={handleChangeSelect}
+              options={cidadesOptions}
+            />
+            {errors.municipio && <MessageError>{errors.municipio}</MessageError>}
             </div>
             <div style={{ width: '100%', margin: '0 0 0 5px' }}>
             <FormSelect
