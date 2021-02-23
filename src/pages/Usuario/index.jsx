@@ -141,7 +141,7 @@ function ListaUsuario() {
         <SearchWrapper>
 
           <Link to="/usuario/formulario">
-            <Buttons variant="warning" className="btn btn-info">Cadastrar Novo Usuário</Buttons>
+            <Buttons variant="warning" className="btn btn-warning">Cadastrar Novo Usuário</Buttons>
           </Link>
 
           <OverlayTrigger placement="auto" overlay={<TooltipBs id={uniqueId()}>Filtrar por Nome</TooltipBs>}>

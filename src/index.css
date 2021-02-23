@@ -64,6 +64,10 @@ body {
   margin: 2vh;
 }
 
+.btn-warning {
+  color: #f5f5f5 !important;
+}
+
 .borderLabel{
   border:2px solid;
   margin-top: 5px;

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Jumbotron } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import uniqueId from 'lodash';
+import { FormControlLabel, Switch } from '@material-ui/core';
 import estados from '../../repositories/estados.json';
 import municipios from '../../repositories/municipios.json';
 import distritos from '../../repositories/distritos.json';
@@ -18,6 +19,7 @@ import {
 import ShowMessage from '../../services/toast';
 import { useMatricula } from '../../context/matricula';
 import cepMask from '../../component/mask/cep';
+import FormSwitch from '../../component/FormSwitch';
 
 const Matricula = () => {
   // variables
@@ -86,6 +88,20 @@ const Matricula = () => {
   };
 
   // handles
+  // const handleChangeRadio = (event) => {
+  //   const label = event.target.labels[0].textContent;
+  //   switch (event.target.name) {
+  //     case 'nacionalidade':
+  //       setMatricula({ ...matricula, nacionalidade: label });
+  //       break;
+  //     case 'grauParentesco':
+  //       setMatricula({ ...matricula, grauParentesco: label });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setMatricula({ ...matricula, [name]: value });
@@ -147,7 +163,7 @@ const Matricula = () => {
   // Triggers
   useEffect(() => {
     if (!matricula.nome) {
-      history.push('/matricula');
+      // history.push('/matricula');
     }
 
     setEstadosOptions(estados.map((estado) => (
@@ -180,20 +196,17 @@ const Matricula = () => {
 
   useEffect(() => {
     if (matricula.cep) {
+      setMatricula({ ...matricula, municipio: '', codigoMunicipio: '' });
+    }
+  }, [matricula.logradouro]);
+
+  useEffect(() => {
+    if (matricula.cep) {
       const mascaraCEP = cepMask(matricula.cep);
       setMatricula({ ...matricula, cep: mascaraCEP });
       if (matricula.cep.length === 10) {
         const cepUnmask = matricula.cep.replace(/\D/g, '');
-        fetch(`${urlCEP}/ws/${cepUnmask}/json`,
-          {
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            mode: 'cors',
-            cache: 'default',
-          })
+        fetch(`${urlCEP}/ws/${cepUnmask}/json`)
           .then(async (resp) => {
             const resultado = await resp.json();
             if (resultado.erro) {
@@ -206,14 +219,39 @@ const Matricula = () => {
                 bairro: resultado.bairro,
                 municipio: resultado.localidade,
                 codigoMunicipio: parseInt(resultado.ibge, 10),
-                codigoUf: codigoUF[0].id,
                 uf: resultado.uf,
+                codigoUf: codigoUF[0].id,
               });
             }
           });
       }
     }
   }, [matricula.cep]);
+
+  useEffect(() => {
+    if (matricula.cep === undefined) {
+      setMatricula({ ...matricula, cep: '' });
+    }
+    if (matricula.municipio) {
+      // if (matricula.cep === '') {
+      if (matricula.logradouro.length > 13) {
+        fetch(`${urlCEP}/ws/${matricula.uf}/${matricula.municipio}/${matricula.logradouro}/json`)
+          .then(async (resp) => {
+            const resultado = await resp.json();
+            if (resultado.length === 0) {
+              setErrors({ ...errors, cep: 'CEP não localizado' });
+            } else {
+              setErrors({ ...errors, cep: '' });
+              console.log('CEP ENCONTRADO:', resultado[0].cep);
+              setMatricula({ ...matricula,
+                cep: resultado[0].cep,
+              });
+            }
+          });
+      }
+      // }
+    }
+  }, [matricula.municipio]);
 
   useEffect(() => {
     if (matricula.codigoMunicipio && matricula.codigoMunicipio > 0) {
@@ -266,6 +304,28 @@ const Matricula = () => {
                 />
               {errors.cep && <MessageError>{errors.cep}</MessageError>}
             </div>
+            {/* <div style={{ width: '100%', margin: '10px 5px 0 0', color: '#5d5d5d' }}>
+            <Form.Check
+                    inline
+                    label="Cep"
+                    type="radio"
+                    checked={matricula.nacionalidade === 'Brasileira'}
+                    name="nacionalidade"
+                    id="inline-nacionalidade-1"
+                    value="1"
+                    onChange={handleChangeRadio}
+                  />
+                  <Form.Check
+                    inline
+                    label="Endereço"
+                    type="radio"
+                    checked={matricula.nacionalidade === 'Estrangeira'}
+                    name="nacionalidade"
+                    id="inline-nacionalidade-2"
+                    value="2"
+                    onChange={handleChangeRadio}
+                  />
+            </div> */}
             </ContainerMultipleColumns>
             <ContainerMultipleColumns>
             <div style={{ width: '100%', margin: '0 5px 0 0' }}>
