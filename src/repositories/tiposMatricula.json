@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "idadeExibicao": "6",
+        "nome": "Matrícula (Primeira matrícula, para quem nunca estudou no Conservatório)"
+    },
+    {
+        "id": 2,
+        "idadeExibicao": "8",
+        "nome": "Re-Matrícula (Aluno que já estudou no Conservatório, mas ficou algum tempo afastado)"
+    },
+    {
+        "id": 3,
+        "idadeExibicao": "7",
+        "nome": "Renovação (Aluno que estudou no ano anterior subsequente)"
+    }
+]

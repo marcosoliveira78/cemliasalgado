@@ -19,7 +19,6 @@ import {
 import ShowMessage from '../../services/toast';
 import { useMatricula } from '../../context/matricula';
 import cepMask from '../../component/mask/cep';
-import FormSwitch from '../../component/FormSwitch';
 
 const Matricula = () => {
   // variables
@@ -163,7 +162,7 @@ const Matricula = () => {
   // Triggers
   useEffect(() => {
     if (!matricula.nome) {
-      // history.push('/matricula');
+      history.push('/matricula');
     }
 
     setEstadosOptions(estados.map((estado) => (

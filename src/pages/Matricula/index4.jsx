@@ -9,22 +9,13 @@ import { useMatricula } from '../../context/matricula';
 import series from '../../repositories/series.json';
 import instrumentos from '../../repositories/instrumentos.json';
 import turmas from '../../repositories/turma.json';
+import tiposMatricula from '../../repositories/tiposMatricula.json';
+import turnos from '../../repositories/turnos.json';
 import { ButtonContainer, Buttons, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
 
 const Matricula4 = () => {
   // variables
   const history = useHistory();
-  const tiposMatricula = [
-    { id: 1, idadeExibicao: '6', nome: 'Matrícula (Primeira matrícula, para quem nunca estudou no Conservatório)' },
-    { id: 2, idadeExibicao: '8', nome: 'Re-Matrícula (Aluno que já estudou no Conservatório, mas ficou algum tempo afastado)' },
-    { id: 3, idadeExibicao: '7', nome: 'Renovação (Aluno que estudou no ano anterior subsequente)' },
-  ];
-
-  const turnos = [
-    { id: 1, nome: 'Manhã' },
-    { id: 2, nome: 'Tarde' },
-    { id: 3, nome: 'Noite' },
-  ];
 
   // hooks
   const [isValid, setIsValid] = useState(false);
@@ -50,9 +41,11 @@ const Matricula4 = () => {
 
   //  Validations
   const validateInstrumentoPretendido2 = () => {
-    if (matricula.codigoSeriePretendida === '') { setIsSerieValida(true);
-    } else {
-      setIsSerieValida(parseInt(matricula.codigoSeriePretendida.split('-')[1], 10) < 7);
+    if (matricula.codigoSeriePretendida) {
+      if (matricula.codigoSeriePretendida === '') { setIsSerieValida(true);
+      } else {
+        setIsSerieValida(parseInt(matricula.codigoSeriePretendida.split('-')[1], 10) < 7);
+      }
     }
   };
 
@@ -128,57 +121,6 @@ const Matricula4 = () => {
     }
   };
 
-  // handles
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setMatricula({ ...matricula, [name]: value });
-  };
-
-  const handleChangeSelect = (event) => {
-    const { value, label } = event;
-    let tipo;
-    if (value.split('-')[0].toString() === '0') tipo = 'tipoMatricula';
-    if (value.split('-')[0].toString() === '1') tipo = 'ultimaSerieCursada';
-    if (value.split('-')[0].toString() === '2') tipo = 'seriePretendida';
-    if (value.split('-')[0].toString() === '3') tipo = 'instrumentoCursado1';
-    if (value.split('-')[0].toString() === '4') tipo = 'instrumentoCursado2';
-    if (value.split('-')[0].toString() === '5') tipo = 'instrumentoPretendido1';
-    if (value.split('-')[0].toString() === '6') tipo = 'instrumentoPretendido2';
-    if (value.split('-')[0].toString() === '7') tipo = 'turma';
-    if (value.split('-')[0].toString() === '8') tipo = 'turno';
-    switch (tipo) {
-      case 'tipoMatricula':
-        setMatricula({ ...matricula, tipoMatricula: label, codigoTipoMatricula: value });
-        break;
-      case 'ultimaSerieCursada':
-        setMatricula({ ...matricula, ultimaSerieCursada: label, codigoUltimaSerieCursada: value });
-        break;
-      case 'instrumentoCursado1':
-        setMatricula({ ...matricula, instrumentoCursado1: label, codigoInstrumentoCursado1: value });
-        break;
-      case 'instrumentoCursado2':
-        setMatricula({ ...matricula, instrumentoCursado2: label, codigoInstrumentoCursado2: value });
-        break;
-      case 'seriePretendida':
-        setMatricula({ ...matricula, seriePretendida: label, codigoSeriePretendida: value });
-        break;
-      case 'instrumentoPretendido1':
-        setMatricula({ ...matricula, instrumentoPretendido1: label, codigoInstrumentoPretendido1: value });
-        break;
-      case 'instrumentoPretendido2':
-        setMatricula({ ...matricula, instrumentoPretendido2: label, codigoInstrumentoPretendido2: value });
-        break;
-      case 'turma':
-        setMatricula({ ...matricula, turma: label, codigoTurma: value });
-        break;
-      case 'turno':
-        setMatricula({ ...matricula, turno: label, codigoTurno: value });
-        break;
-      default:
-        break;
-    }
-  };
-
   // Functions
   const clearTipoMatricula = () => {
     matricula.ultimaSerieCursada = '';
@@ -212,6 +154,58 @@ const Matricula4 = () => {
       return (
         { value: `6-${instrumento.id}`, label: `${instrumento.nome}`, disabled });
     }));
+  };
+
+  // handles
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setMatricula({ ...matricula, [name]: value });
+  };
+
+  const handleChangeSelect = (event) => {
+    const { value, label } = event;
+    let tipo;
+    if (value.split('-')[0].toString() === '0') tipo = 'tipoMatricula';
+    if (value.split('-')[0].toString() === '1') tipo = 'ultimaSerieCursada';
+    if (value.split('-')[0].toString() === '2') tipo = 'seriePretendida';
+    if (value.split('-')[0].toString() === '3') tipo = 'instrumentoCursado1';
+    if (value.split('-')[0].toString() === '4') tipo = 'instrumentoCursado2';
+    if (value.split('-')[0].toString() === '5') tipo = 'instrumentoPretendido1';
+    if (value.split('-')[0].toString() === '6') tipo = 'instrumentoPretendido2';
+    if (value.split('-')[0].toString() === '7') tipo = 'turma';
+    if (value.split('-')[0].toString() === '8') tipo = 'turno';
+    switch (tipo) {
+      case 'tipoMatricula':
+        clearTipoMatricula();
+        setMatricula({ ...matricula, tipoMatricula: label, codigoTipoMatricula: value });
+        break;
+      case 'ultimaSerieCursada':
+        setMatricula({ ...matricula, ultimaSerieCursada: label, codigoUltimaSerieCursada: value });
+        break;
+      case 'instrumentoCursado1':
+        setMatricula({ ...matricula, instrumentoCursado1: label, codigoInstrumentoCursado1: value });
+        break;
+      case 'instrumentoCursado2':
+        setMatricula({ ...matricula, instrumentoCursado2: label, codigoInstrumentoCursado2: value });
+        break;
+      case 'seriePretendida':
+        setMatricula({ ...matricula, seriePretendida: label, codigoSeriePretendida: value });
+        break;
+      case 'instrumentoPretendido1':
+        setMatricula({ ...matricula, instrumentoPretendido1: label, codigoInstrumentoPretendido1: value });
+        break;
+      case 'instrumentoPretendido2':
+        setMatricula({ ...matricula, instrumentoPretendido2: label, codigoInstrumentoPretendido2: value });
+        break;
+      case 'turma':
+        setMatricula({ ...matricula, turma: label, codigoTurma: value });
+        break;
+      case 'turno':
+        setMatricula({ ...matricula, turno: label, codigoTurno: value });
+        break;
+      default:
+        break;
+    }
   };
 
   // triggers
@@ -250,23 +244,16 @@ const Matricula4 = () => {
       { value: `1-${serie.id}`, label: `${serie.nome}` })));
     setSeriePretendidaOptions(seriesFilter.map((serie) => {
       let disabled = 'no';
-      // if (matricula.tipoMatricula !== undefined) {
       if (matricula.tipoMatricula.indexOf('Re') === -1
       && (matricula.instrumentoPretendido1.toLocaleLowerCase() !== 'canto'
       || matricula.instrumentoPretendido1 === '')
       && serie.nome !== '1º INICIAL') { disabled = 'yes'; }
       return (
         { value: `2-${serie.id}`, label: `${serie.nome}`, disabled });
-      // }
-      // return (
-      //   { value: `2-${serie.id}`, label: `${serie.nome}`, disabled });
     }));
-
-    // { value: `2-${serie.id}`, label: `${serie.nome}` })));
   }, [seriesFilter]);
 
   useEffect(() => {
-    clearTipoMatricula();
     setTurnoOptions(turnos.map((t) => (
       { value: `8-${t.id}`, label: `${t.nome}` })));
     if (matricula.tipoMatricula !== undefined) {
@@ -334,10 +321,6 @@ const Matricula4 = () => {
           return (
             { value: `6-${instrumento.id}`, label: `${instrumento.nome}`, disabled });
         }));
-        //   if(seriePretendidaOptions.length === 2){
-      //   matricula.seriePretendida = '';
-      //   matricula.codigoSeriePretendida = '';
-      // }
       }
     }
   }, [matricula.codigoInstrumentoPretendido1, matricula.seriePretendida]);

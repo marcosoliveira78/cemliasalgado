@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "nome": "Manhã"
+    },
+    {
+        "id": 2,
+        "nome": "Tarde"
+    },
+    {
+        "id": 3,
+        "nome": "Noite"
+    }
+]

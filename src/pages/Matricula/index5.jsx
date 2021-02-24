@@ -6,22 +6,17 @@ import { Form, Jumbotron } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import FormSelect from '../../component/FormSelect';
 import { useMatricula } from '../../context/matricula';
-import procedencia from '../../repositories/procedencia.json';
+import procedencias from '../../repositories/procedencia.json';
 import escolaridade from '../../repositories/escolaridade.json';
 import escolaridadeStatus from '../../repositories/escolaridadeSituacao.json';
 import anoEnsinoRegular from '../../repositories/ensinoRegular.json';
 import educacaoEspecial from '../../repositories/educacaoEspecial.json';
+import projetos from '../../repositories/projetos.json';
 import { ButtonContainer, Buttons, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
 
 const Matricula5 = () => {
   // Variables
   const history = useHistory();
-  const projetos = [
-    { id: 1, nome: 'CAIC' },
-    { id: 2, nome: 'APAE' },
-    { id: 3, nome: 'Nenhum' },
-    { id: 4, nome: 'Outros...' },
-  ];
 
   // hooks
   const [isValid, setIsValid] = useState(false);
@@ -40,20 +35,12 @@ const Matricula5 = () => {
   //  Validations
   const validate = (data) => {
     const {
-      tipoMatricula,
-      ultimaSerieCursada,
-      instrumentoCursado1,
-      instrumentoCursado2,
-      seriePretendida,
-      instrumentoPretendido1,
-      instrumentoPretendido2,
-      turma,
-      turno,
+      procedencia,
     } = data;
     const erro = {};
-    if (tipoMatricula === undefined) {
-      const mensagem = 'Tipo de Matrícula deve ser selecionado.';
-      erro.tipoMatricula = mensagem;
+    if (procedencia === undefined) {
+      const mensagem = 'Procedência do Aluno deve ser selecionada.';
+      erro.procedencia = mensagem;
     }
 
     return erro;
@@ -123,9 +110,9 @@ const Matricula5 = () => {
   // triggers
   useEffect(() => {
     if (!matricula.nome) {
-      history.push('/matricula');
+      // history.push('/matricula');
     }
-    setProcedenciaOptions(procedencia.map((p) => (
+    setProcedenciaOptions(procedencias.map((p) => (
       { value: `9-${p.id}`, label: `${p.nome}` })));
     setEscolaridadeOptions(escolaridade.map((e) => (
       { value: `10-${e.id}`, label: `${e.nome}` })));

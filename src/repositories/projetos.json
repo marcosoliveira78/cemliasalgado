@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "nome": "CAIC"
+    },
+    {
+        "id": 2,
+        "nome": "APAE"
+    },
+    {
+        "id": 3,
+        "nome": "Nenhum"
+    },
+    {
+        "id": 4,
+        "nome": "Outros..."
+    }
+]

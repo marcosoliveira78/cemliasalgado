@@ -94,6 +94,9 @@ const Login = () => {
       ShowMessage('info', 'Sua sessão expirou. Realize o login novamente.', 10000);
       localStorage.LOGOUT = '';
     }
+    if (localStorage.USER_LOGGED !== undefined && localStorage.USER_LOGGED.length > 0) {
+      history.push('/ListagemGeral');
+    }
   }, []);
   return (
     <>
