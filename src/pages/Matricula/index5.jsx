@@ -2,21 +2,33 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import { Form, Jumbotron } from 'react-bootstrap';
+import { Form, Jumbotron, Modal } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import { uniqueId } from 'lodash';
 import FormSelect from '../../component/FormSelect';
 import { useMatricula } from '../../context/matricula';
-import procedencias from '../../repositories/procedencia.json';
-import escolaridade from '../../repositories/escolaridade.json';
-import escolaridadeStatus from '../../repositories/escolaridadeSituacao.json';
-import anoEnsinoRegular from '../../repositories/ensinoRegular.json';
-import educacaoEspecial from '../../repositories/educacaoEspecial.json';
-import projetos from '../../repositories/projetos.json';
+import listaProcedencias from '../../repositories/procedencia.json';
+import listaEscolaridades from '../../repositories/escolaridade.json';
+import listaEscolaridadesStatus from '../../repositories/escolaridadeSituacao.json';
+import listaAnosEnsinoRegular from '../../repositories/ensinoRegular.json';
+import listaEducacaoEspecial from '../../repositories/educacaoEspecial.json';
+import listaProjetos from '../../repositories/projetos.json';
 import { ButtonContainer, Buttons, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
+import ShowMessage from '../../services/toast';
+import convertDate from '../../component/Convert/Date';
+import { Label } from '../../component/FormSelect/styles';
+import Confirmacao from './confirmacao';
+// import Modal from '../../component/Modal';
 
 const Matricula5 = () => {
   // Variables
+  const urlBd = window.location.hostname.includes('localhost')
+    ? 'http://localhost:8080'
+    : 'https://cemliasalgado.herokuapp.com';
+  const pasta = 'matriculas';
   const history = useHistory();
+  let nextId;
+  const now = new Date();
 
   // hooks
   const [isValid, setIsValid] = useState(false);
@@ -28,7 +40,9 @@ const Matricula5 = () => {
   const [anoEnsinoRegularOptions, setAnoEnsinoRegularOptions] = useState([]);
   const [projetosOptions, setProjetosOptions] = useState([]);
   const [educacaoEspecialOptions, setEducacaoEspecialOptions] = useState([]);
+  const [show, setShow] = useState(false);
 
+  const dataAtual = convertDate(now);
   // context
   const { matricula, setMatricula } = useMatricula({});
 
@@ -36,18 +50,48 @@ const Matricula5 = () => {
   const validate = (data) => {
     const {
       procedencia,
+      escolaridade,
+      escolaridadeStatus,
+      anoEnsinoRegular,
+      projeto,
+      educacaoEspecial,
     } = data;
     const erro = {};
     if (procedencia === undefined) {
       const mensagem = 'Procedência do Aluno deve ser selecionada.';
       erro.procedencia = mensagem;
     }
+    if (escolaridade === undefined) {
+      const mensagem = 'Escolaridade do Aluno deve ser selecionada.';
+      erro.escolaridade = mensagem;
+    }
+    if (escolaridadeStatus === undefined) {
+      const mensagem = 'Situação escolar do Aluno deve ser selecionada.';
+      erro.escolaridadeStatus = mensagem;
+    }
+    if (escolaridadeStatus !== undefined && parseInt(matricula.codigoEscolaridadeStatus.split('-')[1], 10) > 1) {
+      if (anoEnsinoRegular === undefined || anoEnsinoRegular === '') {
+        const mensagem = 'Ano que cursará deve ser selecionado.';
+        erro.anoEnsinoRegular = mensagem;
+      }
+    } else if (escolaridadeStatus !== undefined && parseInt(matricula.codigoEscolaridadeStatus.split('-')[1], 10) === 1) {
+      matricula.codigoAnoEnsinoRegular = '';
+      matricula.anoEnsinoRegular = '';
+    }
+    if (projeto === undefined) {
+      const mensagem = 'Selecione uma opção';
+      erro.projeto = mensagem;
+    }
+    if (educacaoEspecial === undefined) {
+      const mensagem = 'Selecione uma opção.';
+      erro.educacaoEspecial = mensagem;
+    }
 
     return erro;
   };
 
   const validateIsValid = () => {
-    if (matricula.tipoMatricula !== undefined) {
+    if (matricula.procedencia !== undefined) {
       if (Object.keys(errors).length === 0) {
         setIsValid(true);
       } else {
@@ -73,6 +117,9 @@ const Matricula5 = () => {
     const { name, value } = event.target;
     setMatricula({ ...matricula, [name]: value });
   };
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const handleChangeSelect = (event) => {
     const { value, label } = event;
@@ -107,23 +154,125 @@ const Matricula5 = () => {
     }
   };
 
+  const handleSubmit = async (form) => {
+    form.preventDefault();
+    const json = JSON.stringify({
+      dataHora: dataAtual,
+      id: nextId,
+      status: 'A',
+      nome: matricula.nome,
+      email: matricula.email,
+      cpf: matricula.cpf,
+      telefonePrincipal: matricula.telefonePrincipal,
+      telefoneSecundario: matricula.telefoneSecundario,
+      dataNascimento: matricula.dataNascimento,
+      idadeEscolar: matricula.idadeEscolar,
+      genero: matricula.genero,
+      nacionalidade: matricula.nacionalidade,
+      naturalidade: matricula.naturalidade,
+      codigoNaturalidade: matricula.codigoNaturalidade,
+      naturalidadeUF: matricula.naturalidadeUF,
+      codigoNaturalidadeUF: matricula.codigoNaturalidadeUF,
+      nomeMae: matricula.nomeMae,
+      nomePai: matricula.nomePai,
+      responsavel: matricula.responsavel,
+      grauParentesco: matricula.grauParentesco,
+      cep: matricula.cep,
+      logradouro: matricula.logradouro,
+      numero: matricula.numero,
+      complemento: matricula.complemento,
+      bairro: matricula.bairro,
+      uf: matricula.uf,
+      codigoUf: matricula.codigoUf,
+      municipio: matricula.municipio,
+      codigoMunicipio: matricula.codigoMunicipio,
+      distrito: matricula.distrito,
+      codigoDistrito: matricula.codigoDistrito,
+      tipoMatricula: matricula.tipoMatricula,
+      codigoTipoMatricula: matricula.codigoTipoMatricula,
+      ultimaSerieCursada: matricula.ultimaSerieCursada,
+      codigoUltimaSerieCursada: matricula.codigoUltimaSerieCursada,
+      instrumentoCursado1: matricula.instrumentoCursado1,
+      codigoInstrumentoCursado1: matricula.codigoInstrumentoCursado1,
+      instrumentoCursado2: matricula.instrumentoCursado2,
+      codigoInstrumentoCursado2: matricula.codigoInstrumentoCursado2,
+      seriePretendida: matricula.seriePretendida,
+      codigoSeriePretendida: matricula.codigoSeriePretendida,
+      instrumentoPretendido1: matricula.instrumentoPretendido1,
+      codigoInstrumentoPretendido1: matricula.codigoInstrumentoPretendido1,
+      instrumentoPretendido2: matricula.instrumentoPretendido2,
+      codigoInstrumentoPretendido2: matricula.codigoInstrumentoPretendido2,
+      turma: matricula.turma,
+      codigoTurma: matricula.codigoTurma,
+      turno: matricula.turno,
+      codigoTurno: matricula.codigoTurno,
+      procedencia: matricula.procedencia,
+      codigoProcedencia: matricula.codigoProcedencia,
+      escolaridade: matricula.escolaridade,
+      codigoEscolaridade: matricula.codigoEscolaridade,
+      escolaridadeStatus: matricula.escolaridadeStatus,
+      codigoEscolaridadeStatus: matricula.codigoEscolaridadeStatus,
+      anoEnsinoRegular: matricula.anoEnsinoRegular,
+      codigoAnoEnsinoRegular: matricula.codigoAnoEnsinoRegular,
+      projeto: matricula.projeto,
+      codigoProjeto: matricula.codigoProjeto,
+      educacaoEspecial: matricula.educacaoEspecial,
+      codigoEducacaoEspecial: matricula.codigoEducacaoEspecial,
+    });
+    console.log('MATRICULA FINAL:', JSON.parse(json));
+
+    // fetch(`${urlBd}/${pasta}`,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'application/json',
+    //     },
+    //     mode: 'cors',
+    //     cache: 'default',
+    //     body: json,
+    //   })
+    //   .then(async (resp) => {
+    //     if (resp.ok) {
+    //       ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
+    //       setMatricula('');
+    //       history.push('/listagemGeral');
+    //     }
+    //   });
+  };
+
   // triggers
   useEffect(() => {
     if (!matricula.nome) {
       // history.push('/matricula');
     }
-    setProcedenciaOptions(procedencias.map((p) => (
+    setProcedenciaOptions(listaProcedencias.map((p) => (
       { value: `9-${p.id}`, label: `${p.nome}` })));
-    setEscolaridadeOptions(escolaridade.map((e) => (
+    setEscolaridadeOptions(listaEscolaridades.map((e) => (
       { value: `10-${e.id}`, label: `${e.nome}` })));
-    setEscolaridadeStatusOptions(escolaridadeStatus.map((e) => (
+    setEscolaridadeStatusOptions(listaEscolaridadesStatus.map((e) => (
       { value: `11-${e.id}`, label: `${e.nome}` })));
-    setAnoEnsinoRegularOptions(anoEnsinoRegular.map((a) => (
+    setAnoEnsinoRegularOptions(listaAnosEnsinoRegular.map((a) => (
       { value: `12-${a.id}`, label: `${a.nome}` })));
-    setProjetosOptions(projetos.map((p) => (
+    setProjetosOptions(listaProjetos.map((p) => (
       { value: `13-${p.id}`, label: `${p.nome}` })));
-    setEducacaoEspecialOptions(educacaoEspecial.map((ee) => (
+    setEducacaoEspecialOptions(listaEducacaoEspecial.map((ee) => (
       { value: `14-${ee.id}`, label: `${ee.nome}` })));
+    fetch(`${urlBd}/${pasta}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+        cache: 'default',
+      })
+      .then(async (resp) => {
+        const resultado = await resp.json();
+        const lastKey = Object.keys(resultado).reverse()[0];
+        nextId = resultado[lastKey].id + 1;
+      });
   }, []);
 
   useEffect(() => {
@@ -131,16 +280,25 @@ const Matricula5 = () => {
   }, [errors]);
 
   useEffect(() => {
-    if (matricula.tipoMatricula) {
-      setErrors(validate(matricula));
-    }
+    // if (matricula.procedencia) {
+    setErrors(validate(matricula));
+    // }
   }, [matricula]);
 
   useEffect(() => {
     validateEscolaridadeStatus();
   }, [matricula.escolaridadeStatus]);
 
-  console.log('Página 5', matricula);
+  // console.log('Página 5', matricula);
+  // console.log('ERROS:', errors);
+
+  const confirmacaoMatricula = () => (
+  <>
+  <Label> Nome: </Label>
+  <Label>{matricula.nome}</Label>
+  </>
+  );
+
   return (
       <>
       <div className="root">
@@ -151,7 +309,7 @@ const Matricula5 = () => {
           </Jumbotron>
           <div className="divider" />
           <Wrapper>
-          <Form>
+          <Form onSubmit={handleSubmit}>
           <FormSelect
             id="1"
             label="Procedência do Aluno:"
@@ -227,15 +385,36 @@ const Matricula5 = () => {
               <Link to="/matricula4">
                 <Buttons variant="danger"> Voltar </Buttons>
               </Link>
-              <Link to="/matricula6">
               <Buttons
+                onClick={handleShow}
                 // type="submit"
                 variant="success"
                 disabled={!isValid}>
                 Finalizar
               </Buttons>
-              </Link>
     </ButtonContainer>
+
+    {/* MODAL DE Confirmação */}
+    <Modal
+      dialogClassName="modal-95w"
+      size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      backdrop="static"
+      centered
+      show={show}
+      onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title className="modalTitle">Confirmação de Dados de Matrícula</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+              <Confirmacao />
+              </Modal.Body>
+              <Modal.Footer>
+                <Buttons variant="danger" onClick={handleClose}>Fechar</Buttons>
+                <Buttons variant="success" value="imagem" onClick={handleClose}> Confirmar </Buttons>
+              </Modal.Footer>
+    </Modal>
+
           </Form>
           </Wrapper>
       </div>

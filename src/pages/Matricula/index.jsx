@@ -29,8 +29,8 @@ const Matricula = () => {
     : 'https://cemliasalgado.herokuapp.com';
   const pasta = 'matriculas';
   const history = useHistory();
-  let nextId;
-  const now = new Date();
+  // let nextId;
+  // const now = new Date();
 
   // hooks
   const { matricula, setMatricula } = useMatricula({ });
@@ -38,7 +38,7 @@ const Matricula = () => {
   const [isValid, setIsValid] = useState(false);
   // Functions
 
-  const dataAtual = convertDate(now);
+  // const dataAtual = convertDate(now);
 
   //  Validations
   const validate = (data) => {
@@ -108,10 +108,12 @@ const Matricula = () => {
   };
 
   const validateIsValid = () => {
-    if (Object.keys(errors).length === 0) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
+    if (matricula.nome !== undefined) {
+      if (Object.keys(errors).length === 0) {
+        setIsValid(true);
+      } else {
+        setIsValid(false);
+      }
     }
   };
 
@@ -132,57 +134,9 @@ const Matricula = () => {
     }
   };
 
-  // const handleSubmit = async (form) => {
-  //   form.preventDefault();
-  //   fetch(`${urlBd}/${pasta}`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       mode: 'cors',
-  //       cache: 'default',
-  //       body: JSON.stringify({
-  //         id: nextId,
-  //         nome: matricula.nome,
-  //         cpf: matricula.cpf,
-  //         dataNascimento: matricula.dataNascimento,
-  //         email: matricula.email,
-  //         genero: matricula.genero,
-  //         nacionalidade: matricula.nacionalidade,
-  //         naturalidade: matricula.naturalidade,
-  //         naturalidadeUF: matricula.naturalidadeUF,
-  //         status: 'A',
-  //       }),
-  //     })
-  //     .then(async (resp) => {
-  //       if (resp.ok) {
-  //         ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
-  //         history.push('/listagemGeral');
-  //       }
-  //     });
-  // };
-
   // Triggers
   useEffect(() => {
-    fetch(`${urlBd}/${pasta}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-        cache: 'default',
-      })
-      .then(async (resp) => {
-        const resultado = await resp.json();
-        const lastKey = Object.keys(resultado).reverse()[0];
-        nextId = resultado[lastKey].id + 1;
-      });
 
-    setMatricula({ ...matricula, dataHora: dataAtual });
   }, []);
 
   useEffect(() => {
@@ -233,9 +187,9 @@ const Matricula = () => {
   }, [errors]);
 
   useEffect(() => {
-    if (matricula.dataHora) {
-      setErrors(validate(matricula));
-    }
+    // if (matricula.nome) {
+    setErrors(validate(matricula));
+    // }
   }, [matricula]);
 
   console.log('Página 1', matricula);

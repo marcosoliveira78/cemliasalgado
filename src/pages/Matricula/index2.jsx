@@ -17,11 +17,6 @@ import { useMatricula } from '../../context/matricula';
 
 const Matricula = () => {
   // variables
-  // const urlBd = window.location.hostname.includes('localhost')
-  //   ? 'http://localhost:8080'
-  //   : 'https://cemliasalgado.herokuapp.com';
-  // const pasta = 'matriculas';
-  // const now = new Date();
   const history = useHistory();
 
   // hooks
@@ -114,38 +109,6 @@ const Matricula = () => {
     }
   };
 
-  // const handleSubmit = async (form) => {
-  //   form.preventDefault();
-  //   fetch(`${urlBd}/${pasta}`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       mode: 'cors',
-  //       cache: 'default',
-  //       body: JSON.stringify({
-  //         // id: nextId,
-  //         nome: matricula.nome,
-  //         cpf: matricula.cpf,
-  //         dataNascimento: matricula.dataNascimento,
-  //         email: matricula.email,
-  //         genero: matricula.genero,
-  //         nacionalidade: matricula.nacionalidade,
-  //         naturalidade: matricula.naturalidade,
-  //         naturalidadeUF: matricula.naturalidadeUF,
-  //         status: 'A',
-  //       }),
-  //     })
-  //     .then(async (resp) => {
-  //       if (resp.ok) {
-  //         ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
-  //         history.push('/listagemGeral');
-  //       }
-  //     });
-  // };
-
   // Triggers
   useEffect(() => {
     if (!matricula.nome) {
@@ -218,8 +181,7 @@ const Matricula = () => {
           <span>Origem do Aluno</span>
         </Jumbotron>
         <div className="divider" />
-
-        <Wrapper>
+        <Wrapper style={{ marginBottom: '40px' }}>
           <Form>
             <fieldset style={{ marginTop: '15px' }}>
               <ContainerAlignLeft className="TipoContainer">

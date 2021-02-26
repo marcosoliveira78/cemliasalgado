@@ -1,19 +1,19 @@
 [
     {
         "id": "1",
-        "nome": "MUNICIPAL"
+        "nome": "Municipal"
     },
     {
         "id": "2",
-        "nome": "ESTADUAL"
+        "nome": "Estadual"
     },
     {
         "id": "3",
-        "nome": "PARTICULAR"
+        "nome": "Particular"
     },
     {
         "id": "4",
-        "nome": "FEDERAL"
+        "nome": "Federal"
     },
     {
         "id": "5",

@@ -25,8 +25,8 @@ const Matricula = () => {
   const urlBd = window.location.hostname.includes('localhost')
     ? 'http://localhost:8080'
     : 'https://cemliasalgado.herokuapp.com';
-  const urlCEP = 'https://viacep.com.br/';
   const pasta = 'matriculas';
+  const urlCEP = 'https://viacep.com.br/';
   const history = useHistory();
 
   // hooks
@@ -169,7 +169,6 @@ const Matricula = () => {
       {
         value: estado.id,
         label: `${estado.sigla}`,
-        // label: `${estado.nome} (${estado.sigla})`,
       }
     )));
   }, []);
@@ -188,7 +187,6 @@ const Matricula = () => {
       {
         value: cidade.id,
         label: `${cidade.nome}`,
-        // label: `${cidade.nome} - ${cidade.microrregiao.mesorregiao.UF.sigla}`,
       }
     )));
   }, [cidades]);
@@ -271,11 +269,13 @@ const Matricula = () => {
   }, [matricula.responsavel]);
 
   useEffect(() => {
-    validateIsValid();
+    if (matricula.logradouro !== undefined) {
+      validateIsValid();
+    }
   }, [errors]);
 
   useEffect(() => {
-    if (matricula.dataHora) {
+    if (matricula.nome) {
       setErrors(validate(matricula));
     }
   }, [matricula]);
@@ -303,28 +303,6 @@ const Matricula = () => {
                 />
               {errors.cep && <MessageError>{errors.cep}</MessageError>}
             </div>
-            {/* <div style={{ width: '100%', margin: '10px 5px 0 0', color: '#5d5d5d' }}>
-            <Form.Check
-                    inline
-                    label="Cep"
-                    type="radio"
-                    checked={matricula.nacionalidade === 'Brasileira'}
-                    name="nacionalidade"
-                    id="inline-nacionalidade-1"
-                    value="1"
-                    onChange={handleChangeRadio}
-                  />
-                  <Form.Check
-                    inline
-                    label="Endereço"
-                    type="radio"
-                    checked={matricula.nacionalidade === 'Estrangeira'}
-                    name="nacionalidade"
-                    id="inline-nacionalidade-2"
-                    value="2"
-                    onChange={handleChangeRadio}
-                  />
-            </div> */}
             </ContainerMultipleColumns>
             <ContainerMultipleColumns>
             <div style={{ width: '100%', margin: '0 5px 0 0' }}>

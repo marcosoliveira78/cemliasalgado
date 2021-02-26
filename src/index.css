@@ -145,6 +145,15 @@ justify-content: flex-start;
   margin-bottom: 30px;
 }
 
+.fontBolder {
+  font-weight: bolder;
+}
+
+.fontTransparente {
+  color: transparent !important;
+}
+
+
 .icone {
   width: 40px;
   font-size: 120%;
@@ -205,6 +214,11 @@ justify-content: flex-start;
   padding-top: 10vh;
   width: 90%;
   max-width: none!important;
+}
+
+.modal-95w{
+  /* width: 100% !important; */
+  max-width: 95%!important;
 }
 
 .paper {

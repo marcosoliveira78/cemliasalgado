@@ -334,7 +334,7 @@ const Matricula4 = () => {
           <span>Opções de Matrícula</span>
         </Jumbotron>
         <div className="divider" />
-        <Wrapper>
+        <Wrapper style={{ marginBottom: '40px' }}>
         <Form>
         <FormSelect
               label="Tipo de Matrícula:"
