@@ -236,10 +236,10 @@ const Matricula = () => {
           .then(async (resp) => {
             const resultado = await resp.json();
             if (resultado.length === 0) {
-              setErrors({ ...errors, cep: 'CEP não localizado' });
+              // setErrors({ ...errors, cep: 'CEP não localizado' });
             } else {
               setErrors({ ...errors, cep: '' });
-              console.log('CEP ENCONTRADO:', resultado[0].cep);
+              // console.log('CEP ENCONTRADO:', resultado[0].cep);
               setMatricula({ ...matricula,
                 cep: resultado[0].cep,
               });

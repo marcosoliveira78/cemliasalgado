@@ -141,6 +141,7 @@ export const Container = styled.div`
   display: inline-flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   width: 100%;
   @media (max-width: 600px) {
     justify-content: flex-start;
@@ -154,7 +155,7 @@ export const ContainerAlignLeft = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: 10px 0;
+  padding: 5px 0;
 `;
 
 export const ContainerMultipleColumns = styled.div`

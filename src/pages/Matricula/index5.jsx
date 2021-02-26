@@ -244,7 +244,7 @@ const Matricula5 = () => {
   // triggers
   useEffect(() => {
     if (!matricula.nome) {
-      // history.push('/matricula');
+      history.push('/matricula');
     }
     setProcedenciaOptions(listaProcedencias.map((p) => (
       { value: `9-${p.id}`, label: `${p.nome}` })));
@@ -403,8 +403,9 @@ const Matricula5 = () => {
       centered
       show={show}
       onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title className="modalTitle">Confirmação de Dados de Matrícula</Modal.Title>
+              <Modal.Header className="modalHeader" closeButton>
+                <Modal.Title className="modalTitle">Confirmação dos dados de Matrícula</Modal.Title>
+                {/* <Modal.Label> Teste </Modal.Label> */}
               </Modal.Header>
               <Modal.Body>
               <Confirmacao />
