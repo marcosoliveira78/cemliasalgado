@@ -143,6 +143,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-bottom: 10px;
   @media (max-width: 600px) {
     justify-content: flex-start;
     padding-left: 10px;

@@ -1,6 +1,7 @@
 import { Button } from 'bootstrap';
 import React, { useState } from 'react';
 import { Buttons } from '../../pages/styles';
+import
 
 const Modal = ({ children }) => {
   const [show, setShow] = useState(false);

@@ -42,11 +42,11 @@ const confirmacaoMatricula = () => {
         <Label className="fontBolder"> Idade Escolar: </Label>
         <Label>{ `${matricula.idadeEscolar}`}</Label>
         </ContainerAlignLeft>
+    </ContainerMultipleColumns>
         <ContainerAlignLeft>
         <Label className="fontBolder"> Gênero: </Label>
         <Label>{ `${matricula.genero}`}</Label>
         </ContainerAlignLeft>
-    </ContainerMultipleColumns>
     <ContainerMultipleColumns>
         <ContainerAlignLeft>
         <Label className="fontBolder"> Nacionalidade: </Label>
@@ -78,19 +78,19 @@ const confirmacaoMatricula = () => {
     <ContainerMultipleColumns>
         <ContainerAlignLeft style={{ paddingBottom: 0 }}>
         <Label className="fontBolder"> Endereço: </Label>
-        <Label>{`${matricula.logradouro}, `}</Label>
-        <Label>{`${matricula.numero} -`}</Label>
-        { matricula.complemento && (<Label>{ `${matricula.complemento} - `}</Label>)}
-        <Label>{`${matricula.bairro}`}</Label>
-        { matricula.distrito && (<Label>{ `- ${matricula.distrito} `}</Label>)}
+        <Label>{`${matricula.logradouro},`}</Label>
+        <Label style={{ padding: 0 }}>{`${matricula.numero}`}</Label>
+        { matricula.complemento && (<Label>{`- ${matricula.complemento}`}</Label>)}
+        <Label>{`- ${matricula.bairro}`}</Label>
+        { matricula.distrito && (<Label style={{ padding: 0 }}>{`- ${matricula.distrito}`}</Label>)}
         </ContainerAlignLeft>
     </ContainerMultipleColumns>
     <ContainerMultipleColumns>
         <ContainerAlignLeft style={{ paddingTop: 0 }}>
         <Label className="fontBolder fontTransparente"> Endereço: </Label>
-        <Label>{ `${matricula.municipio}/` }</Label>
-        <Label>{ `${matricula.uf}` }</Label>
-        { matricula.distrito && (<Label>{ `- ${matricula.cep}` }</Label>)}
+        <Label style={{ paddingRight: 0 }}>{ `${matricula.municipio}/` }</Label>
+        <Label style={{ padding: 0 }}>{ `${matricula.uf}` }</Label>
+        { matricula.cep && (<Label>{ `- ${matricula.cep}` }</Label>)}
         </ContainerAlignLeft>
     </ContainerMultipleColumns>
     <div className="divider" />

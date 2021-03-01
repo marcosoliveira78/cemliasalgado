@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import { Form, Jumbotron, Modal } from 'react-bootstrap';
+import { Form, Jumbotron, Modal, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { uniqueId } from 'lodash';
 import FormSelect from '../../component/FormSelect';
@@ -13,7 +13,7 @@ import listaEscolaridadesStatus from '../../repositories/escolaridadeSituacao.js
 import listaAnosEnsinoRegular from '../../repositories/ensinoRegular.json';
 import listaEducacaoEspecial from '../../repositories/educacaoEspecial.json';
 import listaProjetos from '../../repositories/projetos.json';
-import { ButtonContainer, Buttons, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
+import { ButtonContainer, Buttons, Container, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
 import ShowMessage from '../../services/toast';
 import convertDate from '../../component/Convert/Date';
 import { Label } from '../../component/FormSelect/styles';
@@ -101,14 +101,17 @@ const Matricula5 = () => {
   };
 
   const validateEscolaridadeStatus = () => {
-    switch (matricula.escolaridadeStatus) {
-      case 'Incompleto':
-      case 'Cursando':
-        setIsEscolaridadeIncompleta(true);
-        break;
-      default:
-        setIsEscolaridadeIncompleta(false);
-        break;
+    if (matricula.escolaridade !== 'Ensino Superior') {
+      switch (matricula.escolaridadeStatus) {
+        case 'Cursando':
+          setIsEscolaridadeIncompleta(true);
+          break;
+        default:
+          setIsEscolaridadeIncompleta(false);
+          break;
+      }
+    } else {
+      setIsEscolaridadeIncompleta(false);
     }
   };
 
@@ -154,11 +157,30 @@ const Matricula5 = () => {
     }
   };
 
+  const handleChangePage = (val) => {
+    switch (val) {
+      case 1:
+        history.push('/matricula');
+        break;
+      case 2:
+        history.push('/matricula2');
+        break;
+      case 3:
+        history.push('/matricula3');
+        break;
+      case 4:
+        history.push('/matricula4');
+        break;
+      default:
+        break;
+    }
+  };
+
   const handleSubmit = async (form) => {
     form.preventDefault();
     const json = JSON.stringify({
+      id: matricula.id,
       dataHora: dataAtual,
-      id: nextId,
       status: 'A',
       nome: matricula.nome,
       email: matricula.email,
@@ -219,32 +241,40 @@ const Matricula5 = () => {
       educacaoEspecial: matricula.educacaoEspecial,
       codigoEducacaoEspecial: matricula.codigoEducacaoEspecial,
     });
-    console.log('MATRICULA FINAL:', JSON.parse(json));
-
-    // fetch(`${urlBd}/${pasta}`,
-    //   {
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json',
-    //     },
-    //     mode: 'cors',
-    //     cache: 'default',
-    //     body: json,
-    //   })
-    //   .then(async (resp) => {
-    //     if (resp.ok) {
-    //       ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
-    //       setMatricula('');
-    //       history.push('/listagemGeral');
-    //     }
-    //   });
+    // console.log('MATRICULA FINAL:', JSON.parse(json));
+    fetch(`${urlBd}/${pasta}`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+        cache: 'default',
+        body: json,
+      })
+      .then(async (resp) => {
+        if (resp.ok) {
+          ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
+          setMatricula('');
+          history.push('/listagemGeral');
+        }
+      });
   };
 
   // triggers
   useEffect(() => {
     if (!matricula.nome) {
       history.push('/matricula');
+    }
+    if (!matricula.nacionalidade) {
+      history.push('/matricula2');
+    }
+    if (!matricula.logradouro) {
+      history.push('/matricula3');
+    }
+    if (!matricula.tipoMatricula) {
+      history.push('/matricula4');
     }
     setProcedenciaOptions(listaProcedencias.map((p) => (
       { value: `9-${p.id}`, label: `${p.nome}` })));
@@ -272,6 +302,7 @@ const Matricula5 = () => {
         const resultado = await resp.json();
         const lastKey = Object.keys(resultado).reverse()[0];
         nextId = resultado[lastKey].id + 1;
+        setMatricula({ ...matricula, id: nextId });
       });
   }, []);
 
@@ -287,17 +318,10 @@ const Matricula5 = () => {
 
   useEffect(() => {
     validateEscolaridadeStatus();
-  }, [matricula.escolaridadeStatus]);
+  }, [matricula.escolaridadeStatus, matricula.escolaridade]);
 
   // console.log('Página 5', matricula);
   // console.log('ERROS:', errors);
-
-  const confirmacaoMatricula = () => (
-  <>
-  <Label> Nome: </Label>
-  <Label>{matricula.nome}</Label>
-  </>
-  );
 
   return (
       <>
@@ -308,6 +332,15 @@ const Matricula5 = () => {
             {/* <span>Formulário de preenchimento de Matrícula.</span> */}
           </Jumbotron>
           <div className="divider" />
+          <Container>
+            <ToggleButtonGroup type="radio" name="options" defaultValue={1} onChange={handleChangePage}>
+              <ToggleButton className="btn-warning" value={1}>Identificação</ToggleButton>
+              <ToggleButton className="btn-warning" value={2}>Origem</ToggleButton>
+              <ToggleButton className="btn-warning" value={3}>Endereço</ToggleButton>
+              <ToggleButton className="btn-warning" value={4}>Matrícula</ToggleButton>
+              <ToggleButton className="btn-warning" value={5}>Procedência</ToggleButton>
+            </ToggleButtonGroup>
+          </Container>
           <Wrapper>
           <Form onSubmit={handleSubmit}>
           <FormSelect
@@ -412,7 +445,7 @@ const Matricula5 = () => {
               </Modal.Body>
               <Modal.Footer>
                 <Buttons variant="danger" onClick={handleClose}>Fechar</Buttons>
-                <Buttons variant="success" value="imagem" onClick={handleClose}> Confirmar </Buttons>
+                <Buttons variant="success" value="imagem" onClick={handleSubmit}> Confirmar </Buttons>
               </Modal.Footer>
     </Modal>
 

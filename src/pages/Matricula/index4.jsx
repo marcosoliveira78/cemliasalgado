@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import { Form, Jumbotron } from 'react-bootstrap';
+import { Form, Jumbotron, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import FormSelect from '../../component/FormSelect';
 import { useMatricula } from '../../context/matricula';
@@ -11,7 +11,7 @@ import instrumentos from '../../repositories/instrumentos.json';
 import turmas from '../../repositories/turma.json';
 import tiposMatricula from '../../repositories/tiposMatricula.json';
 import turnos from '../../repositories/turnos.json';
-import { ButtonContainer, Buttons, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
+import { ButtonContainer, Buttons, Container, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
 
 const Matricula4 = () => {
   // variables
@@ -20,6 +20,7 @@ const Matricula4 = () => {
   // hooks
   const [isValid, setIsValid] = useState(false);
   const [isSerieValida, setIsSerieValida] = useState(true);
+  const [isSerieCursadaValida, setIsSerieCursadaValida] = useState(true);
   const [errors, setErrors] = useState({});
   const [tipoMatriculaOptions, setTipoMatriculaOptions] = useState([]);
   const [serieCursadaOptions, setSerieCursadaOptions] = useState([]);
@@ -28,6 +29,7 @@ const Matricula4 = () => {
   const [instrumentoCursado2Options, setInstrumentoCursado2Options] = useState([]);
   const [instrumentoPretendido1Options, setInstrumentoPretendido1Options] = useState([]);
   const [instrumentoPretendido2Options, setInstrumentoPretendido2Options] = useState([]);
+  const [isInstrumentoCursado2Disabled, setIsInstrumentoCursado2Disabled] = useState(false);
   const [isInstrumentoPretendido2Disabled, setIsInstrumentoPretendido2Disabled] = useState(false);
   const [turmaOptions, setTurmaOptions] = useState([]);
   const [turnoOptions, setTurnoOptions] = useState([]);
@@ -45,6 +47,18 @@ const Matricula4 = () => {
       if (matricula.codigoSeriePretendida === '') { setIsSerieValida(true);
       } else {
         setIsSerieValida(parseInt(matricula.codigoSeriePretendida.split('-')[1], 10) < 7);
+      }
+    }
+  };
+
+  const validateInstrumentoCursado2 = () => {
+    if (matricula.codigoUltimaSerieCursada) {
+      if (matricula.codigoUltimaSerieCursada === '') { setIsSerieCursadaValida(true);
+      } else {
+        setIsSerieCursadaValida(parseInt(matricula.codigoUltimaSerieCursada.split('-')[1], 10) < 7);
+        if (parseInt(matricula.codigoUltimaSerieCursada.split('-')[1], 10) >= 7) {
+          setMatricula({ ...matricula, instrumentoCursado2: '', codigoInstrumentoCursado2: '' });
+        }
       }
     }
   };
@@ -142,18 +156,57 @@ const Matricula4 = () => {
     setIsValid(false);
   };
 
-  const changeSelectInstrumento = (codigoSerie, serie, codigoInstrumento, instrumentoPretendido) => {
-    matricula.codigoSeriePretendida = codigoSerie;
-    matricula.seriePretendida = serie;
-    matricula.codigoInstrumentoPretendido2 = codigoInstrumento;
-    matricula.instrumentoPretendido2 = instrumentoPretendido;
-    setIsInstrumentoPretendido2Disabled(true);
-    setInstrumentoPretendido2Options(instrumentos.map((instrumento) => {
-      let disabled = 'yes';
-      if (instrumento.nome.toLocaleLowerCase() === instrumentoPretendido.toLocaleLowerCase()) disabled = 'no';
+  const populaInstrumentosCursados = () => {
+    setInstrumentoCursado1Options(instrumentosFilter.map((instrumento) => (
+      { value: `3-${instrumento.id}`, label: `${instrumento.nome}` }
+    )));
+    setInstrumentoCursado2Options(instrumentosFilter.map((instrumento) => {
+      let disabled = 'no';
+      if (instrumento.nome.toLocaleLowerCase() === 'canto') disabled = 'yes';
+      if (matricula.instrumentoCursado1 !== undefined) {
+        if (instrumento.nome.toLocaleLowerCase() === matricula.instrumentoCursado1.toLocaleLowerCase()) disabled = 'yes';
+      }
+      return (
+        { value: `4-${instrumento.id}`, label: `${instrumento.nome}`, disabled });
+    }));
+  };
+  const populaInstrumentosPretendidos = () => {
+    setInstrumentoPretendido1Options(instrumentosFilter.map((instrumento) => (
+      { value: `5-${instrumento.id}`, label: `${instrumento.nome}` }
+    )));
+    setInstrumentoPretendido2Options(instrumentosFilter.map((instrumento) => {
+      let disabled = 'no';
+      if (instrumento.nome.toLocaleLowerCase() === 'canto') disabled = 'yes';
+      if (matricula.instrumentoPretendido1 !== undefined) {
+        if (instrumento.nome.toLocaleLowerCase() === matricula.instrumentoPretendido1.toLocaleLowerCase()) {
+          disabled = 'yes';
+        }
+      }
       return (
         { value: `6-${instrumento.id}`, label: `${instrumento.nome}`, disabled });
     }));
+  };
+
+  const changeSelectInstrumentoCursado = (codigoSerie, serie, codigoInstrumento, instrumento) => {
+    setMatricula({ ...matricula,
+      codigoUltimaSerieCursada: codigoSerie,
+      ultimaSerieCursada: serie,
+      codigoInstrumentoCursado2: codigoInstrumento,
+      instrumentoCursado2: instrumento,
+    });
+    setIsInstrumentoCursado2Disabled(true);
+    populaInstrumentosCursados();
+  };
+
+  const changeSelectInstrumentoPretendido = (codigoSerie, serie, codigoInstrumento, instrumento) => {
+    setMatricula({ ...matricula,
+      codigoSeriePretendida: codigoSerie,
+      seriePretendida: serie,
+      codigoInstrumentoPretendido2: codigoInstrumento,
+      instrumentoPretendido2: instrumento,
+    });
+    setIsInstrumentoPretendido2Disabled(true);
+    populaInstrumentosPretendidos();
   };
 
   // handles
@@ -183,7 +236,7 @@ const Matricula4 = () => {
         setMatricula({ ...matricula, ultimaSerieCursada: label, codigoUltimaSerieCursada: value });
         break;
       case 'instrumentoCursado1':
-        setMatricula({ ...matricula, instrumentoCursado1: label, codigoInstrumentoCursado1: value });
+        setMatricula({ ...matricula, instrumentoCursado1: label, codigoInstrumentoCursado1: value, instrumentoCursado2: '', codigoInstrumentoCursado2: '' });
         break;
       case 'instrumentoCursado2':
         setMatricula({ ...matricula, instrumentoCursado2: label, codigoInstrumentoCursado2: value });
@@ -192,7 +245,7 @@ const Matricula4 = () => {
         setMatricula({ ...matricula, seriePretendida: label, codigoSeriePretendida: value });
         break;
       case 'instrumentoPretendido1':
-        setMatricula({ ...matricula, instrumentoPretendido1: label, codigoInstrumentoPretendido1: value });
+        setMatricula({ ...matricula, instrumentoPretendido1: label, codigoInstrumentoPretendido1: value, codigoInstrumentoPretendido2: '', instrumentoPretendido2: '' });
         break;
       case 'instrumentoPretendido2':
         setMatricula({ ...matricula, instrumentoPretendido2: label, codigoInstrumentoPretendido2: value });
@@ -208,10 +261,35 @@ const Matricula4 = () => {
     }
   };
 
+  const handleChangePage = (val) => {
+    switch (val) {
+      case 1:
+        history.push('/matricula');
+        break;
+      case 2:
+        history.push('/matricula2');
+        break;
+      case 3:
+        history.push('/matricula3');
+        break;
+      case 5:
+        history.push('/matricula5');
+        break;
+      default:
+        break;
+    }
+  };
+
   // triggers
   useEffect(() => {
     if (!matricula.nome) {
       history.push('/matricula');
+    }
+    if (!matricula.nacionalidade) {
+      history.push('/matricula2');
+    }
+    if (!matricula.logradouro) {
+      history.push('/matricula3');
     }
   }, []);
 
@@ -273,24 +351,13 @@ const Matricula4 = () => {
   }, [turmaFilter]);
 
   useEffect(() => {
-    setInstrumentoCursado1Options(instrumentosFilter.map((instrumento) => (
-      { value: `3-${instrumento.id}`, label: `${instrumento.nome}` }
-    )));
-    setInstrumentoCursado2Options(instrumentosFilter.map((instrumento) => (
-      { value: `4-${instrumento.id}`, label: `${instrumento.nome}` })));
-    setInstrumentoPretendido1Options(instrumentosFilter.map((instrumento) => (
-      { value: `5-${instrumento.id}`, label: `${instrumento.nome}` }
-    )));
-    setInstrumentoPretendido2Options(instrumentosFilter.map((instrumento) => {
-      let disabled = 'no';
-      if (instrumento.nome.toLocaleLowerCase() === 'canto') disabled = 'yes';
-      return (
-        { value: `6-${instrumento.id}`, label: `${instrumento.nome}`, disabled });
-    }));
+    populaInstrumentosCursados();
+    populaInstrumentosPretendidos();
   }, [instrumentosFilter]);
 
   useEffect(() => {
     validateInstrumentoPretendido2();
+    populaInstrumentosPretendidos();
     if (matricula.codigoSeriePretendida !== undefined) {
       const serie = parseInt(matricula.codigoSeriePretendida.split('-')[1], 10);
       if (matricula.instrumentoPretendido1 === 'CANTO') {
@@ -299,13 +366,13 @@ const Matricula4 = () => {
           case 2:
           case 3:
           case 4:
-            changeSelectInstrumento('2-4', '4º INTERMEDIÁRIO', '6-210', 'VIOLÃO');
+            changeSelectInstrumentoPretendido('2-4', '4º INTERMEDIÁRIO', '6-210', 'VIOLÃO');
             break;
           case 5:
-            changeSelectInstrumento('2-5', '5º INTERMEDIÁRIO', '6-209', 'TECLADO');
+            changeSelectInstrumentoPretendido('2-5', '5º INTERMEDIÁRIO', '6-209', 'TECLADO');
             break;
           case 6:
-            changeSelectInstrumento('2-6', '6º INTERMEDIÁRIO', '6-207', 'PIANO');
+            changeSelectInstrumentoPretendido('2-6', '6º INTERMEDIÁRIO', '6-207', 'PIANO');
             break;
           default:
             matricula.codigoInstrumentoPretendido2 = '';
@@ -315,17 +382,44 @@ const Matricula4 = () => {
       } else
       if (matricula.instrumentoPretendido1 !== 'CANTO') {
         setIsInstrumentoPretendido2Disabled(false);
-        setInstrumentoPretendido2Options(instrumentosFilter.map((instrumento) => {
-          let disabled = 'no';
-          if (instrumento.nome.toLocaleLowerCase() === 'canto') disabled = 'yes';
-          return (
-            { value: `6-${instrumento.id}`, label: `${instrumento.nome}`, disabled });
-        }));
+        populaInstrumentosPretendidos();
       }
     }
   }, [matricula.codigoInstrumentoPretendido1, matricula.seriePretendida]);
 
-  console.log('Página 4', matricula);
+  useEffect(() => {
+    validateInstrumentoCursado2();
+    populaInstrumentosPretendidos();
+    if (matricula.codigoUltimaSerieCursada !== undefined) {
+      const serie = parseInt(matricula.codigoUltimaSerieCursada.split('-')[1], 10);
+      if (matricula.instrumentoCursado1 === 'CANTO') {
+        switch (serie) {
+          case 1:
+          case 2:
+          case 3:
+          case 4:
+            changeSelectInstrumentoCursado('1-4', '4º INTERMEDIÁRIO', '4-210', 'VIOLÃO');
+            break;
+          case 5:
+            changeSelectInstrumentoCursado('1-5', '5º INTERMEDIÁRIO', '4-209', 'TECLADO');
+            break;
+          case 6:
+            changeSelectInstrumentoCursado('1-6', '6º INTERMEDIÁRIO', '4-207', 'PIANO');
+            break;
+          default:
+            matricula.codigoInstrumentoCursado2 = '';
+            matricula.instrumentoCursado2 = '';
+            break;
+        }
+      } else
+      if (matricula.instrumentoCursado1 !== 'CANTO') {
+        setIsInstrumentoCursado2Disabled(false);
+        populaInstrumentosCursados();
+      }
+    }
+  }, [matricula.ultimaSerieCursada, matricula.codigoInstrumentoCursado1]);
+
+  // console.log('Página 4', matricula);
   return (
     <>
     <div className="root">
@@ -334,6 +428,15 @@ const Matricula4 = () => {
           <span>Opções de Matrícula</span>
         </Jumbotron>
         <div className="divider" />
+        <Container>
+        <ToggleButtonGroup type="radio" name="options" defaultValue={4} onChange={handleChangePage}>
+          <ToggleButton className="btn-warning" value={1}>Identificação</ToggleButton>
+          <ToggleButton className="btn-warning" value={2}>Origem</ToggleButton>
+          <ToggleButton className="btn-warning" value={3}>Endereço</ToggleButton>
+          <ToggleButton className="btn-warning" value={4}>Matrícula</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={5}>Procedência</ToggleButton>
+        </ToggleButtonGroup>
+        </Container>
         <Wrapper style={{ marginBottom: '40px' }}>
         <Form>
         <FormSelect
@@ -370,6 +473,7 @@ const Matricula4 = () => {
                   />
                   {errors.instrumentoCursado1 && <MessageError>{errors.instrumentoCursado1}</MessageError>}
                 </div>
+                { isSerieCursadaValida && (
                 <div style={{ width: '95%', margin: '0 0 0 5px' }}>
                 <FormSelect
                   id="3"
@@ -378,9 +482,11 @@ const Matricula4 = () => {
                   value={matricula.codigoInstrumentoCursado2}
                   onChange={handleChangeSelect}
                   options={instrumentoCursado2Options}
+                  isDisabled={isInstrumentoCursado2Disabled}
                   />
                   {errors.instrumentoCursado2 && <MessageError>{errors.instrumentoCursado2}</MessageError>}
                 </div>
+                )}
               </ContainerMultipleColumns>
             )}
             { matricula.codigoTipoMatricula && (

@@ -3,7 +3,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import { Form, Jumbotron } from 'react-bootstrap';
+import { Form, Jumbotron, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import uniqueId from 'lodash';
 import { FormControlLabel, Switch } from '@material-ui/core';
@@ -14,7 +14,7 @@ import FormSelect from '../../component/FormSelect';
 import FormField from '../../component/FormField';
 import {
   ButtonContainer, Wrapper, Buttons,
-  ContainerMultipleColumns, MessageError,
+  ContainerMultipleColumns, MessageError, Container,
 } from '../styles';
 import ShowMessage from '../../services/toast';
 import { useMatricula } from '../../context/matricula';
@@ -127,42 +127,32 @@ const Matricula = () => {
     }
   };
 
-  const handleSubmit = async (form) => {
-    form.preventDefault();
-    fetch(`${urlBd}/${pasta}`,
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-        cache: 'default',
-        body: JSON.stringify({
-          // id: nextId,
-          nome: matricula.nome,
-          cpf: matricula.cpf,
-          dataNascimento: matricula.dataNascimento,
-          email: matricula.email,
-          genero: matricula.genero,
-          nacionalidade: matricula.nacionalidade,
-          naturalidade: matricula.naturalidade,
-          naturalidadeUF: matricula.naturalidadeUF,
-          status: 'A',
-        }),
-      })
-      .then(async (resp) => {
-        if (resp.ok) {
-          ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
-          history.push('/listagemGeral');
-        }
-      });
+  const handleChangePage = (val) => {
+    switch (val) {
+      case 1:
+        history.push('/matricula');
+        break;
+      case 2:
+        history.push('/matricula2');
+        break;
+      case 4:
+        history.push('/matricula4');
+        break;
+      case 5:
+        history.push('/matricula5');
+        break;
+      default:
+        break;
+    }
   };
 
   // Triggers
   useEffect(() => {
     if (!matricula.nome) {
       history.push('/matricula');
+    }
+    if (!matricula.nacionalidade) {
+      history.push('/matricula2');
     }
 
     setEstadosOptions(estados.map((estado) => (
@@ -289,8 +279,17 @@ const Matricula = () => {
           <span>Endereço</span>
         </Jumbotron>
         <div className="divider" />
+        <Container>
+        <ToggleButtonGroup type="radio" name="options" defaultValue={3} onChange={handleChangePage}>
+          <ToggleButton className="btn-warning" value={1}>Identificação</ToggleButton>
+          <ToggleButton className="btn-warning" value={2}>Origem</ToggleButton>
+          <ToggleButton className="btn-warning" value={3}>Endereço</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={4}>Matrícula</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={5}>Procedência</ToggleButton>
+        </ToggleButtonGroup>
+        </Container>
         <Wrapper>
-          <Form onSubmit={handleSubmit}>
+          <Form>
             <ContainerMultipleColumns>
             <div style={{ width: '35%', margin: '0 5px 0 0' }}>
             <FormField

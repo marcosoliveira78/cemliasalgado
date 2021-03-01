@@ -3,21 +3,18 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Col, Form, Jumbotron } from 'react-bootstrap';
+import { Col, Form, Jumbotron, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
-import uniqueId from 'lodash';
 import cpfMask from '../../component/mask/cpf/index';
 import FormField from '../../component/FormField';
 import {
   ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
-  ContainerMultipleColumns, MessageError,
+  ContainerMultipleColumns, MessageError, Container,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
-import ShowMessage from '../../services/toast';
 import dateMask from '../../component/mask/data';
 import telefoneMask from '../../component/mask/telefone';
 import celularMask from '../../component/mask/celular';
-import convertDate from '../../component/Convert/Date';
 import { validateEmail, validateCPF, validateData } from '../../component/Validate';
 import { useMatricula } from '../../context/matricula';
 import { calculaIdadeEscolar } from '../../component/Convert/Idade';
@@ -134,6 +131,25 @@ const Matricula = () => {
     }
   };
 
+  const handleChangePage = (val) => {
+    switch (val) {
+      case 2:
+        history.push('/matricula2');
+        break;
+      case 3:
+        history.push('/matricula3');
+        break;
+      case 4:
+        history.push('/matricula4');
+        break;
+      case 5:
+        history.push('/matricula5');
+        break;
+      default:
+        break;
+    }
+  };
+
   // Triggers
   useEffect(() => {
 
@@ -201,7 +217,15 @@ const Matricula = () => {
           <span>Identificação do Aluno</span>
         </Jumbotron>
         <div className="divider" />
-
+        <Container>
+        <ToggleButtonGroup type="radio" name="options" defaultValue={1} onChange={handleChangePage}>
+          <ToggleButton className="btn-warning" value={1}>Identificação</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={2}>Origem</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={3}>Endereço</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={4}>Matrícula</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={5}>Procedência</ToggleButton>
+        </ToggleButtonGroup>
+        </Container>
         <Wrapper>
           <Form>
             <FormField

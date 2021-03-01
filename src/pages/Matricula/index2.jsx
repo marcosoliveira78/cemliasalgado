@@ -2,7 +2,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import { Col, Form, Jumbotron } from 'react-bootstrap';
+import { Col, Form, Jumbotron, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import estados from '../../repositories/estados.json';
 import municipios from '../../repositories/municipios.json';
@@ -10,7 +10,7 @@ import FormSelect from '../../component/FormSelect';
 import FormField from '../../component/FormField';
 import {
   ButtonContainer, Wrapper, Buttons, ContainerAlignLeft,
-  ContainerMultipleColumns, MessageError,
+  ContainerMultipleColumns, MessageError, Container,
 } from '../styles';
 import { Label } from '../../component/FormSelect/styles';
 import { useMatricula } from '../../context/matricula';
@@ -109,6 +109,24 @@ const Matricula = () => {
     }
   };
 
+  const handleChangePage = (val) => {
+    switch (val) {
+      case 1:
+        history.push('/matricula');
+        break;
+      case 3:
+        history.push('/matricula3');
+        break;
+      case 4:
+        history.push('/matricula4');
+        break;
+      case 5:
+        history.push('/matricula5');
+        break;
+      default:
+        break;
+    }
+  };
   // Triggers
   useEffect(() => {
     if (!matricula.nome) {
@@ -123,7 +141,6 @@ const Matricula = () => {
           {
             value: estado.id,
             label: `${estado.sigla}`,
-            // label: `${estado.nome} (${estado.sigla})`,
           }
         )));
       } else {
@@ -151,7 +168,6 @@ const Matricula = () => {
       {
         value: cidade.id,
         label: `${cidade.nome}`,
-        // label: `${cidade.nome} - ${cidade.microrregiao.mesorregiao.UF.sigla}`,
       }
     )));
   }, [cidades]);
@@ -167,9 +183,7 @@ const Matricula = () => {
   }, [errors]);
 
   useEffect(() => {
-    if (matricula.dataHora) {
-      setErrors(validate(matricula));
-    }
+    setErrors(validate(matricula));
   }, [matricula]);
 
   console.log('Página 2', matricula);
@@ -181,6 +195,15 @@ const Matricula = () => {
           <span>Origem do Aluno</span>
         </Jumbotron>
         <div className="divider" />
+        <Container>
+        <ToggleButtonGroup type="radio" name="options" defaultValue={2} onChange={handleChangePage}>
+          <ToggleButton className="btn-warning" value={1}>Identificação</ToggleButton>
+          <ToggleButton className="btn-warning" value={2}>Origem</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={3}>Endereço</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={4}>Matrícula</ToggleButton>
+          <ToggleButton className="btn-warning" disabled={!isValid} value={5}>Procedência</ToggleButton>
+        </ToggleButtonGroup>
+        </Container>
         <Wrapper style={{ marginBottom: '40px' }}>
           <Form>
             <fieldset style={{ marginTop: '15px' }}>
