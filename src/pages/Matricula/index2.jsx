@@ -1,6 +1,5 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-useless-escape */
-/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { Col, Form, Jumbotron, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
@@ -186,13 +185,11 @@ const Matricula = () => {
     setErrors(validate(matricula));
   }, [matricula]);
 
-  console.log('Página 2', matricula);
   return (
     <>
       <div className="root">
         <Jumbotron className="jumbotron">
           <h2>Matrícula de Alunos</h2>
-          <span>Origem do Aluno</span>
         </Jumbotron>
         <div className="divider" />
         <Container>
@@ -221,6 +218,7 @@ const Matricula = () => {
                     id="inline-nacionalidade-1"
                     value="1"
                     onChange={handleChangeRadio}
+                    autoFocus
                   />
                   <Form.Check
                     inline

@@ -22,8 +22,8 @@ const calculaIdade = (dataAniversario) => {
 const calculaIdadeEscolar = (dataAniversario) => {
   const d = new Date();
   const anoAtual = d.getFullYear();
-  const mesAtual = 3;
-  const diaAtual = 31;
+  const mesBase = 3;
+  const diaBase = 31;
 
   const newDate = dataAniversario.split('/');
 
@@ -33,7 +33,7 @@ const calculaIdadeEscolar = (dataAniversario) => {
 
   let quantosAnos = anoAtual - anoAniversario;
 
-  if ((mesAtual < mesAniversario || mesAtual === mesAniversario) && diaAtual < diaAniversario) {
+  if (mesBase < mesAniversario || (mesBase === mesAniversario && diaBase < diaAniversario)) {
     quantosAnos--;
   }
   return quantosAnos < 0 ? 0 : quantosAnos;

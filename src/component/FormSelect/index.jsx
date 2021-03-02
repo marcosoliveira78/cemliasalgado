@@ -3,7 +3,8 @@ import React from 'react';
 import { FormGroup, Selecty, Label } from './styles';
 
 function FormSelect({
-  id, label, value, options, name, onChange, isDisabled, menuPlacement,
+  id, label, value, options, name, onChange,
+  isDisabled, menuPlacement, autoFocus,
 }) {
   return (
     <FormGroup>
@@ -20,6 +21,7 @@ function FormSelect({
         placeholder="Selecione..."
         isDisabled={isDisabled}
         menuPlacement={menuPlacement}
+        autoFocus={autoFocus}
       />
     </FormGroup>
   );

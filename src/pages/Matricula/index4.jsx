@@ -1,6 +1,5 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { Form, Jumbotron, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
@@ -425,7 +424,6 @@ const Matricula4 = () => {
     <div className="root">
         <Jumbotron className="jumbotron">
           <h2>Matrícula de Alunos</h2>
-          <span>Opções de Matrícula</span>
         </Jumbotron>
         <div className="divider" />
         <Container>
@@ -445,6 +443,7 @@ const Matricula4 = () => {
               value={matricula.codigoTipoMatricula}
               onChange={handleChangeSelect}
               options={tipoMatriculaOptions}
+              autoFocus
             />
             {errors.tipoMatricula && <MessageError>{errors.tipoMatricula}</MessageError>}
             {matricula.codigoTipoMatricula

@@ -1,6 +1,5 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { Form, Jumbotron, Modal, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
@@ -18,7 +17,6 @@ import ShowMessage from '../../services/toast';
 import convertDate from '../../component/Convert/Date';
 import { Label } from '../../component/FormSelect/styles';
 import Confirmacao from './confirmacao';
-// import Modal from '../../component/Modal';
 
 const Matricula5 = () => {
   // Variables
@@ -40,11 +38,25 @@ const Matricula5 = () => {
   const [anoEnsinoRegularOptions, setAnoEnsinoRegularOptions] = useState([]);
   const [projetosOptions, setProjetosOptions] = useState([]);
   const [educacaoEspecialOptions, setEducacaoEspecialOptions] = useState([]);
+  const [anosFilter, setAnosFilter] = useState([]);
   const [show, setShow] = useState(false);
 
   const dataAtual = convertDate(now);
   // context
   const { matricula, setMatricula } = useMatricula({});
+
+  // functions
+  const populaAnoASerCursado = () => {
+    if (anosFilter.length > 0) {
+      setAnoEnsinoRegularOptions(anosFilter.map((a) => (
+        { value: `12-${a.id}`, label: `${a.nome}` })));
+    }
+  };
+
+  const filtraAnos = () => {
+    const anosFiltrados = listaAnosEnsinoRegular.filter((ano) => (ano.escolaridade === matricula.escolaridade));
+    setAnosFilter(anosFiltrados);
+  };
 
   //  Validations
   const validate = (data) => {
@@ -105,6 +117,7 @@ const Matricula5 = () => {
       switch (matricula.escolaridadeStatus) {
         case 'Cursando':
           setIsEscolaridadeIncompleta(true);
+          populaAnoASerCursado();
           break;
         default:
           setIsEscolaridadeIncompleta(false);
@@ -112,6 +125,7 @@ const Matricula5 = () => {
       }
     } else {
       setIsEscolaridadeIncompleta(false);
+      setMatricula({ ...matricula, anoEnsinoRegular: '', codigoAnoEnsinoRegular: '' });
     }
   };
 
@@ -282,8 +296,6 @@ const Matricula5 = () => {
       { value: `10-${e.id}`, label: `${e.nome}` })));
     setEscolaridadeStatusOptions(listaEscolaridadesStatus.map((e) => (
       { value: `11-${e.id}`, label: `${e.nome}` })));
-    setAnoEnsinoRegularOptions(listaAnosEnsinoRegular.map((a) => (
-      { value: `12-${a.id}`, label: `${a.nome}` })));
     setProjetosOptions(listaProjetos.map((p) => (
       { value: `13-${p.id}`, label: `${p.nome}` })));
     setEducacaoEspecialOptions(listaEducacaoEspecial.map((ee) => (
@@ -311,29 +323,31 @@ const Matricula5 = () => {
   }, [errors]);
 
   useEffect(() => {
-    // if (matricula.procedencia) {
     setErrors(validate(matricula));
-    // }
   }, [matricula]);
 
   useEffect(() => {
     validateEscolaridadeStatus();
+    if (matricula.escolaridade !== undefined && matricula.escolaridade !== 'Ensino Superior') {
+      filtraAnos();
+    }
   }, [matricula.escolaridadeStatus, matricula.escolaridade]);
 
-  // console.log('Página 5', matricula);
-  // console.log('ERROS:', errors);
+  useEffect(() => {
+    populaAnoASerCursado();
+  }, [anosFilter]);
+
+  console.log('Matricula:', matricula);
 
   return (
       <>
       <div className="root">
           <Jumbotron className="jumbotron">
             <h2>Matrícula de Alunos</h2>
-            <span>Dados Escolares (Ensino Regular)</span>
-            {/* <span>Formulário de preenchimento de Matrícula.</span> */}
           </Jumbotron>
           <div className="divider" />
           <Container>
-            <ToggleButtonGroup type="radio" name="options" defaultValue={1} onChange={handleChangePage}>
+            <ToggleButtonGroup type="radio" name="options" defaultValue={5} onChange={handleChangePage}>
               <ToggleButton className="btn-warning" value={1}>Identificação</ToggleButton>
               <ToggleButton className="btn-warning" value={2}>Origem</ToggleButton>
               <ToggleButton className="btn-warning" value={3}>Endereço</ToggleButton>
@@ -350,6 +364,7 @@ const Matricula5 = () => {
             value={matricula.codigoProcedencia}
             onChange={handleChangeSelect}
             options={procedenciaOptions}
+            autoFocus
             />
             {errors.procedencia && <MessageError>{errors.procedencia}</MessageError>}
         <ContainerMultipleColumns>

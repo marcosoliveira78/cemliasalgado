@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-useless-escape */
-/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { Form, Jumbotron, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
@@ -270,13 +269,11 @@ const Matricula = () => {
     }
   }, [matricula]);
 
-  console.log('Página 3', matricula);
   return (
     <>
       <div className="root">
         <Jumbotron className="jumbotron">
           <h2>Matrícula de Alunos</h2>
-          <span>Endereço</span>
         </Jumbotron>
         <div className="divider" />
         <Container>
@@ -299,6 +296,7 @@ const Matricula = () => {
                 value={matricula.cep}
                 maxLength={10}
                 onChange={handleChange}
+                autoFocus
                 />
               {errors.cep && <MessageError>{errors.cep}</MessageError>}
             </div>

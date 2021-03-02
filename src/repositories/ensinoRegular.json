@@ -1,50 +1,61 @@
-[
-    {
-        "id": "1",
-        "nome": "1º ANO"
-    },
-    {
-        "id": "2",
-        "nome": "2º ANO"
-    },
-    {
-        "id": "3",
-        "nome": "3º ANO"
-    },
-    {
-        "id": "4",
-        "nome": "4º ANO"
-    },
-    {
-        "id": "5",
-        "nome": "5º ANO"
-    },
-    {
-        "id": "6",
-        "nome": "6º ANO"
-    },
-    {
-        "id": "7",
-        "nome": "7º ANO"
-    },
-    {
-        "id": "8",
-        "nome": "8º ANO"
-    },
-    {
-        "id": "9",
-        "nome": "9º ANO"
-    },
-    {
-        "id": "10",
-        "nome": "1º ANO (MÉDIO)"
-    },
-    {
-        "id": "11",
-        "nome": "2º ANO (MÉDIO)"
-    },
-    {
-        "id": "12",
-        "nome": "3º ANO (MÉDIO)"
-    }
+[{
+    "id": "1",
+    "nome": "1º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "2",
+    "nome": "2º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "3",
+    "nome": "3º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "4",
+    "nome": "4º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "5",
+    "nome": "5º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "6",
+    "nome": "6º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "7",
+    "nome": "7º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "8",
+    "nome": "8º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "9",
+    "nome": "9º ANO",
+    "escolaridade": "Ensino Fundamental"
+  },
+  {
+    "id": "10",
+    "nome": "1º ANO (MÉDIO)",
+    "escolaridade": "Ensino Médio"
+  },
+  {
+    "id": "11",
+    "nome": "2º ANO (MÉDIO)",
+    "escolaridade": "Ensino Médio"
+  },
+  {
+    "id": "12",
+    "nome": "3º ANO (MÉDIO)",
+    "escolaridade": "Ensino Médio"
+  }
 ]

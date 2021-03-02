@@ -1,6 +1,5 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-useless-escape */
-/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Col, Form, Jumbotron, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
@@ -26,16 +25,12 @@ const Matricula = () => {
     : 'https://cemliasalgado.herokuapp.com';
   const pasta = 'matriculas';
   const history = useHistory();
-  // let nextId;
-  // const now = new Date();
 
   // hooks
   const { matricula, setMatricula } = useMatricula({ });
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
   // Functions
-
-  // const dataAtual = convertDate(now);
 
   //  Validations
   const validate = (data) => {
@@ -164,7 +159,6 @@ const Matricula = () => {
 
   useEffect(() => {
     if (matricula.dataNascimento && matricula.dataNascimento.length < 10) {
-      // console.log(dateMask(matricula.dataNascimento));
       setMatricula({ ...matricula, dataNascimento: dateMask(matricula.dataNascimento), idadeEscolar: '0' });
     }
     if (matricula.dataNascimento !== undefined && matricula.dataNascimento.length === 10) {
@@ -203,18 +197,14 @@ const Matricula = () => {
   }, [errors]);
 
   useEffect(() => {
-    // if (matricula.nome) {
     setErrors(validate(matricula));
-    // }
   }, [matricula]);
 
-  console.log('Página 1', matricula);
   return (
     <>
       <div className="root">
         <Jumbotron className="jumbotron">
           <h2>Matrícula de Alunos</h2>
-          <span>Identificação do Aluno</span>
         </Jumbotron>
         <div className="divider" />
         <Container>
@@ -235,6 +225,7 @@ const Matricula = () => {
               value={matricula.nome}
               maxLength={200}
               onChange={handleChange}
+              autoFocus
               />
             {errors.nome && <MessageError>{errors.nome}</MessageError>}
             <ContainerMultipleColumns>
