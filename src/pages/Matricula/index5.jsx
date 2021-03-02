@@ -1,5 +1,5 @@
-/* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-plusplus */
 import React, { useEffect, useState } from 'react';
 import { Form, Jumbotron, Modal, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
@@ -15,7 +15,6 @@ import listaProjetos from '../../repositories/projetos.json';
 import { ButtonContainer, Buttons, Container, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
 import ShowMessage from '../../services/toast';
 import convertDate from '../../component/Convert/Date';
-import { Label } from '../../component/FormSelect/styles';
 import Confirmacao from './confirmacao';
 
 const Matricula5 = () => {
@@ -340,8 +339,6 @@ const Matricula5 = () => {
   useEffect(() => {
     populaAnoASerCursado();
   }, [anosFilter]);
-
-  console.log('Matricula:', matricula);
 
   return (
       <>
