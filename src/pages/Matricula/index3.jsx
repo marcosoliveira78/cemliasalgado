@@ -147,10 +147,10 @@ const Matricula = () => {
 
   // Triggers
   useEffect(() => {
-    if (!matricula.nome) {
-      history.push('/matricula');
-    }
-    if (!matricula.nacionalidade) {
+    // if (!matricula.pageIdentificacao) {
+    //   history.push('/matricula');
+    // }
+    if (!matricula.pageOrigem) {
       history.push('/matricula2');
     }
 
@@ -256,6 +256,10 @@ const Matricula = () => {
       setMatricula({ ...matricula, parentesco: '' });
     }
   }, [matricula.responsavel]);
+
+  useEffect(() => {
+    setMatricula({ ...matricula, pageEndereco: isValid });
+  }, [isValid]);
 
   useEffect(() => {
     if (matricula.logradouro !== undefined) {

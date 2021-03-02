@@ -42,6 +42,14 @@ const Matricula = () => {
       const mensagem = 'Nome do Aluno deve ser preenchido.';
       erro.nome = mensagem;
     }
+    if (nome !== undefined && nome.length >= 3) {
+      const mensagem = 'Nome do Aluno deve ter sobrenome.';
+      if (nome.split(' ')[1] === undefined) {
+        erro.nome = mensagem;
+      } else if (nome.split(' ')[1].length === 0) {
+        erro.nome = mensagem;
+      }
+    }
     if (email === undefined || email === '') {
       const mensagem = 'E-mail deve ser preenchido.';
       erro.email = mensagem;
@@ -191,6 +199,10 @@ const Matricula = () => {
       }
     }
   }, [matricula.telefoneSecundario]);
+
+  useEffect(() => {
+    setMatricula({ ...matricula, pageIdentificacao: isValid });
+  }, [isValid]);
 
   useEffect(() => {
     validateIsValid();

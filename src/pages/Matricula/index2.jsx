@@ -128,7 +128,7 @@ const Matricula = () => {
   };
   // Triggers
   useEffect(() => {
-    if (!matricula.nome) {
+    if (!matricula.pageIdentificacao) {
       history.push('/matricula');
     }
   }, []);
@@ -176,6 +176,10 @@ const Matricula = () => {
       setMatricula({ ...matricula, grauParentesco: '' });
     }
   }, [matricula.responsavel]);
+
+  useEffect(() => {
+    setMatricula({ ...matricula, pageOrigem: isValid });
+  }, [isValid]);
 
   useEffect(() => {
     validateIsValid();

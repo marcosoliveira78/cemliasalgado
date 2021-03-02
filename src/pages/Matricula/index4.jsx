@@ -281,16 +281,20 @@ const Matricula4 = () => {
 
   // triggers
   useEffect(() => {
-    if (!matricula.nome) {
-      history.push('/matricula');
-    }
-    if (!matricula.nacionalidade) {
-      history.push('/matricula2');
-    }
-    if (!matricula.logradouro) {
+    // if (!matricula.pageIdentificacao) {
+    //   history.push('/matricula');
+    // }
+    // if (!matricula.pageOrigem) {
+    //   history.push('/matricula2');
+    // }
+    if (!matricula.pageEndereco) {
       history.push('/matricula3');
     }
   }, []);
+
+  useEffect(() => {
+    setMatricula({ ...matricula, pageMatricula: isValid });
+  }, [isValid]);
 
   useEffect(() => {
     validateIsValid();

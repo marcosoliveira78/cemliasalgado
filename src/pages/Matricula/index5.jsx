@@ -278,16 +278,16 @@ const Matricula5 = () => {
 
   // triggers
   useEffect(() => {
-    if (!matricula.nome) {
-      history.push('/matricula');
-    }
-    if (!matricula.nacionalidade) {
-      history.push('/matricula2');
-    }
-    if (!matricula.logradouro) {
-      history.push('/matricula3');
-    }
-    if (!matricula.tipoMatricula) {
+    // if (!matricula.pageIdentificacao) {
+    //   history.push('/matricula');
+    // }
+    // if (!matricula.pageOrigem) {
+    //   history.push('/matricula2');
+    // }
+    // if (!matricula.pageEndereco) {
+    //   history.push('/matricula3');
+    // }
+    if (!matricula.pageMatricula) {
       history.push('/matricula4');
     }
     setProcedenciaOptions(listaProcedencias.map((p) => (
@@ -317,6 +317,10 @@ const Matricula5 = () => {
         setMatricula({ ...matricula, id: nextId });
       });
   }, []);
+
+  useEffect(() => {
+    setMatricula({ ...matricula, pageProcedencia: isValid });
+  }, [isValid]);
 
   useEffect(() => {
     validateIsValid();
