@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import {
   Nav, Navbar, NavDropdown, OverlayTrigger, Tooltip,
@@ -10,15 +11,15 @@ import {
 import { DropdownSubmenu, NavDropdownMenu } from 'react-bootstrap-submenu';
 import { uniqueId } from 'lodash';
 import logo from '../../assets/image/logo(white).png';
-// import Auth from '../../services/auth';
 import './styles.css';
 import { NavTitle } from './styles';
 import { Container } from '../../pages/styles';
 import { useLogin } from '../../context/Login';
-import { logout } from '../../services/auth';
+import { logout, extendSession } from '../../services/auth';
 
 function NavMenu() {
   // Hooks
+  const [tempo, setTempo] = useState();
 
   // Context
   const { login, setLogin } = useLogin();
@@ -26,12 +27,40 @@ function NavMenu() {
   // Variables
   const history = useHistory();
   const admin = true;
+  let expireSession = 0;
+  const tempoSessao = 1440 * 60; // minutos * 60
+  const horalogin = parseInt(localStorage.HORA_LOGIN, 10);
 
   // Functions
+
   const closeSession = (type) => {
     logout(type);
     setLogin(false);
     history.push('/');
+  };
+
+  const startCountdown = () => {
+    if (localStorage.USER_LOGGED !== undefined) {
+      expireSession = horalogin + tempoSessao;
+      let min;
+      const horaAtual = Math.floor(+new Date() / 1000);
+      const hora = Math.trunc(((expireSession - horaAtual) / 60) / 60).toString();
+      if (parseInt(hora, 10) > 0) {
+        min = (`0${Math.trunc(((expireSession - horaAtual) / 60) % 60)}`).slice(-2);
+      } else {
+        min = Math.trunc((expireSession - horaAtual) / 60).toString();
+      }
+      const seg = (`0${((expireSession - horaAtual) % 60)}`).slice(-2);
+      setTempo(`${hora}:${min}:${seg}`);
+      if (expireSession <= horaAtual) {
+        closeSession('expireSession');
+        return false;
+      }
+      setTimeout(() => {
+        startCountdown();
+      }, 1000);
+    }
+    return true;
   };
 
   // Handles
@@ -43,6 +72,9 @@ function NavMenu() {
   // LocalStorage
 
   // Triggers
+  useEffect(() => {
+    startCountdown();
+  }, [login]);
 
   // Renders
   const adminNavDropdownTitle = (

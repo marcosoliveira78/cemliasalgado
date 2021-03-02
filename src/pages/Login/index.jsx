@@ -50,8 +50,8 @@ const Login = () => {
   // Handles
   const handleSubmit = async (form) => {
     form.preventDefault();
-    localStorage.LOGOUT = '';
     setSpinnerShow(true);
+    localStorage.LOGOUT = '';
     const newLogin = {
       user,
       pass: password,
@@ -70,8 +70,8 @@ const Login = () => {
         if (allowed) {
           setResponse(allowed);
         }
+        setSpinnerShow(false);
       });
-    setSpinnerShow(false);
   };
 
   useEffect(() => {
@@ -80,6 +80,7 @@ const Login = () => {
       if (response.length > 0) {
         setLogin(true);
         login(response);
+        localStorage.setItem('HORA_LOGIN', JSON.stringify(Math.floor(+new Date() / 1000)));
         //   setAdmin(response.isAdmin);
         history.push('/ListagemGeral');
       } else {
@@ -91,7 +92,7 @@ const Login = () => {
 
   useEffect(() => {
     if (localStorage.LOGOUT === 'expireSession') {
-      ShowMessage('info', 'Sua sessão expirou. Realize o login novamente.', 10000);
+      ShowMessage('warning', 'Sua sessão expirou. Realize o login novamente.', 10000);
       localStorage.LOGOUT = '';
     }
     if (localStorage.USER_LOGGED !== undefined && localStorage.USER_LOGGED.length > 0) {

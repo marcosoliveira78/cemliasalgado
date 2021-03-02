@@ -453,7 +453,7 @@ const Matricula5 = () => {
       show={show}
       onHide={handleClose}>
               <Modal.Header className="modalHeader" closeButton>
-                <Modal.Title className="modalTitle">Confirmação dos dados de Matrícula</Modal.Title>
+                <Modal.Title className="modalTitle">Confirmação de Matrícula</Modal.Title>
                 {/* <Modal.Label> Teste </Modal.Label> */}
               </Modal.Header>
               <Modal.Body>

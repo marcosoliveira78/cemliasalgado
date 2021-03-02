@@ -35,7 +35,7 @@ const ShowMessage = (type, message, autoClose, toastId) => {
       break;
     case 'warning':
       icon = <FaExclamationTriangle />;
-      title = 'Alerta!';
+      title = ' Alerta!';
       break;
     case 'error':
       icon = <FaTimes />;

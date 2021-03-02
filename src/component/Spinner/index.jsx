@@ -9,7 +9,7 @@ function CustomSpinner(props) {
   return (
         <>
             <Modal
-                size="lg"
+                size="auto"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
                 show={show}
@@ -19,7 +19,7 @@ function CustomSpinner(props) {
                 contentClassName="content-modal-spinner"
             >
                 <Modal.Body>
-                    <Spinner animation="border" variant="primary" className="modal-spinner" />
+                    <Spinner animation="border" className="modal-spinner" />
                 </Modal.Body>
             </Modal>
         </>

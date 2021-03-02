@@ -1,9 +1,14 @@
-.content-modal-spinner{
-    border: none;
-    background: none;
+.content-modal-spinner {
+  border: none !important;
+  background: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-spinner {
-    width: 100px;
-    height: 100px;
+  width: 200px !important;
+  height: 200px !important;
+  z-index: 999;
+  color: #db904a !important;
 }
