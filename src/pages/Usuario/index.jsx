@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import { uniqueId } from 'lodash';
 import Tables from '../../component/Table';
+import CustomSpinner from '../../component/Spinner';
 // import request from '../../services/api';
 import { SearchWrapper, FiltroItem, Buttons } from '../styles';
 
@@ -64,6 +65,7 @@ function ListaUsuario() {
   const [usuarios, setUsuarios] = useState([]);
   const [resultado, setResultado] = useState([]);
   const [filtro, setFiltro] = useState([]);
+  const [spinnerShow, setSpinnerShow] = useState(false);
 
   // Handles
   const handleChange = (event) => {
@@ -94,11 +96,13 @@ function ListaUsuario() {
 
   // Triggers
   useEffect(() => {
+    setSpinnerShow(true);
     fetch(urlBd)
       .then(async (resp) => {
         const result = await resp.json();
         setUsuarios([...result]);
         setResultado([...result]);
+        setSpinnerShow(false);
       });
   }, []);
 
@@ -132,6 +136,7 @@ function ListaUsuario() {
   return (
     <>
       <div className="root">
+      <CustomSpinner show={spinnerShow} onHide={() => setSpinnerShow(false)} />
         <Jumbotron className="jumbotron">
           <h2>Lista de Usuários.</h2>
           <span>

@@ -15,6 +15,7 @@ import listaProjetos from '../../repositories/projetos.json';
 import { ButtonContainer, Buttons, Container, ContainerMultipleColumns, MessageError, Wrapper } from '../styles';
 import ShowMessage from '../../services/toast';
 import convertDate from '../../component/Convert/Date';
+import CustomSpinner from '../../component/Spinner';
 import Confirmacao from './confirmacao';
 
 const Matricula5 = () => {
@@ -39,6 +40,7 @@ const Matricula5 = () => {
   const [educacaoEspecialOptions, setEducacaoEspecialOptions] = useState([]);
   const [anosFilter, setAnosFilter] = useState([]);
   const [show, setShow] = useState(false);
+  const [spinnerShow, setSpinnerShow] = useState(false);
 
   const dataAtual = convertDate(now);
   // context
@@ -191,6 +193,7 @@ const Matricula5 = () => {
 
   const handleSubmit = async (form) => {
     form.preventDefault();
+    setSpinnerShow(true);
     const json = JSON.stringify({
       id: matricula.id,
       dataHora: dataAtual,
@@ -272,6 +275,7 @@ const Matricula5 = () => {
           setMatricula('');
           history.push('/listagemGeral');
         }
+        setSpinnerShow(true);
       });
   };
 
@@ -343,6 +347,7 @@ const Matricula5 = () => {
   return (
       <>
       <div className="root">
+      <CustomSpinner show={spinnerShow} onHide={() => setSpinnerShow(false)} />
           <Jumbotron className="jumbotron">
             <h2>Matrícula de Alunos</h2>
           </Jumbotron>
@@ -435,7 +440,7 @@ const Matricula5 = () => {
                 <Buttons variant="danger"> Voltar </Buttons>
               </Link>
               <Buttons
-                onClick={handleShow}
+                onClick={() => { handleShow(); }}
                 // type="submit"
                 variant="success"
                 disabled={!isValid}>

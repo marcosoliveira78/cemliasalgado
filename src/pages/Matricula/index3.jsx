@@ -18,6 +18,7 @@ import {
 import ShowMessage from '../../services/toast';
 import { useMatricula } from '../../context/matricula';
 import cepMask from '../../component/mask/cep';
+import CustomSpinner from '../../component/Spinner';
 
 const Matricula = () => {
   // variables
@@ -36,6 +37,7 @@ const Matricula = () => {
   const [cidades, setCidades] = useState([]);
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
+  const [spinnerShow, setSpinnerShow] = useState(false);
 
   //  Validations
   const validate = (data) => {
@@ -191,12 +193,14 @@ const Matricula = () => {
       const mascaraCEP = cepMask(matricula.cep);
       setMatricula({ ...matricula, cep: mascaraCEP });
       if (matricula.cep.length === 10) {
+        setSpinnerShow(true);
         const cepUnmask = matricula.cep.replace(/\D/g, '');
         fetch(`${urlCEP}/ws/${cepUnmask}/json`)
           .then(async (resp) => {
             const resultado = await resp.json();
             if (resultado.erro) {
               setErrors({ ...errors, cep: 'CEP inválido' });
+              setSpinnerShow(false);
             } else {
               const codigoUF = estados.filter((e) => (e.sigla === resultado.uf));
               setMatricula({ ...matricula,
@@ -208,6 +212,7 @@ const Matricula = () => {
                 uf: resultado.uf,
                 codigoUf: codigoUF[0].id,
               });
+              setSpinnerShow(false);
             }
           });
       }
@@ -276,6 +281,7 @@ const Matricula = () => {
   return (
     <>
       <div className="root">
+      <CustomSpinner show={spinnerShow} onHide={() => setSpinnerShow(false)} />
         <Jumbotron className="jumbotron">
           <h2>Matrícula de Alunos</h2>
         </Jumbotron>

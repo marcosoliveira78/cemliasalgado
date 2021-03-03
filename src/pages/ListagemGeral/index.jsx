@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap';
 import { uniqueId } from 'lodash';
 import Tables from '../../component/Table';
+import CustomSpinner from '../../component/Spinner';
 import request from '../../services/api';
 import { SearchWrapper, FiltroItem, Buttons } from '../styles';
 
@@ -72,6 +73,7 @@ function ListagemGeral() {
   const [matriculas, setMatriculas] = useState([]);
   const [resultado, setResultado] = useState([]);
   const [filtro, setFiltro] = useState([]);
+  const [spinnerShow, setSpinnerShow] = useState(false);
 
   // Handles
   const handleChange = (event) => {
@@ -137,12 +139,14 @@ function ListagemGeral() {
 
   // Triggers
   useEffect(() => {
+    setSpinnerShow(true);
     // request('get', 'matriculas')
     fetch(urlBd)
       .then(async (resp) => {
         const result = await resp.json();
         setMatriculas([...result]);
         setResultado([...result]);
+        setSpinnerShow(false);
       });
   }, []);
 
@@ -176,6 +180,7 @@ function ListagemGeral() {
   return (
     <>
       <div className="root">
+      <CustomSpinner show={spinnerShow} onHide={() => setSpinnerShow(false)} />
         <Jumbotron className="jumbotron">
           <h2>Listagem de Alunos</h2>
           <span>

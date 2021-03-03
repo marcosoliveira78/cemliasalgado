@@ -1,14 +1,16 @@
 .content-modal-spinner {
   border: none !important;
-  background: none !important;
+  background: #5d5d5d01 !important;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 50px;
+  z-index: 9999
 }
 
 .modal-spinner {
   width: 200px !important;
   height: 200px !important;
-  z-index: 999;
+  z-index: 9999;
   color: #db904a !important;
 }

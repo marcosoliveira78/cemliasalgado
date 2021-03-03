@@ -18,6 +18,7 @@ import loginMask from '../../../component/mask/login';
 import ShowMessage from '../../../services/toast';
 import encryptPass from '../../../component/Convert/Encrypt';
 import decryptPass from '../../../component/Convert/Decrypt';
+import CustomSpinner from '../../../component/Spinner';
 
 const UsuarioForm = ({ match }) => {
   // variables
@@ -38,6 +39,7 @@ const UsuarioForm = ({ match }) => {
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
   const [listaUsuarios, setListaUsuarios] = useState({});
+  const [spinnerShow, setSpinnerShow] = useState(false);
 
   // Gets
   const getSwitchValue = (value) => {
@@ -73,14 +75,16 @@ const UsuarioForm = ({ match }) => {
       }
       if (login.length >= 6) {
         let existe;
-        if (params.id === undefined) {
-          existe = listaUsuarios.filter((u) => u.usuario === login);
-        } else {
-          existe = listaUsuarios.filter((u) => (u.usuario === login && u.id.toString() !== params.id));
-        }
-        if (existe.length > 0) {
-          mensagem = 'Nome de login já utilizado.';
-          erro.login = mensagem;
+        if (listaUsuarios) {
+          if (params.id === undefined) {
+            existe = listaUsuarios.filter((u) => u.usuario === login);
+          } else {
+            existe = listaUsuarios.filter((u) => (u.usuario === login && u.id.toString() !== params.id));
+          }
+          if (existe.length > 0) {
+            mensagem = 'Nome de login já utilizado.';
+            erro.login = mensagem;
+          }
         }
       }
     }
@@ -146,6 +150,7 @@ const UsuarioForm = ({ match }) => {
 
   const handleSubmit = async (form) => {
     form.preventDefault();
+    setSpinnerShow(true);
     let metodo = 'POST';
     let url = `${urlBd}/${pasta}`;
     if (params.id !== undefined)
@@ -177,11 +182,13 @@ const UsuarioForm = ({ match }) => {
           ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
           history.push('/usuario');
         }
+        setSpinnerShow(false);
       });
   };
 
   // Triggers
   useEffect(() => {
+    setSpinnerShow(true);
     fetch(`${urlBd}/${pasta}`)
       .then(async (resp) => {
         const resultado = await resp.json();
@@ -205,7 +212,10 @@ const UsuarioForm = ({ match }) => {
           status: resultado.status,
         };
         setUsuario(data);
+        setSpinnerShow(false);
       });
+    } else {
+      setSpinnerShow(false);
     }
   }, []);
 
@@ -224,6 +234,7 @@ const UsuarioForm = ({ match }) => {
   return (
     <>
       <div className="root">
+      <CustomSpinner show={spinnerShow} onHide={() => setSpinnerShow(false)} />
         <Jumbotron className="jumbotron">
           <h2>Configuração de Usuários</h2>
           <span>Formulário de configuração de usuários.</span>
