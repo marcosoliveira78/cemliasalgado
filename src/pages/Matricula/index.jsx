@@ -212,6 +212,8 @@ const Matricula = () => {
     setErrors(validate(matricula));
   }, [matricula]);
 
+  // console.log('Matricula: ', matricula);
+
   return (
     <>
       <div className="root">

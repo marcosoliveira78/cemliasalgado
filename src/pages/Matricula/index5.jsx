@@ -271,8 +271,8 @@ const Matricula5 = () => {
       })
       .then(async (resp) => {
         if (resp.ok) {
-          ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
           setMatricula('');
+          ShowMessage('success', 'Cadastro efetuado com sucesso', 5000, uniqueId());
           history.push('/listagemGeral');
         }
         setSpinnerShow(true);
